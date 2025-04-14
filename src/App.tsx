@@ -19,7 +19,10 @@ const JumboLogo = () => (
       <path d="M12 16.5c-.414 0-.75-.336-.75-.75v-6c0-.414.336-.75.75-.75s.75.336.75.75v6c0 .414-.336.75-.75.75z"/>
       <path d="M9 12.75c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75zm6 0c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75z"/>
     </svg>
-    <span className="text-green-600 text-xl font-semibold">JumboIA</span>
+    <div className="flex flex-col items-start">
+      <span className="text-green-600 text-xl font-semibold">JumboIA</span>
+      <span className="text-blue-400 text-sm font-medium -mt-0.5">by <span className="uppercase">Gotta</span></span>
+    </div>
   </div>
 );
 
