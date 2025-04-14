@@ -3,7 +3,7 @@ import { FiSend, FiTrash2, FiLoader } from 'react-icons/fi';
 import { LuBrain } from 'react-icons/lu';
 import { ChatMessage, ApiResponse } from './types/chat';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const MAX_INPUT_LENGTH = 5000; // Define o limite de caracteres
 
 // SVG do logo JumboIA (elefante estilizado)

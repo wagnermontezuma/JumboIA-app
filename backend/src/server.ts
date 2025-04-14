@@ -8,15 +8,30 @@ import { askDeepSeek, humanizeTextWithDeepSeek } from './services/askDeepSeek';
 
 // Configuração explícita do dotenv assumindo execução da raiz
 // process.cwd() retorna o diretório de onde o script npm foi iniciado
-dotenv.config({ path: path.resolve(process.cwd(), 'backend', '.env') });
+console.log('Diretório atual:', process.cwd());
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+console.log('Valor de OPENROUTER_API_KEY:', process.env.OPENROUTER_API_KEY ? 'Chave presente (valor oculto por segurança)' : 'Chave não encontrada');
 
 const app = express();
 // Lê a porta do .env ou usa 3000 como padrão
 const port = process.env.PORT || 3000; 
 
+// Configuração CORS aprimorada
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Rota de teste para verificar se o servidor está funcionando
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API funcionando corretamente!' });
+});
 
 // Rota principal para processar perguntas
 app.post('/ask', async (req, res) => {
@@ -113,5 +128,7 @@ app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
   if (!process.env.OPENROUTER_API_KEY) {
     console.warn('Atenção: Variável de ambiente OPENROUTER_API_KEY não carregada!');
+  } else {
+    console.log('Chave da API OpenRouter carregada com sucesso.');
   }
 }); 

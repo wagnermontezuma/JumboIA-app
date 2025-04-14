@@ -1,70 +1,85 @@
 # JumboIA - Assistente de IA
 
-Interface de chat moderna e responsiva para interação com modelos de linguagem através da API DeepSeek.
+Um assistente de IA construído com React, Vite, Node.js e Express, utilizando a API do OpenRouter para gerar respostas inteligentes.
 
-## 🚀 Tecnologias
+## 🚀 Ambiente Local
 
-- **Frontend:**
-  - React 18 com TypeScript
-  - TailwindCSS para estilização
-  - Vite como bundler
-  - React Icons
+### Pré-requisitos
 
-- **Backend:**
-  - Node.js com Express
-  - TypeScript
-  - Axios para requisições HTTP
-  - CORS habilitado
+- Node.js >= 18
+- npm ou yarn
 
-## 🛠️ Instalação
+### Configuração do Ambiente
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/jumboia.git
-cd jumboia
+git clone https://github.com/wagnermontezuma/JumboIA-app.git
+cd JumboIA-app
 ```
 
-2. Instale as dependências do frontend:
-```bash
-npm install
-```
+2. Configure as variáveis de ambiente:
 
-3. Instale as dependências do backend:
-```bash
-cd backend
-npm install
-```
-
-4. Configure as variáveis de ambiente:
-- Crie um arquivo `.env` na raiz do diretório `backend`
-- Adicione sua chave API:
+#### Frontend (.env.development)
 ```env
-OPENROUTER_API_KEY=sua-chave-aqui
+VITE_API_URL=http://localhost:3000
 ```
 
-## 🎯 Uso
+#### Backend (.env)
+```env
+PORT=3000
+OPENROUTER_API_KEY=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
+CORS_ORIGIN=http://localhost:5173
+```
 
-1. Inicie o backend:
+3. Inicie o backend:
 ```bash
 cd backend
+npm install
 npm run dev
 ```
 
-2. Em outro terminal, inicie o frontend:
+4. Em outro terminal, inicie o frontend:
 ```bash
+npm install
 npm run dev
 ```
 
-3. Acesse a aplicação em `http://localhost:5173`
+5. Acesse o aplicativo:
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:3000
 
-## 🌟 Funcionalidades
+## 🌐 Deploy em Produção
 
-- Interface moderna e responsiva no estilo dark mode
+### Frontend (Vercel)
+
+1. Conecte o repositório ao Vercel
+2. Configure as variáveis de ambiente:
+   - `VITE_API_URL`: URL do backend no Railway (ex: https://jumboia-api.up.railway.app)
+
+### Backend (Railway)
+
+1. Conecte o repositório ao Railway
+2. Configure as variáveis de ambiente:
+   - `PORT`: Será configurado automaticamente pelo Railway
+   - `OPENROUTER_API_KEY`: Sua chave da API do OpenRouter
+   - `CORS_ORIGIN`: URL do frontend no Vercel (ex: https://jumboia.vercel.app)
+
+## ✨ Funcionalidades
+
+- Interface de chat moderna e responsiva
+- Integração com modelo DeepSeek via OpenRouter
+- Função de humanização de texto
+- Limite de caracteres com contador
 - Indicador de digitação animado
-- Histórico de mensagens persistente
-- Botão para limpar conversa
-- Suporte a markdown nas respostas
-- Design adaptativo para mobile
+
+## 🧪 Verificação do Ambiente
+
+### Checklist:
+- [ ] Frontend rodando em `http://localhost:5173`
+- [ ] Backend rodando em `http://localhost:3000`
+- [ ] Comunicação entre front e back sem erros de CORS
+- [ ] OpenRouter respondendo com a chave configurada
+- [ ] Mensagens sendo exibidas corretamente na interface
 
 ## 📝 Licença
 
