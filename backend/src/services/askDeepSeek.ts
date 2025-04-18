@@ -23,6 +23,14 @@ export async function askDeepSeek(question: string): Promise<string> {
   try {
     console.log('Iniciando requisição para a OpenRouter...');
     
+    // Log para debug da chave (ocultando parte dela)
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    console.log('API Key presente:', apiKey ? `${apiKey.substring(0, 10)}...` : 'não encontrada');
+    
+    if (!apiKey) {
+      throw new Error('API key não encontrada nas variáveis de ambiente');
+    }
+
     const data = {
       model: 'deepseek/deepseek-chat-v3-0324:free',
       messages: [
@@ -43,7 +51,7 @@ export async function askDeepSeek(question: string): Promise<string> {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
           'HTTP-Referer': 'http://localhost:3000',
           'X-Title': 'DeepSeek Assistant API'
         }
