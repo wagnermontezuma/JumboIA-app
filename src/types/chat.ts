@@ -1,16 +1,16 @@
 /**
  * Tipo de remetente da mensagem
  */
-export type MessageSender = 'user' | 'bot';
+export type MessageRole = 'user' | 'assistant';
 
 /**
  * Interface para uma mensagem do chat
  */
 export interface ChatMessage {
   id: string;
-  sender: MessageSender;
-  text: string;
-  timestamp: Date;
+  role: MessageRole;
+  content: string;  // Pode conter markdown, incluindo imagens ![texto](url)
+  timestamp: string;
 }
 
 /**
@@ -18,5 +18,6 @@ export interface ChatMessage {
  */
 export interface ApiResponse {
   answer?: string;
+  humanizedText?: string;
   error?: string;
 } 

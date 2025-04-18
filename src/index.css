@@ -2,6 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .bg-jumbo {
+    @apply bg-green-400;
+  }
+  
+  .bg-jumbo-dark {
+    @apply bg-green-600;
+  }
+  
+  .text-jumbo {
+    @apply text-green-500;
+  }
+  
+  .border-l-jumbo {
+    @apply border-l-green-400;
+  }
+  
+  .hover\:text-jumbo:hover {
+    @apply text-green-500;
+  }
+}
+
+/* Animação para o indicador de digitação */
+@keyframes typing {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-typing {
+  animation: typing 1.5s ease-in-out infinite;
+}
+
+/* Animação para o aparecimento suave das mensagens */
+.animate-message-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Animação para o brilho da estrela (efeito de cintilância) */
+@keyframes sparkle {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(15deg) scale(1.05); }
+  50% { transform: rotate(0deg) scale(1); }
+  75% { transform: rotate(-15deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.sparkle-animation {
+  animation: sparkle 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Animação para o calendário (efeito de pulsação) */
+@keyframes calendar-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.calendar-animation {
+  animation: calendar-pulse 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
 :root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
