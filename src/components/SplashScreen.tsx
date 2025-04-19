@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import splashLogo from '../assets/splash-logo.svg';
+import splashLogoNew from '../assets/splash-logo-new.svg';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -28,9 +28,9 @@ export const SplashScreen = ({ onFinish }: SplashScreenProps) => {
       }`}
     >
       <img
-        src={splashLogo}
+        src={splashLogoNew}
         alt="JumboIA Logo"
-        className="w-32 h-32 animate-pulse"
+        className="w-40 h-40 animate-pulse"
       />
     </div>
   );

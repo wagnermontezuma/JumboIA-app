@@ -6,23 +6,19 @@ import { SplashScreen } from './components/SplashScreen';
 import { CrystalBallButton } from './components/CrystalBallButton';
 import { CalendarButton } from './components/CalendarButton';
 import { SourcesDisplay } from './components/SourcesDisplay';
+import jumboLogoNew from './assets/jumbo-logo-new.svg';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const MAX_INPUT_LENGTH = 5000; // Define o limite de caracteres
 
-// SVG do logo JumboIA (elefante estilizado)
+// Logo JumboIA (elefante estilizado)
 const JumboLogo = () => (
   <div className="flex items-center space-x-2">
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="#7BC96F" 
-      className="w-6 h-6"
-    >
-      <path d="M15.75 5h-7.5C7.56 5 7 5.56 7 6.25v3.542c0 .438.237.837.62 1.047l1.314.724c.326.179.516.529.516.898v3.789c0 .414.336.75.75.75h4.6c.414 0 .75-.336.75-.75v-3.79c0-.368.19-.718.516-.897l1.314-.724A1.25 1.25 0 0017 9.792V6.25c0-.69-.56-1.25-1.25-1.25zm-7.5-1.5h7.5C17.019 3.5 18.25 4.731 18.25 6.25v3.542c0 .877-.474 1.674-1.239 2.094l-1.314.724v3.64c0 1.242-1.008 2.25-2.25 2.25h-4.6c-1.242 0-2.25-1.008-2.25-2.25v-3.64l-1.314-.724A2.75 2.75 0 014 9.792V6.25C4 4.731 5.231 3.5 6.75 3.5h1.5zm9.75 8.25h1.5c.414 0 .75.336.75.75s-.336.75-.75.75h-1.5v-1.5zm-12 0H4.5c-.414 0-.75.336-.75.75s.336.75.75.75H6v-1.5z"/>
-      <path d="M12 16.5c-.414 0-.75-.336-.75-.75v-6c0-.414.336-.75.75-.75s.75.336.75.75v6c0 .414-.336.75-.75.75z"/>
-      <path d="M9 12.75c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75zm6 0c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75z"/>
-    </svg>
+    <img 
+      src={jumboLogoNew}
+      alt="Logo JumboIA" 
+      className="w-7 h-7"
+    />
     <div className="flex flex-col items-start">
       <span className="text-green-600 text-xl font-semibold">JumboIA</span>
       <span className="text-blue-400 text-sm font-medium -mt-0.5">by <span className="uppercase">Gotta</span></span>
@@ -33,16 +29,11 @@ const JumboLogo = () => (
 // Versão simplificada do logo para a caixa de mensagem (sem o texto "by GOTTA")
 const JumboLogoSimple = () => (
   <div className="flex items-center justify-center w-full h-full">
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="#7BC96F" 
-      className="w-4 h-4"
-    >
-      <path d="M15.75 5h-7.5C7.56 5 7 5.56 7 6.25v3.542c0 .438.237.837.62 1.047l1.314.724c.326.179.516.529.516.898v3.789c0 .414.336.75.75.75h4.6c.414 0 .75-.336.75-.75v-3.79c0-.368.19-.718.516-.897l1.314-.724A1.25 1.25 0 0017 9.792V6.25c0-.69-.56-1.25-1.25-1.25zm-7.5-1.5h7.5C17.019 3.5 18.25 4.731 18.25 6.25v3.542c0 .877-.474 1.674-1.239 2.094l-1.314.724v3.64c0 1.242-1.008 2.25-2.25 2.25h-4.6c-1.242 0-2.25-1.008-2.25-2.25v-3.64l-1.314-.724A2.75 2.75 0 014 9.792V6.25C4 4.731 5.231 3.5 6.75 3.5h1.5zm9.75 8.25h1.5c.414 0 .75.336.75.75s-.336.75-.75.75h-1.5v-1.5zm-12 0H4.5c-.414 0-.75.336-.75.75s.336.75.75.75H6v-1.5z"/>
-      <path d="M12 16.5c-.414 0-.75-.336-.75-.75v-6c0-.414.336-.75.75-.75s.75.336.75.75v6c0 .414-.336.75-.75.75z"/>
-      <path d="M9 12.75c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75zm6 0c-.414 0-.75-.336-.75-.75v-3c0-.414.336-.75.75-.75s.75.336.75.75v3c0 .414-.336.75-.75.75z"/>
-    </svg>
+    <img 
+      src={jumboLogoNew}
+      alt="Logo JumboIA" 
+      className="w-5 h-5"
+    />
   </div>
 );
 
