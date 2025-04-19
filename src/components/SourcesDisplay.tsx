@@ -1,5 +1,5 @@
 import React from 'react';
-import uolLogo from '../assets/logo-uol.svg';
+import uolLogoNew from '../assets/logo-uol-new.svg';
 import g1Logo from '../assets/logo-g1.svg';
 
 interface Source {
@@ -21,7 +21,7 @@ export const SourcesDisplay: React.FC<SourcesDisplayProps> = ({
     {
       name: 'UOL',
       url: 'https://www.uol.com.br',
-      logo: uolLogo
+      logo: uolLogoNew
     },
     {
       name: 'G1',
