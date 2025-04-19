@@ -1,10 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="64" cy="64" r="64" fill="#7BC96F"/>
-  <path d="M93.5 34.5C88.5 39.5 83.5 42 78.5 42C73.5 42 69 37 69 34.5C69 32 78.5 27 83.5 27C88.5 27 93.5 29.5 93.5 34.5Z" fill="white"/>
-  <path d="M96 37C91 59 75 64 53 64C31 64 31 54 31 37C31 20 47 10 64 10C81 10 101 16 96 37Z" fill="#7BC96F"/>
-  <path d="M31 37C31 54 31 64 53 64C75 64 91 59 96 37C96 59 96 96 64 96C32 96 31 64 31 37Z" fill="#7BC96F"/>
-  <path d="M31 37C21 48 21 64 31 75C31 54 37 48 48 43C59 38 75 38 85 43C96 48 96 54 96 75C106 64 106 48 96 37" stroke="white" stroke-width="8"/>
-  <path d="M64 64V96" stroke="white" stroke-width="10"/>
-  <circle cx="59" cy="48" r="5" fill="white"/>
+  <!-- Fundo circular com gradiente -->
+  <circle cx="64" cy="64" r="64" fill="url(#paint0_radial)" />
+  
+  <!-- Efeito de luz externa -->
+  <circle cx="64" cy="64" r="62" stroke="white" stroke-opacity="0.2" stroke-width="4"/>
+  
+  <!-- Corpo do elefante -->
+  <path d="M96 40C90 57 75 63 56 63C37 63 35 53 35 40C35 27 48 16 64 16C80 16 102 23 96 40Z" fill="url(#paint1_linear)"/>
+  
+  <!-- Contorno do elefante -->
+  <path d="M35 40C24 50 24 64 35 74C35 53 40 48 50 43C60 38 75 38 85 43C95 48 96 53 96 74C106 64 106 50 96 40" stroke="white" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Tromba -->
+  <path d="M67 63V95" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  
+  <!-- Orelha -->
+  <path d="M94 35C89 40 84 42 79 42C74 42 70 37 70 35C70 33 79 28 84 28C89 28 94 30 94 35Z" fill="url(#paint2_linear)"/>
+  
+  <!-- Olho principal -->
+  <circle cx="53" cy="48" r="5" fill="white"/>
+  <circle cx="53" cy="48" r="2.5" fill="#333"/>
+  
+  <!-- Reflexos de luz -->
+  <path d="M42 30C47 27 55 24 64 24" stroke="rgba(255,255,255,0.6)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="74" cy="30" r="1.5" fill="white" fill-opacity="0.8"/>
+  <circle cx="78" cy="33" r="1" fill="white" fill-opacity="0.6"/>
+  
+  <!-- Sombras e profundidade -->
+  <path d="M35 40C35 53 37 63 56 63C75 63 90 57 96 40C96 57 96 94 64 94C32 94 35 64 35 40Z" fill="url(#paint3_linear)" fill-opacity="0.3"/>
+  
+  <!-- Definições dos gradientes -->
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(64 64) rotate(90) scale(64)">
+      <stop offset="0" stop-color="#92D275"/>
+      <stop offset="1" stop-color="#5CAA3F"/>
+    </radialGradient>
+    <linearGradient id="paint1_linear" x1="64" y1="16" x2="64" y2="63" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BC96F"/>
+      <stop offset="1" stop-color="#61B354"/>
+    </linearGradient>
+    <linearGradient id="paint2_linear" x1="82" y1="28" x2="82" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BC96F"/>
+      <stop offset="1" stop-color="#61B354"/>
+    </linearGradient>
+    <linearGradient id="paint3_linear" x1="64" y1="40" x2="64" y2="94" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5CAA3F" stop-opacity="0"/>
+      <stop offset="1" stop-color="#548F39" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
 </svg> 
