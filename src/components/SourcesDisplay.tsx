@@ -10,9 +10,13 @@ interface Source {
 
 interface SourcesDisplayProps {
   showSources: boolean;
+  messageContent?: string; // Conteúdo da mensagem para análise
 }
 
-export const SourcesDisplay: React.FC<SourcesDisplayProps> = ({ showSources }) => {
+export const SourcesDisplay: React.FC<SourcesDisplayProps> = ({ 
+  showSources, 
+  messageContent = '' 
+}) => {
   const sources: Source[] = [
     {
       name: 'UOL',
@@ -26,7 +30,23 @@ export const SourcesDisplay: React.FC<SourcesDisplayProps> = ({ showSources }) =
     }
   ];
 
-  if (!showSources) {
+  // Verifica se o conteúdo da mensagem parece ser uma pesquisa detalhada
+  const isPesquisaDetalhada = () => {
+    const termosPesquisa = [
+      'pesquisa', 'pesquisar', 'estudo', 'doença', 'chagas', 
+      'análise', 'investigação', 'relatório', 'levantamento',
+      'história', 'dados', 'estatísticas', 'informações'
+    ];
+    
+    const contentLowerCase = messageContent.toLowerCase();
+    
+    // Verifica se o conteúdo contém algum dos termos de pesquisa
+    return termosPesquisa.some(termo => contentLowerCase.includes(termo)) && 
+           contentLowerCase.length > 50; // Mensagem deve ter mais de 50 caracteres para ser considerada detalhada
+  };
+
+  // Se não deve mostrar fontes ou não é uma pesquisa detalhada, retorna null
+  if (!showSources || !isPesquisaDetalhada()) {
     return null;
   }
 

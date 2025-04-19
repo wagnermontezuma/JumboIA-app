@@ -328,7 +328,7 @@ function App() {
                     
                     {/* Mostrar fontes apenas para respostas do assistente */}
                     {msg.role === 'assistant' && (
-                      <SourcesDisplay showSources={true} />
+                      <SourcesDisplay showSources={true} messageContent={msg.content} />
                     )}
                     
                     {msg.role === 'assistant' && (
