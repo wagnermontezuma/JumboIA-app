@@ -335,14 +335,10 @@ function App() {
                       <button
                         onClick={() => handleHumanize(msg.id, msg.content)}
                         disabled={!!humanizingMessageId}
-                        className={`absolute -top-3 -right-3 p-2 bg-white rounded-full shadow-md text-gray-500 hover:text-jumbo transition-opacity duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed ${humanizingMessageId === msg.id ? 'animate-pulse' : ''}`}
+                        className={`absolute -top-3 -right-3 p-2 bg-white rounded-full shadow-md text-gray-500 hover:text-jumbo transition-opacity duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed`}
                         title="Humanizar texto"
                       >
-                        {humanizingMessageId === msg.id ? (
-                          <FiLoader className="w-5 h-5 animate-spin" />
-                        ) : (
-                          <LuBrain className="w-5 h-5" />
-                        )}
+                        <LuBrain className="w-5 h-5" />
                       </button>
                     )}
                   </div>

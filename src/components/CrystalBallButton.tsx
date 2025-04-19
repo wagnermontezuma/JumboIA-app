@@ -46,13 +46,6 @@ export const CrystalBallButton: React.FC<CrystalBallButtonProps> = ({ onClick, d
       
       {/* Efeito de reflexo */}
       <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white opacity-20" />
-      
-      {/* Estado de carregamento */}
-      {disabled && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-        </div>
-      )}
     </button>
   );
 }; 
