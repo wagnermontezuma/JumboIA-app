@@ -1,39 +1,47 @@
 import { useState, useRef, useEffect } from 'react';
 import { FiSend, FiTrash2, FiLoader } from 'react-icons/fi';
 import { LuBrain } from 'react-icons/lu';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ChatMessage, ApiResponse } from './types/chat';
 import { SplashScreen } from './components/SplashScreen';
 import { CrystalBallButton } from './components/CrystalBallButton';
 import { CalendarButton } from './components/CalendarButton';
 import { SourcesDisplay } from './components/SourcesDisplay';
-import jumboLogoNew from './assets/jumbo-logo-new.svg';
+import { QuizzesPage } from './components/QuizzesPage';
+import { QuizPage } from './components/QuizPage';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const MAX_INPUT_LENGTH = 5000; // Define o limite de caracteres
 
-// Logo JumboIA (elefante estilizado)
+// Função para formatar o conteúdo da mensagem com suporte a markdown
+const formatMessageContent = (content: string): string => {
+  // Substitui URLs por links clicáveis
+  const linkedContent = content.replace(
+    /(https?:\/\/[^\s]+)/g, 
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">$1</a>'
+  );
+  
+  // Suporte a imagens markdown
+  const withImages = linkedContent.replace(
+    /!\[(.*?)\]\((.*?)\)/g,
+    '<img src="$2" alt="$1" class="mt-2 max-w-full rounded-lg">'
+  );
+  
+  return withImages;
+};
+
+// Logo JumboIA como texto
 const JumboLogo = () => (
   <div className="flex items-center space-x-2">
-    <img 
-      src={jumboLogoNew}
-      alt="Logo JumboIA" 
-      className="w-7 h-7"
-    />
-    <div className="flex flex-col items-start">
-      <span className="text-green-600 text-xl font-semibold">JumboIA</span>
-      <span className="text-blue-400 text-sm font-medium -mt-0.5">by <span className="uppercase">Gotta</span></span>
-    </div>
+    <span className="text-green-600 text-xl font-semibold">JumboIA</span>
+    <span className="text-blue-400 text-sm font-medium -mt-0.5">by <span className="uppercase">Gotta</span></span>
   </div>
 );
 
 // Versão simplificada do logo para a caixa de mensagem (sem o texto "by GOTTA")
 const JumboLogoSimple = () => (
   <div className="flex items-center justify-center w-full h-full">
-    <img 
-      src={jumboLogoNew}
-      alt="Logo JumboIA" 
-      className="w-5 h-5"
-    />
+    <span className="text-green-600 font-semibold">JumboIA</span>
   </div>
 );
 
@@ -48,6 +56,7 @@ const TypingIndicator = () => (
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const location = useLocation();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -168,42 +177,41 @@ function App() {
 
   const generateImage = async () => {
     if (!input.trim() || isGeneratingImage) return;
-    
     setIsGeneratingImage(true);
     setError(null);
-    
-    const prompt = `Por favor, crie uma imagem baseada em: ${input.trim()}`;
-    
-    const newMessage: ChatMessage = {
+    const prompt = input.trim();
+    // Adiciona mensagem do usuário
+    const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
       content: prompt,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-    
-    setMessages(prev => [...prev, newMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
-    
     try {
-      // Simular uma chamada de API para geração de imagens
-      // Na implementação real, esta seria uma chamada para um serviço como DALL-E ou similar
-      setTimeout(() => {
-        const imageUrl = 'https://via.placeholder.com/512x512/9370DB/FFFFFF?text=Imagem+Gerada';
-        
-        const botMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: `![Imagem gerada](${imageUrl})`,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        
-        setMessages(prev => [...prev, botMessage]);
-        setIsGeneratingImage(false);
-      }, 3000); // Simulando um delay de 3 segundos
-      
+      const response = await fetch(`${API_URL}/image`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro ao gerar imagem');
+      }
+      const data = await response.json();
+      const imageUrl = data.url;
+      const botMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: `![Imagem gerada](${imageUrl})`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages(prev => [...prev, botMessage]);
     } catch (err: any) {
-      setError(err.message || 'Erro ao gerar imagem');
       console.error('Erro na geração de imagem:', err);
+      setError(err.message || 'Erro ao gerar imagem');
+    } finally {
       setIsGeneratingImage(false);
     }
   };
@@ -269,143 +277,230 @@ function App() {
   };
 
   return (
-    <>
-      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
-      <div className="flex flex-col h-screen bg-white text-gray-800 font-sans">
-        {/* Header com sombra sutil */}
-        <header className="bg-white shadow-sm border-b border-gray-100 p-4">
-          <div className="flex items-center justify-between max-w-4xl mx-auto">
-            <JumboLogo />
-            <div className="text-gray-500 text-sm font-medium absolute left-1/2 transform -translate-x-1/2">Intelligence 1.0</div>
-            <button
-              onClick={clearChat}
-              className="p-2 text-gray-400 hover:text-jumbo transition-colors duration-300"
-              title="Limpar conversa"
-            >
-              <FiTrash2 className="w-5 h-5" />
-            </button>
-          </div>
-        </header>
-
-        {/* Área de mensagens com fundo branco */}
-        <main className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-message-in`}
-              >
-                <div
-                  className={`relative group flex items-start space-x-2 max-w-[80%] ${
-                    msg.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                  }`}
-                >
-                  {msg.role === 'assistant' && (
-                    <div className="w-8 h-8 rounded-full bg-jumbo/10 flex items-center justify-center flex-shrink-0">
-                      <JumboLogoSimple />
-                    </div>
-                  )}
-                  <div
-                    className={`p-4 rounded-2xl ${
-                      msg.role === 'user'
-                        ? 'bg-gray-100 border border-gray-200'
-                        : 'bg-white shadow-md border-l-4 border-l-jumbo'
+    <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 to-gray-100">
+      {showSplash ? (
+        <SplashScreen onFinish={() => setShowSplash(false)} />
+      ) : (
+        <>
+          {/* Header */}
+          <header className="bg-white shadow-sm py-3 px-4">
+            <div className="flex items-center justify-between max-w-7xl mx-auto">
+              <div className="flex space-x-6 items-center">
+                <Link to="/" className="flex items-center space-x-2">
+                  <JumboLogo />
+                </Link>
+                <nav className="hidden md:flex space-x-4">
+                  <Link
+                    to="/"
+                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname === '/' 
+                        ? 'text-green-600 bg-green-50' 
+                        : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
-                    <span className="text-xs text-gray-500 mt-2 block">
-                      {msg.timestamp}
-                    </span>
-                    
-                    {/* Mostrar fontes apenas para respostas do assistente */}
-                    {msg.role === 'assistant' && (
-                      <SourcesDisplay showSources={true} messageContent={msg.content} />
-                    )}
-                    
-                    {msg.role === 'assistant' && (
-                      <button
-                        onClick={() => handleHumanize(msg.id, msg.content)}
-                        disabled={!!humanizingMessageId}
-                        className={`absolute -top-3 -right-3 p-2 bg-white rounded-full shadow-md text-gray-500 hover:text-jumbo transition-opacity duration-300 opacity-0 group-hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed`}
-                        title="Humanizar texto"
-                      >
-                        <LuBrain className="w-5 h-5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
+                    Chat IA
+                  </Link>
+                  <Link
+                    to="/quizzes"
+                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname.includes('/quizzes') 
+                        ? 'text-green-600 bg-green-50' 
+                        : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
+                    }`}
+                  >
+                    Quizzes
+                  </Link>
+                </nav>
               </div>
-            ))}
-            
-            {isLoading && (
-              <div className="flex items-start space-x-2 animate-fade-in">
-                <div className="w-8 h-8 rounded-full bg-jumbo/10 flex items-center justify-center">
-                  <JumboLogoSimple />
-                </div>
-                <div className="bg-white shadow-md border-l-4 border-l-jumbo rounded-2xl">
-                  <div className="text-sm text-jumbo px-4 py-2">
-                    JumboIA está digitando...
-                  </div>
-                  <TypingIndicator />
-                </div>
-              </div>
-            )}
-
-            {error && (
-              <div className="bg-red-50 border-l-4 border-l-red-500 text-red-600 px-4 py-3 rounded-lg animate-fade-in">
-                {error}
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-        </main>
-
-        {/* Input Footer */}
-        <footer className="bg-white border-t border-gray-100 p-4 shadow-sm">
-          <form onSubmit={sendMessage} className="max-w-4xl mx-auto">
-            <div className="flex gap-2 items-start">
-              <div className="flex-1 flex flex-col">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={handleInputChange}
-                  placeholder="Digite sua mensagem..."
-                  className="flex-1 p-3 rounded-xl bg-white border border-gray-200 focus:border-jumbo focus:ring-1 focus:ring-jumbo text-gray-800 placeholder-gray-400 transition-all duration-300 outline-none"
-                  disabled={isLoading || isGeneratingImage || isCreatingSchedule}
-                  maxLength={MAX_INPUT_LENGTH}
-                />
-                <div className="text-xs text-gray-400 text-right pr-2 pt-1">
-                  {input.length}/{MAX_INPUT_LENGTH}
-                </div>
-              </div>
-              
-              <div className="flex gap-2 items-center mt-1">
-                <button
-                  type="submit"
-                  disabled={isLoading || isGeneratingImage || isCreatingSchedule || !input.trim() || input.length > MAX_INPUT_LENGTH} 
-                  className="p-3 bg-jumbo hover:bg-jumbo-dark text-white rounded-xl transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md"
-                >
-                  <FiSend className="w-5 h-5" />
-                </button>
-                
-                {/* Botão de Estrela para Gerar Imagens */}
-                <CrystalBallButton 
-                  onClick={generateImage} 
-                  disabled={isLoading || isGeneratingImage || isCreatingSchedule || !input.trim() || input.length > MAX_INPUT_LENGTH}
-                />
-                
-                {/* Botão de Calendário para Criar Cronogramas */}
-                <CalendarButton 
-                  onClick={createSchedule} 
-                  disabled={isLoading || isGeneratingImage || isCreatingSchedule || !input.trim() || input.length > MAX_INPUT_LENGTH}
-                />
-              </div>
+              <div></div>
             </div>
-          </form>
-        </footer>
-      </div>
-    </>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex-1 overflow-auto">
+            <Routes>
+              <Route path="/" element={
+                <div className="flex-1 overflow-hidden flex flex-col h-full">
+                  {/* Chat container */}
+                  <div className="flex-1 overflow-auto p-4 md:p-6">
+                    <div className="max-w-4xl mx-auto space-y-6">
+                      {messages.length === 0 ? (
+                        <div className="h-full flex flex-col items-center justify-center text-center px-4">
+                          <div className="mb-4">
+                            <LuBrain className="w-16 h-16 text-jumbo mx-auto" />
+                          </div>
+                          <h1 className="text-2xl font-semibold text-gray-700 mb-3">Bem-vindo ao JumboIA</h1>
+                          <p className="text-gray-500 max-w-md mb-8">
+                            Pergunte a JumboIA qualquer dúvida sobre suas matérias escolares e obtenha respostas detalhadas e precisas.
+                          </p>
+                          <div className="space-y-4 w-full max-w-md">
+                            <button 
+                              onClick={() => setInput("Explique o ciclo da água de forma simples")}
+                              className="w-full p-3 border border-jumbo/30 rounded-lg text-left text-gray-700 hover:bg-jumbo/5 transition"
+                            >
+                              Explique o ciclo da água de forma simples
+                            </button>
+                            <button 
+                              onClick={() => setInput("Como resolver equações de segundo grau?")}
+                              className="w-full p-3 border border-jumbo/30 rounded-lg text-left text-gray-700 hover:bg-jumbo/5 transition"
+                            >
+                              Como resolver equações de segundo grau?
+                            </button>
+                            <button 
+                              onClick={() => setInput("Quais são os principais eventos da Segunda Guerra Mundial?")}
+                              className="w-full p-3 border border-jumbo/30 rounded-lg text-left text-gray-700 hover:bg-jumbo/5 transition"
+                            >
+                              Quais são os principais eventos da Segunda Guerra Mundial?
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        messages.map((message) => (
+                          <div
+                            key={message.id}
+                            className={`flex ${
+                              message.role === 'user' ? 'justify-end' : 'justify-start'
+                            }`}
+                          >
+                            <div
+                              className={`
+                                max-w-[90%] md:max-w-2xl rounded-xl p-4
+                                ${
+                                  message.role === 'user'
+                                    ? 'bg-jumbo text-white ml-4'
+                                    : 'bg-white border border-gray-200 mr-4 shadow-sm'
+                                }
+                                relative
+                              `}
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <div 
+                                  className={`text-sm font-semibold ${
+                                    message.role === 'user' ? 'text-blue-50' : 'text-jumbo'
+                                  }`}
+                                >
+                                  {message.role === 'user' ? 'Você' : 'JumboIA'}
+                                </div>
+                                <div 
+                                  className={`text-xs ${
+                                    message.role === 'user' ? 'text-blue-100' : 'text-gray-400'
+                                  } ml-2`}
+                                >
+                                  {message.timestamp}
+                                </div>
+                              </div>
+                              <div 
+                                className={`prose prose-sm max-w-none ${
+                                  message.role === 'user' ? 'prose-invert' : ''
+                                }`}
+                                dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}
+                              />
+                              {message.role === 'assistant' && message.content.length > 200 && (
+                                <button
+                                  onClick={() => handleHumanize(message.id, message.content)}
+                                  disabled={humanizingMessageId === message.id}
+                                  className={`
+                                    mt-2 text-xs px-2 py-1 rounded 
+                                    ${
+                                      humanizingMessageId === message.id
+                                        ? 'bg-gray-100 text-gray-400'
+                                        : 'bg-blue-50 text-jumbo hover:bg-blue-100'
+                                    }
+                                    transition-colors
+                                  `}
+                                >
+                                  {humanizingMessageId === message.id ? (
+                                    <span className="flex items-center">
+                                      <FiLoader className="animate-spin mr-1" />
+                                      Humanizando...
+                                    </span>
+                                  ) : (
+                                    'Humanizar texto'
+                                  )}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                      {isLoading && (
+                        <div className="flex justify-start">
+                          <div className="max-w-[90%] md:max-w-2xl rounded-xl p-4 bg-white border border-gray-200 mr-4 shadow-sm">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="text-sm font-semibold text-jumbo">JumboIA</div>
+                              <div className="text-xs text-gray-400 ml-2">
+                                {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </div>
+                            </div>
+                            <TypingIndicator />
+                          </div>
+                        </div>
+                      )}
+                      {error && (
+                        <div className="flex justify-center">
+                          <div className="max-w-md rounded-xl p-4 bg-red-50 border border-red-200 text-red-600">
+                            <p className="text-sm">{error}</p>
+                          </div>
+                        </div>
+                      )}
+                      <div ref={messagesEndRef} />
+                    </div>
+                  </div>
+
+                  {/* Input area */}
+                  <div className="bg-white border-t border-gray-200 p-4">
+                    <div className="max-w-4xl mx-auto relative">
+                      <form onSubmit={sendMessage} className="flex items-end gap-2">
+                        <div className="relative flex-1">
+                          <input
+                            type="text"
+                            value={input}
+                            onChange={handleInputChange}
+                            placeholder="Digite sua pergunta aqui..."
+                            className="w-full p-3 pr-24 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
+                            disabled={isLoading}
+                          />
+                          <div className="absolute right-2 bottom-2 flex space-x-1">
+                            <CrystalBallButton 
+                              onClick={generateImage} 
+                              disabled={isLoading || isGeneratingImage || !input.trim()}
+                            />
+                            <CalendarButton 
+                              onClick={createSchedule}
+                              disabled={isLoading || isCreatingSchedule || !input.trim()}
+                            />
+                          </div>
+                          <div className="text-xs text-gray-400 absolute -bottom-6 right-0">
+                            {input.length}/{MAX_INPUT_LENGTH}
+                          </div>
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={isLoading || !input.trim()}
+                          className="bg-jumbo text-white p-3 rounded-lg hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <FiSend className="w-5 h-5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={clearChat}
+                          disabled={messages.length === 0}
+                          className="text-gray-400 p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <FiTrash2 className="w-5 h-5" />
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              } />
+              <Route path="/quizzes" element={<QuizzesPage />} />
+              <Route path="/quizzes/:quizId" element={<QuizPage />} />
+            </Routes>
+          </main>
+        </>
+      )}
+    </div>
   );
 }
 

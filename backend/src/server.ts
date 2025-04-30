@@ -4,7 +4,9 @@ import path from 'path';
 // import { fileURLToPath } from 'url'; 
 import express from 'express';
 import cors from 'cors';
-import { askDeepSeek, humanizeTextWithDeepSeek } from './services/askDeepSeek';
+import { askDeepSeek, humanizeTextWithDeepSeek } from './services';
+import OpenAI from 'openai';
+import * as quizController from './controllers/quizController';
 
 // Configuração explícita do dotenv assumindo execução da raiz
 // process.cwd() retorna o diretório de onde o script npm foi iniciado
@@ -27,6 +29,13 @@ const corsOptions = {
 // Middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Verifica se a chave da API do OpenAI existe
+const openaiApiKey = process.env.OPENAI_API_KEY;
+console.log('Valor de OPENAI_API_KEY:', openaiApiKey ? 'Chave presente (valor oculto por segurança)' : 'Chave não encontrada');
+
+// Só inicializa o cliente OpenAI se a chave estiver presente
+const openaiClient = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
 // Rota de teste para verificar se o servidor está funcionando
 app.get('/api/test', (req, res) => {
@@ -123,12 +132,103 @@ app.post('/humanize', async (req, res) => {
   }
 });
 
-// Inicia o servidor
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-  if (!process.env.OPENROUTER_API_KEY) {
-    console.warn('Atenção: Variável de ambiente OPENROUTER_API_KEY não carregada!');
-  } else {
-    console.log('Chave da API OpenRouter carregada com sucesso.');
+// Rota para geração de imagens via OpenAI
+app.post('/image', async (req, res) => {
+  const { prompt } = req.body;
+  if (!prompt) {
+    return res.status(400).json({ error: 'Prompt é obrigatório para gerar a imagem.' });
   }
-}); 
+  
+  // Verifica se o cliente OpenAI foi inicializado
+  if (!openaiClient) {
+    return res.status(500).json({ error: 'Serviço de geração de imagens não disponível. Verifique a configuração da API.' });
+  }
+  
+  try {
+    const response = await openaiClient.images.generate({ prompt, n: 1, size: '512x512' });
+    // Garantindo que o resultado existe antes de acessar a URL
+    if (!response.data || response.data.length === 0) {
+      throw new Error('A API não retornou imagens');
+    }
+    const imageUrl = response.data[0].url;
+    return res.json({ url: imageUrl });
+  } catch (error: any) {
+    console.error('Erro ao gerar imagem via OpenAI:', error);
+    return res.status(500).json({ error: error.message || 'Erro interno ao gerar imagem.' });
+  }
+});
+
+// Rotas para o sistema de quizzes
+app.post('/quiz/generate', quizController.generateQuiz);
+app.get('/quiz/:quizId', quizController.getQuiz);
+app.post('/quiz/:quizId/submit', quizController.submitQuiz);
+
+// Middleware para verificar tentativas expiradas
+app.use('/quiz/:quizId/submit', (req, res, next) => {
+  // Verifica se há um parâmetro startTime na query
+  const { startTime } = req.query;
+  if (startTime) {
+    const startTimestamp = parseInt(startTime as string);
+    const currentTime = Date.now();
+    const timeDifference = currentTime - startTimestamp;
+    
+    // Se passaram mais de 10 minutos (600000 ms)
+    if (timeDifference > 600000) {
+      return res.status(400).json({ error: 'Tempo limite excedido (10 minutos)' });
+    }
+  }
+  next();
+});
+
+// Inicia o servidor
+const startServer = (portToUse: number) => {
+  try {
+    const server = app.listen(portToUse, () => {
+      console.log(`Servidor rodando em http://localhost:${portToUse}`);
+      
+      if (!process.env.OPENROUTER_API_KEY) {
+        console.warn('Atenção: Variável de ambiente OPENROUTER_API_KEY não carregada!');
+      } else {
+        console.log('Chave da API OpenRouter carregada com sucesso.');
+      }
+    
+      // Status das funcionalidades
+      console.log('-------------- STATUS DAS FUNCIONALIDADES --------------');
+      console.log('Chat com DeepSeek:', process.env.OPENROUTER_API_KEY ? 'DISPONÍVEL ✅' : 'INDISPONÍVEL ❌');
+      console.log('Geração de imagens:', openaiApiKey ? 'DISPONÍVEL ✅' : 'INDISPONÍVEL ❌');
+      console.log('Sistema de Quiz:', 'DISPONÍVEL ✅');
+      console.log('----------------------------------------------------');
+      
+      // Atualizar o arquivo .env do frontend com a URL correta
+      const envPath = path.resolve(process.cwd(), '..', '.env');
+      try {
+        const envContent = `VITE_API_URL=http://localhost:${portToUse}`;
+        require('fs').writeFileSync(envPath, envContent);
+        console.log(`Frontend configurado para usar a URL: http://localhost:${portToUse}`);
+      } catch (err) {
+        console.warn(`Não foi possível atualizar o arquivo .env do frontend: ${err}`);
+      }
+    });
+    
+    // Adicionar um manipulador de erros
+    server.on('error', (e: any) => {
+      if (e.code === 'EADDRINUSE') {
+        console.log(`Porta ${portToUse} está em uso, tentando a porta ${portToUse + 1}`);
+        server.close();
+        startServer(portToUse + 1);
+      } else {
+        console.error('Erro ao iniciar o servidor:', e);
+      }
+    });
+  } catch (err) {
+    console.error('Erro ao iniciar o servidor:', err);
+    // Verificar se o erro tem o código EADDRINUSE
+    if (err && typeof err === 'object' && 'code' in err && err.code === 'EADDRINUSE') {
+      console.log(`Porta ${portToUse} está em uso, tentando a porta ${portToUse + 1}`);
+      startServer(portToUse + 1);
+    }
+  }
+};
+
+// Iniciar o servidor na porta configurada
+startServer(parseInt(port.toString())); 

@@ -5,19 +5,21 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite",
-    "dev:backend": "ts-node-dev --respawn --transpile-only backend/src/server.ts",
+    "dev:backend": "ts-node-dev --esm --respawn --transpile-only --project backend/tsconfig.json backend/src/server.ts",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "tsc && vite build",
     "serve": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.6.7",
+    "@headlessui/react": "^2.2.2",
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-icons": "^4.12.0"
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^7.5.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
