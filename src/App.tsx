@@ -46,8 +46,10 @@ const formatMessageContent = (content: string): string => {
 // Logo JumboIA como texto
 const JumboLogo = () => (
   <div className="flex items-center space-x-2">
-    <span className="text-green-600 text-xl font-semibold">JumboIA</span>
-    <span className="text-blue-400 text-sm font-medium -mt-0.5">by <span className="uppercase">Gotta</span></span>
+    <div>
+      <span className="text-green-600 text-xl font-semibold">JumboIA</span>
+      <span className="text-blue-400 text-sm font-medium -mt-0.5 ml-1">by <span className="uppercase">Gotta</span></span>
+    </div>
   </div>
 );
 

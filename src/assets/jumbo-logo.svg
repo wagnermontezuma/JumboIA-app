@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="48" height="48">
+  <!-- Tromba -->
+  <path 
+    d="M256,100 
+       C240,130 230,160 240,190
+       C250,220 250,250 240,280
+       C230,310 230,340 240,370
+       C250,400 240,430 230,460" 
+    fill="#22c55e" 
+    stroke="#22c55e" 
+    stroke-width="60" 
+    stroke-linecap="round" 
+  />
+  
+  <!-- Linhas da tromba (detalhes) -->
+  <path 
+    d="M230,160 C250,160 282,160 302,160
+       M226,220 C250,220 286,220 310,220
+       M222,280 C250,280 290,280 318,280
+       M218,340 C250,340 294,340 326,340
+       M214,400 C250,400 298,400 334,400" 
+    stroke="white" 
+    stroke-width="6" 
+    stroke-linecap="round" 
+  />
+</svg> 

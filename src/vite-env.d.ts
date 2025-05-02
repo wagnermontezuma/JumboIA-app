@@ -8,6 +8,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 
+declare const VITE_API_URL: string;
+
 // Declaração para arquivos de imagem
 declare module '*.png' {
   const value: string;
@@ -24,7 +26,14 @@ declare module '*.jpeg' {
   export default value;
 }
 
+// Declaração para importação de arquivos SVG
 declare module '*.svg' {
-  const value: string;
-  export default value;
+  import * as React from 'react';
+
+  export const ReactComponent: React.FunctionComponent<React.SVGProps<
+    SVGSVGElement
+  > & { title?: string }>;
+
+  const src: string;
+  export default src;
 } 
