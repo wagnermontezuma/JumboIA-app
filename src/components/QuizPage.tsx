@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiLoader, FiCheck, FiX, FiClock } from 'react-icons/fi';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// URL fixa do backend
+const API_URL = 'http://localhost:3000';
 
 // Constante para o temporizador (5 minutos em segundos)
 const QUIZ_TIME_LIMIT = 5 * 60;

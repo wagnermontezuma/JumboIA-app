@@ -12,7 +12,12 @@ import { CreditsModal } from './components/CreditsModal';
 import { QuizzesPage } from './components/QuizzesPage';
 import { QuizPage } from './components/QuizPage';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Corrigido para garantir que a URL do backend seja sempre http://localhost:3000
+const API_URL = 'http://localhost:3000';
+
+// Logo para debugging
+console.log('API URL configurada:', API_URL);
+
 const MAX_INPUT_LENGTH = 5000; // Define o limite de caracteres
 
 // Função para verificar se o conteúdo parece uma pesquisa

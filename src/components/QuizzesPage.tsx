@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiLoader } from 'react-icons/fi';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// URL fixa do backend
+const API_URL = 'http://localhost:3000';
 
 export const QuizzesPage = () => {
   const [topic, setTopic] = useState('');
