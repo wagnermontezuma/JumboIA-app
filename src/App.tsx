@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiSend, FiTrash2, FiLoader } from 'react-icons/fi';
+import { FiSend, FiTrash2, FiLoader, FiInfo } from 'react-icons/fi';
 import { LuBrain } from 'react-icons/lu';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ChatMessage, ApiResponse } from './types/chat';
@@ -8,6 +8,7 @@ import { CrystalBallButton } from './components/CrystalBallButton';
 import { CalendarButton } from './components/CalendarButton';
 import { SourcesDisplay } from './components/SourcesDisplay';
 import { ResearchDisplay } from './components/ResearchDisplay';
+import { CreditsModal } from './components/CreditsModal';
 import { QuizzesPage } from './components/QuizzesPage';
 import { QuizPage } from './components/QuizPage';
 
@@ -72,7 +73,10 @@ function App() {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isCreatingSchedule, setIsCreatingSchedule] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  
+  // Estado para controlar a abertura/fechamento do modal de créditos
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+  
   // Função para rolar para a última mensagem
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -283,6 +287,16 @@ function App() {
     return date.toLocaleDateString('pt-BR');
   };
 
+  // Função para abrir o modal de créditos
+  const openCreditsModal = () => {
+    setIsCreditsModalOpen(true);
+  };
+  
+  // Função para fechar o modal de créditos
+  const closeCreditsModal = () => {
+    setIsCreditsModalOpen(false);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-blue-50 to-gray-100">
       {showSplash ? (
@@ -319,10 +333,22 @@ function App() {
                   </Link>
                 </nav>
               </div>
-              <div></div>
+              <div>
+                {/* Botão de créditos */}
+                <button
+                  onClick={openCreditsModal}
+                  className="p-2 rounded-full text-jumbo hover:bg-jumbo/10 transition-colors"
+                  title="Créditos"
+                >
+                  <FiInfo className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </header>
 
+          {/* Modal de créditos */}
+          <CreditsModal isOpen={isCreditsModalOpen} closeModal={closeCreditsModal} />
+          
           {/* Main Content */}
           <main className="flex-1 overflow-auto">
             <Routes>
