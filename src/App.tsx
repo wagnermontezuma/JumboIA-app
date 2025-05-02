@@ -512,30 +512,41 @@ function App() {
                             {input.length}/{MAX_INPUT_LENGTH}
                           </div>
                         </div>
-                        <div className="flex gap-2 mt-3 items-center justify-end">
+                        <div className="flex gap-2 mt-3 items-center justify-between">
                           <button
                             type="button"
-                            onClick={clearChat}
-                            className="p-3 bg-jumbo text-white rounded-lg hover:bg-jumbo/90 transition-colors w-10 h-10 flex items-center justify-center"
-                            title="Limpar conversa"
+                            className="py-2 px-4 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-500 text-white shadow-md hover:from-amber-500 hover:to-yellow-600 transition-all duration-300 border border-amber-200 flex items-center"
                           >
-                            <FiTrash2 className="w-5 h-5" />
+                            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-yellow-700 shadow-sm" style={{ textShadow: '0 0 1px rgba(255,255,255,0.7)' }}>
+                              JumboIA
+                            </span>
                           </button>
-                          <CrystalBallButton 
-                            onClick={generateImage} 
-                            disabled={isLoading || isGeneratingImage || !input.trim()}
-                          />
-                          <CalendarButton 
-                            onClick={createSchedule}
-                            disabled={isLoading || isCreatingSchedule || !input.trim()}
-                          />
-                          <button
-                            type="submit"
-                            disabled={isLoading || !input.trim()}
-                            className="bg-jumbo text-white p-3 rounded-lg hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 flex items-center justify-center"
-                          >
-                            <FiSend className="w-5 h-5" />
-                          </button>
+                          
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={clearChat}
+                              className="p-3 bg-jumbo text-white rounded-lg hover:bg-jumbo/90 transition-colors w-10 h-10 flex items-center justify-center"
+                              title="Limpar conversa"
+                            >
+                              <FiTrash2 className="w-5 h-5" />
+                            </button>
+                            <CrystalBallButton 
+                              onClick={generateImage} 
+                              disabled={isLoading || isGeneratingImage || !input.trim()}
+                            />
+                            <CalendarButton 
+                              onClick={createSchedule}
+                              disabled={isLoading || isCreatingSchedule || !input.trim()}
+                            />
+                            <button
+                              type="submit"
+                              disabled={isLoading || !input.trim()}
+                              className="bg-jumbo text-white p-3 rounded-lg hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 flex items-center justify-center"
+                            >
+                              <FiSend className="w-5 h-5" />
+                            </button>
+                          </div>
                         </div>
                       </form>
                       {error && (
