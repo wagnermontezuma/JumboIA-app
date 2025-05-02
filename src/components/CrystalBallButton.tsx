@@ -11,10 +11,10 @@ export const CrystalBallButton: React.FC<CrystalBallButtonProps> = ({ onClick, d
       onClick={onClick}
       disabled={disabled}
       className={`
-        relative w-12 h-12 rounded-full overflow-hidden shadow-lg
+        relative w-10 h-10 rounded-full overflow-hidden
         transition-all duration-300 transform hover:scale-110
         disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none
-        ${disabled ? '' : 'hover:shadow-[0_0_15px_rgba(147,51,234,0.5)]'}
+        ${disabled ? '' : 'hover:shadow-md'}
       `}
       title="Criar imagem"
     >
@@ -29,7 +29,7 @@ export const CrystalBallButton: React.FC<CrystalBallButtonProps> = ({ onClick, d
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 24 24"
-          className="w-7 h-7 text-white sparkle-animation"
+          className="w-6 h-6 text-white sparkle-animation"
           fill="currentColor"
           stroke="none"
         >
@@ -45,7 +45,7 @@ export const CrystalBallButton: React.FC<CrystalBallButtonProps> = ({ onClick, d
       </div>
       
       {/* Efeito de reflexo */}
-      <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white opacity-20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white opacity-10" />
     </button>
   );
 }; 

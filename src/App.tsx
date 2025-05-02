@@ -450,17 +450,25 @@ function App() {
                   {/* Input area */}
                   <div className="bg-white border-t border-gray-200 p-4">
                     <div className="max-w-4xl mx-auto relative">
-                      <form onSubmit={sendMessage} className="flex items-end gap-2">
-                        <div className="relative flex-1">
+                      <form onSubmit={sendMessage} className="flex items-end gap-2 mb-8">
+                        <button
+                          type="button"
+                          onClick={clearChat}
+                          className="p-3 text-gray-500 hover:text-red-500 transition-colors"
+                          title="Limpar conversa"
+                        >
+                          <FiTrash2 className="w-5 h-5" />
+                        </button>
+                        <div className="relative flex-1 flex items-center">
                           <input
                             type="text"
                             value={input}
                             onChange={handleInputChange}
                             placeholder="Digite sua pergunta aqui..."
-                            className="w-full p-3 pr-24 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
+                            className="w-full p-3 pl-3 pr-32 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
                             disabled={isLoading}
                           />
-                          <div className="absolute right-2 bottom-2 flex space-x-1">
+                          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-1 items-center">
                             <CrystalBallButton 
                               onClick={generateImage} 
                               disabled={isLoading || isGeneratingImage || !input.trim()}
@@ -470,7 +478,7 @@ function App() {
                               disabled={isLoading || isCreatingSchedule || !input.trim()}
                             />
                           </div>
-                          <div className="text-xs text-gray-400 absolute -bottom-6 right-0">
+                          <div className="text-xs text-gray-400 absolute bottom-[-20px] right-0">
                             {input.length}/{MAX_INPUT_LENGTH}
                           </div>
                         </div>
@@ -481,15 +489,12 @@ function App() {
                         >
                           <FiSend className="w-5 h-5" />
                         </button>
-                        <button
-                          type="button"
-                          onClick={clearChat}
-                          disabled={messages.length === 0}
-                          className="text-gray-400 p-3 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <FiTrash2 className="w-5 h-5" />
-                        </button>
                       </form>
+                      {error && (
+                        <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700">
+                          <p>{error}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite",
-    "dev:backend": "ts-node-dev --esm --respawn --transpile-only --project backend/tsconfig.json backend/src/server.ts",
+    "dev:backend": "ts-node-dev --respawn --transpile-only --project backend/tsconfig.json backend/src/server.ts",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "tsc && vite build",
     "serve": "vite preview"
