@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiLoader, FiCheck, FiX } from 'react-icons/fi';
+import { FiLoader, FiCheck, FiX, FiClock } from 'react-icons/fi';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+// Constante para o temporizador (5 minutos em segundos)
+const QUIZ_TIME_LIMIT = 5 * 60;
 
 interface Question {
   id: string;
@@ -30,6 +33,17 @@ export const QuizPage = () => {
   const [results, setResults] = useState<boolean[] | null>(null);
   const [score, setScore] = useState<number | null>(null);
   
+  // Estado para o temporizador
+  const [timeRemaining, setTimeRemaining] = useState<number>(QUIZ_TIME_LIMIT);
+  const [timerActive, setTimerActive] = useState<boolean>(false);
+  
+  // Formatar o tempo restante para minutos:segundos
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+  
   // Buscar o quiz quando a página carrega
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -52,6 +66,8 @@ export const QuizPage = () => {
         setQuiz(data);
         // Inicializar as respostas selecionadas com -1 (nenhuma selecionada)
         setSelectedAnswers(new Array(data.questions.length).fill(-1));
+        // Iniciar o temporizador quando o quiz é carregado
+        setTimerActive(true);
       } catch (err: any) {
         console.error('Erro ao buscar quiz:', err);
         setError(err.message || 'Erro ao buscar dados do quiz');
@@ -61,7 +77,35 @@ export const QuizPage = () => {
     };
     
     fetchQuiz();
+    
+    // Limpar o temporizador quando o componente é desmontado
+    return () => {
+      setTimerActive(false);
+    };
   }, [quizId]);
+  
+  // Efeito para controlar o temporizador
+  useEffect(() => {
+    let timerInterval: number | undefined;
+    
+    if (timerActive && timeRemaining > 0 && !results) {
+      timerInterval = window.setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            clearInterval(timerInterval);
+            // Submeter automaticamente quando o tempo acabar
+            handleSubmit();
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+    };
+  }, [timerActive, timeRemaining, results]);
   
   // Manipular a seleção de resposta
   const handleAnswerSelect = (questionIndex: number, answerIndex: number) => {
@@ -74,10 +118,14 @@ export const QuizPage = () => {
   
   // Enviar as respostas
   const handleSubmit = async () => {
-    if (!quiz) return;
+    if (!quiz || isSubmitting || results) return;
+    
+    // Parar o temporizador
+    setTimerActive(false);
     
     // Verificar se todas as perguntas foram respondidas
-    if (selectedAnswers.some(answer => answer === -1)) {
+    const hasUnanswered = selectedAnswers.some(answer => answer === -1);
+    if (hasUnanswered && timeRemaining > 0) {
       setError('Por favor, responda todas as perguntas antes de enviar');
       return;
     }
@@ -90,9 +138,15 @@ export const QuizPage = () => {
       const answersPayload: Record<string,string> = {};
       quiz.questions.forEach((q, idx) => {
         const selIdx = selectedAnswers[idx];
-        const selOpt = q.choices[selIdx] || '';
-        answersPayload[q.id] = selOpt.charAt(0);
+        // Se o tempo acabou e não foi respondida, envia uma resposta vazia
+        if (selIdx === -1) {
+          answersPayload[q.id] = '';
+        } else {
+          const selOpt = q.choices[selIdx] || '';
+          answersPayload[q.id] = selOpt.charAt(0);
+        }
       });
+      
       const response = await fetch(`${API_URL}/quiz/${quizId}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -111,6 +165,7 @@ export const QuizPage = () => {
       // Calcular corretidão localmente
       const correctness: boolean[] = quiz.questions.map((q, idx) => {
         const selectedIdx = selectedAnswers[idx];
+        if (selectedIdx === -1) return false; // Pergunta não respondida
         const selectedOption = q.choices[selectedIdx] || '';
         const selectedLetter = selectedOption.charAt(0);
         return data.correctAnswers[q.id] === selectedLetter;
@@ -187,12 +242,29 @@ export const QuizPage = () => {
       <h1 className="text-3xl font-bold text-center mb-3 text-green-600">JumboIA - Quiz</h1>
       <p className="text-center text-gray-600 mb-8">Criado em {formattedDate}</p>
       
+      {/* Temporizador */}
+      {!results && (
+        <div className="fixed top-24 right-8 bg-white p-3 rounded-lg shadow-lg border border-jumbo flex items-center space-x-2">
+          <FiClock className={`w-5 h-5 ${timeRemaining < 60 ? 'text-red-500 animate-pulse' : 'text-jumbo'}`} />
+          <span className={`font-mono font-bold ${timeRemaining < 60 ? 'text-red-500' : 'text-jumbo'}`}>
+            {formatTime(timeRemaining)}
+          </span>
+        </div>
+      )}
+      
       <div className="bg-white rounded-xl shadow-md p-6 mb-8">
         {/* Banner de pontuação */}
         {results && (
           <div className={`mb-6 p-4 rounded ${passed ? 'bg-green-50 border-green-500' : 'bg-yellow-50 border-yellow-500'} border-l-4`}>
             <p className="text-lg font-semibold mb-1">Pontuação: {percentage}% ({correctCount}/{totalQuestions})</p>
-            <p>{passed ? 'Parabéns! Você teve um ótimo desempenho neste quiz!' : 'Continue praticando para melhorar seu conhecimento neste tópico.'}</p>
+            <p>
+              {timeRemaining === 0 
+                ? 'O tempo acabou! ' 
+                : ''}
+              {passed 
+                ? 'Parabéns! Você teve um ótimo desempenho neste quiz!' 
+                : 'Continue praticando para melhorar seu conhecimento neste tópico.'}
+            </p>
           </div>
         )}
         <h2 className="text-2xl font-semibold mb-6">Tópico: {quiz.topic}</h2>
