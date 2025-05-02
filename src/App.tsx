@@ -7,11 +7,18 @@ import { SplashScreen } from './components/SplashScreen';
 import { CrystalBallButton } from './components/CrystalBallButton';
 import { CalendarButton } from './components/CalendarButton';
 import { SourcesDisplay } from './components/SourcesDisplay';
+import { ResearchDisplay } from './components/ResearchDisplay';
 import { QuizzesPage } from './components/QuizzesPage';
 import { QuizPage } from './components/QuizPage';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const MAX_INPUT_LENGTH = 5000; // Define o limite de caracteres
+
+// Função para verificar se o conteúdo parece uma pesquisa
+const isPesquisaContent = (content: string): boolean => {
+  return content.includes('Pesquisa Completa') || 
+         (content.includes('Doença') && content.includes('Transmissão') && content.includes('Sintomas'));
+};
 
 // Função para formatar o conteúdo da mensagem com suporte a markdown
 const formatMessageContent = (content: string): string => {
@@ -389,13 +396,21 @@ function App() {
                                   {message.timestamp}
                                 </div>
                               </div>
-                              <div 
-                                className={`prose prose-sm max-w-none ${
-                                  message.role === 'user' ? 'prose-invert' : ''
-                                }`}
-                                dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}
-                              />
-                              {message.role === 'assistant' && message.content.length > 200 && (
+                              {/* Renderizar conteúdo normal ou componente de pesquisa baseado no conteúdo */}
+                              {message.role === 'assistant' && isPesquisaContent(message.content) ? (
+                                <ResearchDisplay 
+                                  content={message.content} 
+                                  title="Resultado da Pesquisa" 
+                                />
+                              ) : (
+                                <div 
+                                  className={`prose prose-sm max-w-none ${
+                                    message.role === 'user' ? 'prose-invert' : ''
+                                  }`}
+                                  dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}
+                                />
+                              )}
+                              {message.role === 'assistant' && message.content.length > 200 && !isPesquisaContent(message.content) && (
                                 <button
                                   onClick={() => handleHumanize(message.id, message.content)}
                                   disabled={humanizingMessageId === message.id}
@@ -450,45 +465,45 @@ function App() {
                   {/* Input area */}
                   <div className="bg-white border-t border-gray-200 p-4">
                     <div className="max-w-4xl mx-auto relative">
-                      <form onSubmit={sendMessage} className="flex items-end gap-2 mb-8">
-                        <button
-                          type="button"
-                          onClick={clearChat}
-                          className="p-3 text-gray-500 hover:text-red-500 transition-colors"
-                          title="Limpar conversa"
-                        >
-                          <FiTrash2 className="w-5 h-5" />
-                        </button>
-                        <div className="relative flex-1 flex items-center">
+                      <form onSubmit={sendMessage} className="flex flex-col gap-2 mb-8">
+                        <div className="relative w-full">
                           <input
                             type="text"
                             value={input}
                             onChange={handleInputChange}
                             placeholder="Digite sua pergunta aqui..."
-                            className="w-full p-3 pl-3 pr-32 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
+                            className="w-full p-3 pl-3 pr-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
                             disabled={isLoading}
                           />
-                          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-1 items-center">
-                            <CrystalBallButton 
-                              onClick={generateImage} 
-                              disabled={isLoading || isGeneratingImage || !input.trim()}
-                            />
-                            <CalendarButton 
-                              onClick={createSchedule}
-                              disabled={isLoading || isCreatingSchedule || !input.trim()}
-                            />
-                          </div>
                           <div className="text-xs text-gray-400 absolute bottom-[-20px] right-0">
                             {input.length}/{MAX_INPUT_LENGTH}
                           </div>
                         </div>
-                        <button
-                          type="submit"
-                          disabled={isLoading || !input.trim()}
-                          className="bg-jumbo text-white p-3 rounded-lg hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <FiSend className="w-5 h-5" />
-                        </button>
+                        <div className="flex gap-2 mt-3 items-center justify-end">
+                          <button
+                            type="button"
+                            onClick={clearChat}
+                            className="p-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors w-10 h-10 flex items-center justify-center"
+                            title="Limpar conversa"
+                          >
+                            <FiTrash2 className="w-5 h-5" />
+                          </button>
+                          <CrystalBallButton 
+                            onClick={generateImage} 
+                            disabled={isLoading || isGeneratingImage || !input.trim()}
+                          />
+                          <CalendarButton 
+                            onClick={createSchedule}
+                            disabled={isLoading || isCreatingSchedule || !input.trim()}
+                          />
+                          <button
+                            type="submit"
+                            disabled={isLoading || !input.trim()}
+                            className="bg-emerald-500 text-white p-3 rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 flex items-center justify-center"
+                          >
+                            <FiSend className="w-5 h-5" />
+                          </button>
+                        </div>
                       </form>
                       {error && (
                         <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700">
