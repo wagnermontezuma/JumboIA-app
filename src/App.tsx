@@ -483,7 +483,7 @@ function App() {
                           <button
                             type="button"
                             onClick={clearChat}
-                            className="p-3 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors w-10 h-10 flex items-center justify-center"
+                            className="p-3 bg-jumbo text-white rounded-lg hover:bg-jumbo/90 transition-colors w-10 h-10 flex items-center justify-center"
                             title="Limpar conversa"
                           >
                             <FiTrash2 className="w-5 h-5" />
@@ -499,7 +499,7 @@ function App() {
                           <button
                             type="submit"
                             disabled={isLoading || !input.trim()}
-                            className="bg-emerald-500 text-white p-3 rounded-lg hover:bg-emerald-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 flex items-center justify-center"
+                            className="bg-jumbo text-white p-3 rounded-lg hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-10 h-10 flex items-center justify-center"
                           >
                             <FiSend className="w-5 h-5" />
                           </button>

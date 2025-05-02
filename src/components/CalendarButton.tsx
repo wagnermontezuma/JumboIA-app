@@ -14,7 +14,7 @@ export const CalendarButton: React.FC<CalendarButtonProps> = ({ onClick, disable
         relative w-10 h-10 rounded-xl overflow-hidden
         transition-all duration-300 transform hover:scale-105
         disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none
-        bg-emerald-500 hover:bg-emerald-600 p-2
+        bg-jumbo hover:bg-jumbo/90 p-2
       `}
       title="Criar cronograma"
     >
