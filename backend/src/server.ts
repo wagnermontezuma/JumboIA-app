@@ -172,9 +172,9 @@ app.use('/quiz/:quizId/submit', (req, res, next) => {
     const currentTime = Date.now();
     const timeDifference = currentTime - startTimestamp;
     
-    // Se passaram mais de 10 minutos (600000 ms)
-    if (timeDifference > 600000) {
-      return res.status(400).json({ error: 'Tempo limite excedido (10 minutos)' });
+    // Se passaram mais de 5 minutos (300000 ms)
+    if (timeDifference > 300000) {
+      return res.status(400).json({ error: 'Tempo limite excedido (5 minutos)' });
     }
   }
   next();

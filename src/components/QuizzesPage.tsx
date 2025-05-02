@@ -108,7 +108,7 @@ export const QuizzesPage = () => {
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Digite um tópico para criar um quiz personalizado.</li>
           <li>Nossa IA gerará 5 perguntas de múltipla escolha sobre o tópico.</li>
-          <li>Você terá 10 minutos para completar o quiz.</li>
+          <li>Você terá 5 minutos para completar o quiz.</li>
           <li>Envie suas respostas e receba feedback personalizado!</li>
           <li>Cada quiz permite até 3 tentativas.</li>
         </ol>
