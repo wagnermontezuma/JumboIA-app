@@ -11,6 +11,18 @@ import { ResearchDisplay } from './components/ResearchDisplay';
 import { CreditsModal } from './components/CreditsModal';
 import { QuizzesPage } from './components/QuizzesPage';
 import { QuizPage } from './components/QuizPage';
+import { 
+  getThematicContent,
+  getBasicConcepts,
+  getEssentialTerminology,
+  getIntermediateConcepts,
+  getPracticalApplications,
+  getConnections,
+  getCriticalAnalysis,
+  getSpecialization,
+  getRealWorldApplications,
+  getRecommendedBooks
+} from './utils/studyGuideContent';
 
 // Corrigido para garantir que a URL do backend seja sempre http://localhost:3000
 const API_URL = 'http://localhost:3000';
@@ -370,40 +382,52 @@ function App() {
       setTimeout(() => {
         const guideTitle = `Guia de Estudos: ${selectedMateria} - ${learningTopic}`;
         
+        // Obter conteúdo histórico ou específico do tema, se disponível
+        const thematicContent = getThematicContent(selectedMateria, learningTopic);
+        
         const guideContent = `
+          ${thematicContent ? `
+          <div class="mb-6 p-5 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 class="text-lg font-semibold text-blue-800 mb-3">Contexto Histórico: ${learningTopic}</h3>
+            <div class="prose prose-sm max-w-none text-blue-900">
+              ${thematicContent}
+            </div>
+          </div>
+          ` : ''}
+          
           <h3>Nível Básico</h3>
           <ul>
-            <li><strong>Conceitos Fundamentais:</strong> Compreensão dos princípios básicos de ${learningTopic.toLowerCase()}</li>
-            <li><strong>Terminologia Essencial:</strong> Aprendizado do vocabulário básico relacionado ao tema</li>
-            <li><strong>Exercícios Introdutórios:</strong> Prática com problemas simples para fixação</li>
+            <li><strong>Conceitos Fundamentais:</strong> ${getBasicConcepts(selectedMateria, learningTopic)}</li>
+            <li><strong>Terminologia Essencial:</strong> ${getEssentialTerminology(selectedMateria, learningTopic)}</li>
+            <li><strong>Exercícios Introdutórios:</strong> Resolução de problemas básicos envolvendo ${learningTopic.toLowerCase()}, com foco na compreensão dos princípios fundamentais.</li>
           </ul>
           
           <h3>Nível Intermediário</h3>
           <ul>
-            <li><strong>Aprofundamento Teórico:</strong> Estudo de conceitos mais complexos</li>
-            <li><strong>Aplicações Práticas:</strong> Resolução de problemas mais elaborados</li>
-            <li><strong>Conexões com Outros Temas:</strong> Relacionamento do tema com outros conteúdos da matéria</li>
+            <li><strong>Aprofundamento Teórico:</strong> ${getIntermediateConcepts(selectedMateria, learningTopic)}</li>
+            <li><strong>Aplicações Práticas:</strong> ${getPracticalApplications(selectedMateria, learningTopic)}</li>
+            <li><strong>Conexões com Outros Temas:</strong> ${getConnections(selectedMateria, learningTopic)}</li>
           </ul>
           
           <h3>Nível Avançado</h3>
           <ul>
-            <li><strong>Análise Crítica:</strong> Desenvolvimento de pensamento crítico sobre o tema</li>
-            <li><strong>Resolução de Problemas Complexos:</strong> Abordagem de desafios que exigem múltiplos conceitos</li>
-            <li><strong>Pesquisa e Aprofundamento:</strong> Busca por fontes adicionais de conhecimento</li>
+            <li><strong>Análise Crítica:</strong> ${getCriticalAnalysis(selectedMateria, learningTopic)}</li>
+            <li><strong>Resolução de Problemas Complexos:</strong> Abordar desafios que requerem a integração de múltiplos conceitos e perspectivas dentro do tema ${learningTopic.toLowerCase()}.</li>
+            <li><strong>Pesquisa e Aprofundamento:</strong> Investigação aprofundada das principais teorias e debates acadêmicos relacionados a ${learningTopic.toLowerCase()}, incluindo artigos científicos e obras de referência.</li>
           </ul>
           
           <h3>Nível Profissional</h3>
           <ul>
-            <li><strong>Especialização:</strong> Estudo de áreas específicas dentro do tema</li>
-            <li><strong>Aplicações no Mundo Real:</strong> Como o tema é utilizado em contextos profissionais</li>
-            <li><strong>Contribuições para o Campo:</strong> Preparação para contribuir com novos conhecimentos na área</li>
+            <li><strong>Especialização:</strong> ${getSpecialization(selectedMateria, learningTopic)}</li>
+            <li><strong>Aplicações no Mundo Real:</strong> ${getRealWorldApplications(selectedMateria, learningTopic)}</li>
+            <li><strong>Contribuições para o Campo:</strong> Estudo das fronteiras do conhecimento em ${learningTopic.toLowerCase()}, identificando lacunas teóricas e possibilidades de contribuições originais.</li>
           </ul>
           
           <h3>Recursos Recomendados</h3>
           <ul>
-            <li><strong>Livros:</strong> Títulos essenciais para aprofundamento</li>
-            <li><strong>Cursos Online:</strong> Plataformas educacionais com conteúdo relacionado</li>
-            <li><strong>Exercícios Práticos:</strong> Fontes de problemas para prática contínua</li>
+            <li><strong>Livros:</strong> ${getRecommendedBooks(selectedMateria, learningTopic)}</li>
+            <li><strong>Cursos Online:</strong> Plataformas como Coursera, Khan Academy e edX oferecem cursos específicos sobre ${learningTopic.toLowerCase()} com diferentes níveis de profundidade.</li>
+            <li><strong>Exercícios Práticos:</strong> Resolução sistemática de problemas em livros didáticos, simulados e bancos de questões, aumentando gradualmente o nível de dificuldade.</li>
           </ul>
           
           <p>Este guia foi criado especialmente para estudantes do ${selectedAno}. Adapte o ritmo de estudos conforme sua familiaridade com o tema.</p>
@@ -411,6 +435,14 @@ function App() {
           <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
             <h4 class="text-lg font-semibold text-green-700 mb-2">O que aprender no ${selectedAno}:</h4>
             <p class="text-green-800">${getYearSpecificContent(selectedMateria, selectedAno, learningTopic)}</p>
+          </div>
+          
+          <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h4 class="text-lg font-semibold text-yellow-700 mb-2">Teste seus conhecimentos:</h4>
+            <p class="text-yellow-800 mb-3">Faça um quiz sobre ${learningTopic} para verificar seu nível de compreensão e identificar áreas que precisam de mais estudo.</p>
+            <button class="px-4 py-2 bg-jumbo text-white rounded-md hover:bg-jumbo/90 transition-colors" onclick="window.location.href='/quizzes'">
+              Iniciar Quiz
+            </button>
           </div>
         `;
         
@@ -422,72 +454,6 @@ function App() {
       setError(err.message || 'Erro ao gerar guia de estudos');
       console.error('Erro na criação do guia:', err);
       setIsCreatingStudyGuide(false);
-    }
-  };
-
-  // Função para determinar o conteúdo específico para o ano escolar
-  const getYearSpecificContent = (materia: string, ano: string, tema: string): string => {
-    // Extrair o número do ano e o nível (Fundamental ou Médio)
-    const anoNumber = parseInt(ano.split('º')[0]);
-    const isEnsinoMedio = ano.includes('Médio');
-    
-    if (isEnsinoMedio) {
-      // Conteúdo para Ensino Médio
-      switch (materia) {
-        case 'Matemática':
-          return `No ${ano}, você deve focar em dominar os fundamentos de ${tema} através de exercícios práticos, compreender as principais fórmulas e aplicações, além de resolver problemas contextualizados. É importante relacionar este tema com outros conteúdos da matemática como ${anoNumber === 3 ? 'preparação para o vestibular' : 'base para tópicos mais avançados'}.`;
-          
-        case 'Português':
-          return `Durante o ${ano}, você deve desenvolver análises mais aprofundadas sobre ${tema}, compreender as principais regras gramaticais relacionadas, produzir textos aplicando este conhecimento e identificar sua aplicação em diferentes contextos literários. ${anoNumber === 3 ? 'Este tópico é frequentemente cobrado em vestibulares e no ENEM.' : 'Este conhecimento será fundamental para os próximos anos.'}`;
-          
-        case 'História':
-          return `No ${ano}, você deve compreender os principais eventos históricos relacionados a ${tema}, analisar suas causas e consequências, estabelecer conexões com outros períodos históricos e desenvolver pensamento crítico sobre o tema. ${anoNumber === 3 ? 'Este é um tema recorrente em questões de vestibular e ENEM.' : 'Este conhecimento será aprofundado nos próximos anos.'}`;
-          
-        case 'Geografia':
-          return `Durante o ${ano}, você deve dominar os conceitos fundamentais de ${tema}, compreender sua distribuição espacial e impactos socioeconômicos, analisar dados e mapas relacionados ao tema, e estabelecer conexões com questões ambientais e geopolíticas atuais. ${anoNumber === 3 ? 'Este é um tópico frequentemente abordado em exames de ingresso universitário.' : 'Este conhecimento será essencial para os tópicos mais complexos dos próximos anos.'}`;
-          
-        default:
-          return `No ${ano}, você deve focar em dominar os conceitos fundamentais de ${tema}, praticar exercícios relacionados, desenvolver projetos práticos e preparar-se para aprofundar este conhecimento ${anoNumber === 3 ? 'nos estudos universitários' : 'nos próximos anos do ensino médio'}.`;
-      }
-    } else {
-      // Conteúdo para Ensino Fundamental
-      if (anoNumber <= 5) {
-        // Fundamental I (1º ao 5º ano)
-        switch (materia) {
-          case 'Matemática':
-            return `No ${ano}, você deve aprender os conceitos básicos de ${tema}, praticar com exemplos simples do dia a dia, desenvolver o raciocínio lógico através de jogos e atividades lúdicas, e compreender como este tema se relaciona com outros conteúdos matemáticos.`;
-            
-          case 'Português':
-            return `Durante o ${ano}, você precisa conhecer o vocabulário básico relacionado a ${tema}, praticar leitura e escrita com textos simples, participar de atividades orais e desenvolver a capacidade de expressão usando este conhecimento.`;
-            
-          case 'Ciências':
-            return `No ${ano}, você vai explorar ${tema} através de observações simples, experimentos básicos, atividades práticas e ilustrações. É importante compreender como este tema se relaciona com o seu dia a dia e com o meio ambiente.`;
-            
-          default:
-            return `Durante o ${ano}, você vai conhecer os primeiros conceitos de ${tema} através de atividades lúdicas, histórias, imagens e exemplos simples do cotidiano. Os professores usarão jogos e projetos criativos para tornar o aprendizado mais divertido.`;
-        }
-      } else {
-        // Fundamental II (6º ao 9º ano)
-        switch (materia) {
-          case 'Matemática':
-            return `No ${ano}, você deve aprofundar o conhecimento sobre ${tema}, resolver problemas mais elaborados, compreender fórmulas e suas aplicações, e começar a desenvolver raciocínio abstrato relacionado ao tema.`;
-            
-          case 'Português':
-            return `Durante o ${ano}, você deve ampliar o vocabulário relacionado a ${tema}, analisar diferentes tipos de textos, produzir redações aplicando este conhecimento e compreender as regras gramaticais associadas.`;
-            
-          case 'História':
-            return `No ${ano}, você vai estudar os principais acontecimentos relacionados a ${tema}, compreender sua importância histórica, analisar suas causas e consequências, e estabelecer relações com outros períodos históricos.`;
-            
-          case 'Geografia':
-            return `Durante o ${ano}, você vai explorar ${tema} através de mapas e gráficos, compreender sua distribuição espacial, analisar seu impacto na sociedade e no meio ambiente, e relacionar com outros fenômenos geográficos.`;
-            
-          case 'Ciências':
-            return `No ${ano}, você deve compreender os princípios científicos de ${tema}, realizar experimentos práticos, analisar suas aplicações no cotidiano e entender sua importância para o meio ambiente e a saúde.`;
-            
-          default:
-            return `Durante o ${ano}, você vai aprofundar seus conhecimentos sobre ${tema}, realizar projetos práticos, desenvolver pesquisas guiadas e preparar apresentações sobre aspectos específicos deste tema.`;
-        }
-      }
     }
   };
 
