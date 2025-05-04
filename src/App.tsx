@@ -115,7 +115,7 @@ function App() {
   // Estados para o guia de estudos
   const [isCreatingStudyGuide, setIsCreatingStudyGuide] = useState(false);
   const [studyGuide, setStudyGuide] = useState<{ title: string, content: string } | null>(null);
-  
+
   // Função para rolar para a última mensagem
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -251,13 +251,13 @@ function App() {
       }
       const data = await response.json();
       const imageUrl = data.url;
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: `![Imagem gerada](${imageUrl})`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, botMessage]);
+        const botMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: `![Imagem gerada](${imageUrl})`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, botMessage]);
     } catch (err: any) {
       console.error('Erro na geração de imagem:', err);
       setError(err.message || 'Erro ao gerar imagem');
@@ -672,7 +672,7 @@ function App() {
                                 />
                               )}
                               {message.role === 'assistant' && message.content.length > 200 && !isPesquisaContent(message.content) && (
-                                <button
+                      <button
                                   onClick={() => handleHumanize(message.id, message.content)}
                                   disabled={humanizingMessageId === message.id}
                                   className={`
@@ -693,34 +693,34 @@ function App() {
                                   ) : (
                                     'Humanizar texto'
                                   )}
-                                </button>
-                              )}
-                            </div>
-                          </div>
+                      </button>
+                    )}
+                  </div>
+                </div>
                         ))
                       )}
-                      {isLoading && (
+            {isLoading && (
                         <div className="flex justify-start">
                           <div className="max-w-[90%] md:max-w-2xl rounded-xl p-4 bg-white border border-gray-200 mr-4 shadow-sm">
                             <div className="flex justify-between items-start mb-2">
                               <div className="text-sm font-semibold text-jumbo">JumboIA</div>
                               <div className="text-xs text-gray-400 ml-2">
                                 {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </div>
-                            </div>
-                            <TypingIndicator />
-                          </div>
-                        </div>
-                      )}
-                      {error && (
+                </div>
+                  </div>
+                  <TypingIndicator />
+                </div>
+              </div>
+            )}
+            {error && (
                         <div className="flex justify-center">
                           <div className="max-w-md rounded-xl p-4 bg-red-50 border border-red-200 text-red-600">
                             <p className="text-sm">{error}</p>
                           </div>
-                        </div>
-                      )}
-                      <div ref={messagesEndRef} />
-                    </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
                   </div>
 
                   {/* Input area */}
@@ -728,20 +728,20 @@ function App() {
                     <div className="max-w-4xl mx-auto relative">
                       <form onSubmit={sendMessage} className="flex flex-col gap-2 mb-8">
                         <div className="relative w-full">
-                          <input
-                            type="text"
-                            value={input}
-                            onChange={handleInputChange}
+                <input
+                  type="text"
+                  value={input}
+                  onChange={handleInputChange}
                             placeholder="Digite sua pergunta aqui..."
                             className="w-full p-3 pl-3 pr-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-jumbo focus:border-transparent"
                             disabled={isLoading}
                           />
                           <div className="text-xs text-gray-400 absolute bottom-[-20px] right-0">
-                            {input.length}/{MAX_INPUT_LENGTH}
-                          </div>
-                        </div>
+                  {input.length}/{MAX_INPUT_LENGTH}
+                </div>
+              </div>
                         <div className="flex gap-2 mt-3 items-center justify-between">
-                          <button
+                <button
                             type="button"
                             className="h-12 px-4 rounded-lg bg-gradient-to-r from-gray-300 to-gray-400 shadow-md hover:from-gray-400 hover:to-gray-500 transition-all duration-300 border border-gray-200 flex items-center justify-center"
                           >
@@ -754,8 +754,8 @@ function App() {
                             >
                               JumboIA
                             </span>
-                          </button>
-                          
+                </button>
+                
                           <div className="flex gap-2">
                             <button
                               type="button"
@@ -765,12 +765,12 @@ function App() {
                             >
                               <FiTrash2 className="w-5 h-5" />
                             </button>
-                            <CrystalBallButton 
-                              onClick={generateImage} 
+                <CrystalBallButton 
+                  onClick={generateImage} 
                               disabled={isLoading || isGeneratingImage || !input.trim()}
-                            />
-                            <CalendarButton 
-                              onClick={createSchedule}
+                />
+                <CalendarButton 
+                  onClick={createSchedule} 
                               disabled={isLoading || isCreatingSchedule || !input.trim()}
                             />
                             <button
@@ -780,9 +780,9 @@ function App() {
                             >
                               <FiSend className="w-5 h-5" />
                             </button>
-                          </div>
-                        </div>
-                      </form>
+              </div>
+            </div>
+          </form>
                       {error && (
                         <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700">
                           <p>{error}</p>
@@ -907,11 +907,11 @@ function App() {
                       </div>
                     </div>
                   )}
-                </div>
+      </div>
               } />
             </Routes>
           </main>
-        </>
+    </>
       )}
     </div>
   );

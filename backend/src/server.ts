@@ -186,11 +186,11 @@ const startServer = (portToUse: number) => {
     const server = app.listen(portToUse, () => {
       console.log(`Servidor rodando em http://localhost:${portToUse}`);
       
-      if (!process.env.OPENROUTER_API_KEY) {
-        console.warn('Atenção: Variável de ambiente OPENROUTER_API_KEY não carregada!');
-      } else {
-        console.log('Chave da API OpenRouter carregada com sucesso.');
-      }
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.warn('Atenção: Variável de ambiente OPENROUTER_API_KEY não carregada!');
+  } else {
+    console.log('Chave da API OpenRouter carregada com sucesso.');
+  }
     
       // Status das funcionalidades
       console.log('-------------- STATUS DAS FUNCIONALIDADES --------------');
