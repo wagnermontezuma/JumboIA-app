@@ -515,13 +515,11 @@ function App() {
                         <div className="flex gap-2 mt-3 items-center justify-between">
                           <button
                             type="button"
-                            className="py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 border-2 border-yellow-300 flex items-center"
+                            className="h-12 px-4 rounded-lg bg-gradient-to-r from-gray-300 to-gray-400 shadow-md hover:from-gray-400 hover:to-gray-500 transition-all duration-300 border border-gray-200 flex items-center justify-center"
                           >
                             <span 
-                              className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500" 
+                              className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-600" 
                               style={{ 
-                                textShadow: '0 0 3px rgba(255,255,255,0.9), 0 0 5px rgba(255,255,255,0.5)',
-                                filter: 'drop-shadow(0 0 1px #fff)',
                                 letterSpacing: '0.5px',
                                 fontSize: '1.1rem'
                               }}
