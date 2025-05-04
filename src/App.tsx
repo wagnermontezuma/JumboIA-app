@@ -84,6 +84,12 @@ function App() {
   // Estado para controlar a abertura/fechamento do modal de créditos
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   
+  // Estados para o modal de Matérias
+  const [isAnoDiaglogOpen, setIsAnoDiaglogOpen] = useState(false);
+  const [selectedMateria, setSelectedMateria] = useState('');
+  const [selectedAno, setSelectedAno] = useState('');
+  const [learningTopic, setLearningTopic] = useState('');
+  
   // Função para rolar para a última mensagem
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -302,6 +308,34 @@ function App() {
   // Função para fechar o modal de créditos
   const closeCreditsModal = () => {
     setIsCreditsModalOpen(false);
+  };
+
+  // Função para abrir o diálogo de seleção de ano e conteúdo
+  const openAnoDialog = (materia: string) => {
+    setSelectedMateria(materia);
+    setIsAnoDiaglogOpen(true);
+  };
+
+  // Função para fechar o diálogo
+  const closeAnoDialog = () => {
+    setIsAnoDiaglogOpen(false);
+    setSelectedAno('');
+    setLearningTopic('');
+  };
+
+  // Função para processar o formulário de ano e conteúdo
+  const handleAnoFormSubmit = () => {
+    if (!selectedAno || !learningTopic.trim()) return;
+
+    // Criar a mensagem para enviar ao chat
+    const tema = `${selectedMateria} - ${selectedAno}: ${learningTopic}`;
+    setInput(`Preciso de ajuda com ${tema}`);
+
+    // Fechar o diálogo
+    closeAnoDialog();
+
+    // Navegar para a página de chat
+    window.location.href = "/";
   };
 
   return (
@@ -584,12 +618,81 @@ function App() {
                       <div key={materia} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow">
                         <h2 className="text-lg font-semibold text-jumbo">{materia}</h2>
                         <p className="text-gray-600 mt-2 text-sm">Conteúdo completo sobre {materia.toLowerCase()}</p>
-                        <button className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors">
+                        <button 
+                          className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors"
+                          onClick={() => openAnoDialog(materia)}
+                        >
                           Explorar
                         </button>
                       </div>
                     ))}
                   </div>
+
+                  {/* Modal de seleção de ano escolar */}
+                  {isAnoDiaglogOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                      <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">Explorar {selectedMateria}</h2>
+                        
+                        <div className="mb-4">
+                          <label htmlFor="anoEscolar" className="block text-sm font-medium text-gray-700 mb-1">
+                            Qual o seu ano escolar?
+                          </label>
+                          <select
+                            id="anoEscolar"
+                            value={selectedAno}
+                            onChange={(e) => setSelectedAno(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-jumbo"
+                          >
+                            <option value="">Selecione seu ano</option>
+                            <optgroup label="Ensino Fundamental">
+                              {Array.from({ length: 9 }, (_, i) => (
+                                <option key={`fundamental-${i+1}`} value={`${i+1}º ano do Fundamental`}>
+                                  {i+1}º ano do Fundamental
+                                </option>
+                              ))}
+                            </optgroup>
+                            <optgroup label="Ensino Médio">
+                              {Array.from({ length: 3 }, (_, i) => (
+                                <option key={`medio-${i+1}`} value={`${i+1}º ano do Ensino Médio`}>
+                                  {i+1}º ano do Ensino Médio
+                                </option>
+                              ))}
+                            </optgroup>
+                          </select>
+                        </div>
+                        
+                        <div className="mb-6">
+                          <label htmlFor="conteudoAprendendo" className="block text-sm font-medium text-gray-700 mb-1">
+                            O que você está aprendendo?
+                          </label>
+                          <textarea
+                            id="conteudoAprendendo"
+                            value={learningTopic}
+                            onChange={(e) => setLearningTopic(e.target.value)}
+                            placeholder="Ex: Equações de segundo grau, Análise sintática..."
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-jumbo"
+                          ></textarea>
+                        </div>
+                        
+                        <div className="flex justify-end space-x-3">
+                          <button
+                            onClick={closeAnoDialog}
+                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            onClick={handleAnoFormSubmit}
+                            disabled={!selectedAno || !learningTopic.trim()}
+                            className="px-4 py-2 bg-jumbo text-white rounded-md hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Obter ajuda
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               } />
             </Routes>
