@@ -515,9 +515,17 @@ function App() {
                         <div className="flex gap-2 mt-3 items-center justify-between">
                           <button
                             type="button"
-                            className="py-2 px-4 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-500 text-white shadow-md hover:from-amber-500 hover:to-yellow-600 transition-all duration-300 border border-amber-200 flex items-center"
+                            className="py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-500 to-amber-600 text-white shadow-lg hover:from-yellow-600 hover:to-amber-700 transition-all duration-300 border-2 border-yellow-300 flex items-center"
                           >
-                            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-600 to-yellow-700 shadow-sm" style={{ textShadow: '0 0 1px rgba(255,255,255,0.7)' }}>
+                            <span 
+                              className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500" 
+                              style={{ 
+                                textShadow: '0 0 3px rgba(255,255,255,0.9), 0 0 5px rgba(255,255,255,0.5)',
+                                filter: 'drop-shadow(0 0 1px #fff)',
+                                letterSpacing: '0.5px',
+                                fontSize: '1.1rem'
+                              }}
+                            >
                               JumboIA
                             </span>
                           </button>
