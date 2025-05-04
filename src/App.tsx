@@ -338,6 +338,16 @@ function App() {
                   >
                     Quizzes
                   </Link>
+                  <Link
+                    to="/materias"
+                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname.includes('/materias') 
+                        ? 'text-green-600 bg-green-50' 
+                        : 'text-gray-500 hover:text-green-600 hover:bg-green-50'
+                    }`}
+                  >
+                    Matérias
+                  </Link>
                 </nav>
               </div>
               <div>
@@ -566,6 +576,22 @@ function App() {
               } />
               <Route path="/quizzes" element={<QuizzesPage />} />
               <Route path="/quizzes/:quizId" element={<QuizPage />} />
+              <Route path="/materias" element={
+                <div className="p-6 max-w-4xl mx-auto">
+                  <h1 className="text-2xl font-bold text-gray-800 mb-6">Matérias Disponíveis</h1>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Física', 'Química', 'Biologia', 'Literatura'].map((materia) => (
+                      <div key={materia} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow">
+                        <h2 className="text-lg font-semibold text-jumbo">{materia}</h2>
+                        <p className="text-gray-600 mt-2 text-sm">Conteúdo completo sobre {materia.toLowerCase()}</p>
+                        <button className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors">
+                          Explorar
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              } />
             </Routes>
           </main>
         </>
