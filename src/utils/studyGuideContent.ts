@@ -4,7 +4,32 @@ export const getThematicContent = (materia: string, tema: string): string | null
   
   // Temas de História
   if (materia === 'História') {
-    if (temaLowerCase.includes('pré-história') || temaLowerCase.includes('pre historia') || temaLowerCase.includes('pre-historia')) {
+    if ((temaLowerCase.includes('pré-história') || temaLowerCase.includes('pre historia') || temaLowerCase.includes('pre-historia')) && 
+        (temaLowerCase.includes('brasil') || temaLowerCase.includes('brasileira'))) {
+      return `
+        <p>A pré-história brasileira refere-se ao período anterior à chegada dos portugueses em 1500, abrangendo aproximadamente 50 mil anos de ocupação humana no território que hoje corresponde ao Brasil. Este período pré-cabraliano é caracterizado pela presença de diversas populações indígenas que desenvolveram culturas sofisticadas adaptadas aos diferentes ambientes do território brasileiro.</p>
+        
+        <p>Os vestígios arqueológicos encontrados no Brasil mostram que os primeiros habitantes chegaram durante o período Paleolítico Superior, migrando provavelmente pela Beríngia (ponte terrestre entre Ásia e América) e se dispersando pelo continente americano. Sítios arqueológicos importantes como Pedra Furada (PI), Lagoa Santa (MG) e Serra da Capivara (PI) revelam a antiguidade e complexidade dessa ocupação.</p>
+        
+        <p><strong>Principais períodos e características:</strong></p>
+        <ul>
+          <li><strong>Período Paleoindígena (12.000 a 8.000 a.C.):</strong> Primeiros habitantes, caçadores-coletores que utilizavam tecnologia lítica, como pontas de projétil. O sítio arqueológico de Pedra Furada, no Piauí, apresenta datações controversas que podem recuar a presença humana para até 50.000 anos atrás.</li>
+          <li><strong>Período Arcaico (8.000 a 4.000 a.C.):</strong> Desenvolvimento de tecnologias mais adaptadas ao ambiente tropical, início da domesticação de plantas e formação de aldeamentos mais estáveis.</li>
+          <li><strong>Período Formativo (4.000 a.C. a 1.500 d.C.):</strong> Surgimento da cerâmica, agricultura mais desenvolvida, formação de sociedades complexas e redes de comércio entre diferentes grupos.</li>
+        </ul>
+        
+        <p><strong>Principais culturas pré-cabralinas:</strong></p>
+        <ul>
+          <li><strong>Sambaquis:</strong> Monumentais depósitos de conchas construídos por povos pescadores-coletores no litoral brasileiro entre 8.000 e 2.000 anos atrás, alguns chegando a 30 metros de altura.</li>
+          <li><strong>Cultura Marajoara:</strong> Sociedade complexa desenvolvida na Ilha de Marajó entre os séculos IV e XIV, conhecida por sua sofisticada cerâmica decorada e organização social hierarquizada.</li>
+          <li><strong>Povos da Terra Preta:</strong> Comunidades da Amazônia que desenvolveram técnicas agrícolas avançadas, criando solos férteis antropogênicos (terra preta de índio) capazes de sustentar grandes populações.</li>
+          <li><strong>Geoglifos amazônicos:</strong> Enormes desenhos geométricos escavados no solo, descobertos recentemente após o desmatamento, indicando organizações sociais complexas capazes de mobilizar grande força de trabalho.</li>
+          <li><strong>Civilização Tapajônica:</strong> Sociedade complexa que habitou a região do baixo Tapajós, com cerâmica elaborada e possível organização em cacicados.</li>
+        </ul>
+        
+        <p><strong>Legado e importância:</strong> Estima-se que cerca de 5 milhões de indígenas habitavam o território brasileiro em 1500, falando mais de 1.000 línguas diferentes. Esses povos desenvolveram conhecimentos sofisticados sobre o meio ambiente, incluindo manejos florestais sustentáveis que moldaram a biodiversidade amazônica. Práticas agrícolas como o cultivo de mandioca, milho, batata-doce, amendoim e diversas frutas foram contribuições fundamentais dessas populações, assim como tecnologias de processamento desses alimentos. A complexidade das organizações sociais e culturais dos povos pré-cabralinos tem sido cada vez mais reconhecida pela arqueologia contemporânea, desafiando visões simplistas sobre esses povos.</p>
+      `;
+    } else if (temaLowerCase.includes('pré-história') || temaLowerCase.includes('pre historia') || temaLowerCase.includes('pre-historia')) {
       return `
         <p>A Pré-história é o período da história humana que antecede a invenção da escrita, abrangendo desde o surgimento dos primeiros hominídeos até aproximadamente 4.000 a.C. (com variações regionais). Este longo período é tradicionalmente dividido em três grandes eras: Paleolítico (Idade da Pedra Lascada), Neolítico (Idade da Pedra Polida) e Idade dos Metais.</p>
         
@@ -25,6 +50,71 @@ export const getThematicContent = (materia: string, tema: string): string | null
           <li>Primeiras construções megalíticas, como Stonehenge e Göbekli Tepe</li>
           <li>Desenvolvimento da metalurgia, começando com o cobre e evoluindo para o bronze e o ferro</li>
         </ul>
+      `;
+    } else if (temaLowerCase.includes('descobrimento do brasil') || temaLowerCase.includes('chegada dos portugueses')) {
+      return `
+        <p>O chamado "descobrimento do Brasil" ocorreu em 22 de abril de 1500, quando a esquadra portuguesa comandada por Pedro Álvares Cabral chegou ao litoral do atual estado da Bahia. Este evento marca oficialmente o início da colonização europeia no território brasileiro, embora existam evidências e debates historiográficos sobre visitas anteriores de outros navegadores europeus.</p>
+        
+        <p>A expedição de Cabral fazia parte da expansão marítima portuguesa e tinha como destino principal as Índias, buscando estabelecer rotas comerciais para as especiarias. O desvio para o oeste que resultou na chegada ao Brasil pode ter sido acidental, resultante de correntes marítimas e ventos, ou intencional, como parte de uma estratégia geopolítica portuguesa.</p>
+        
+        <p><strong>Contexto histórico:</strong></p>
+        <ul>
+          <li><strong>Tratado de Tordesilhas (1494):</strong> Acordo entre Portugal e Espanha que dividia o mundo a ser "descoberto" entre as duas potências</li>
+          <li><strong>Era das Grandes Navegações:</strong> Período de expansão marítima europeia motivado por interesses comerciais, religiosos e políticos</li>
+          <li><strong>Viagem de Colombo (1492):</strong> Precedeu o "descobrimento" do Brasil e iniciou a colonização europeia na América</li>
+          <li><strong>Viagem de Vasco da Gama (1497-1499):</strong> Estabeleceu a rota marítima para as Índias contornando a África</li>
+        </ul>
+        
+        <p><strong>Primeiros contatos e registros:</strong></p>
+        <ul>
+          <li><strong>Carta de Pero Vaz de Caminha:</strong> Primeiro documento escrito sobre o Brasil, descrevendo a terra e seus habitantes aos reis de Portugal</li>
+          <li><strong>Primeiros contatos com os povos Tupiniquins:</strong> Descritos como pacíficos nos relatos portugueses</li>
+          <li><strong>Missa celebrada por Frei Henrique de Coimbra:</strong> Primeira cerimônia religiosa católica realizada em solo brasileiro</li>
+          <li><strong>Posse da terra:</strong> Cabral tomou posse do território para a Coroa Portuguesa, denominando-o inicialmente de "Ilha de Vera Cruz"</li>
+        </ul>
+        
+        <p><strong>Perspectivas críticas contemporâneas:</strong> A historiografia atual problematiza o termo "descobrimento", reconhecendo que o território já era habitado por milhões de indígenas com culturas complexas e organizadas. Alguns historiadores preferem termos como "achamento", "invasão" ou "conquista" para designar este processo que iniciou profundas transformações demográficas, culturais e ambientais nas terras que viriam a formar o Brasil. O evento representa o encontro (muitas vezes violento) entre civilizações com visões de mundo drasticamente diferentes e o início de um processo colonizador que resultou no genocídio de grande parte da população nativa.</p>
+      `;
+    } else if (temaLowerCase.includes('brasil colônia') || temaLowerCase.includes('brasil colonia') || temaLowerCase.includes('período colonial brasileiro')) {
+      return `
+        <p>O Brasil Colônia foi o período que se estendeu de 1500 a 1822, durante o qual o território brasileiro esteve sob domínio português. Nestes três séculos, foram estabelecidas as bases da formação territorial, populacional e cultural do Brasil, através de um processo de colonização marcado pela exploração econômica, miscigenação étnica e imposição cultural europeia.</p>
+        
+        <p>A colonização brasileira seguiu o modelo de exploração mercantilista, visando principalmente a extração de recursos para enriquecer a metrópole portuguesa. Este período foi caracterizado pelo estabelecimento de uma sociedade patriarcal, escravocrata e latifundiária, com forte influência da Igreja Católica.</p>
+        
+        <p><strong>Fases da colonização:</strong></p>
+        <ul>
+          <li><strong>Pré-Colonial (1500-1530):</strong> Exploração do pau-brasil através do escambo com indígenas, presença de feitorias no litoral, ameaças de invasões estrangeiras</li>
+          <li><strong>Brasil Colonial (1530-1822):</strong> Implementação do sistema de capitanias hereditárias (1534), estabelecimento do Governo-Geral (1549), ciclos econômicos sucessivos, ocupação do interior</li>
+        </ul>
+        
+        <p><strong>Principais ciclos econômicos:</strong></p>
+        <ul>
+          <li><strong>Ciclo do Pau-Brasil (século XVI):</strong> Primeira atividade econômica, baseada na extração da madeira para tinturaria</li>
+          <li><strong>Ciclo da Cana-de-Açúcar (séculos XVI-XVII):</strong> Baseado na plantation, com latifúndios, monocultura e mão de obra escravizada africana</li>
+          <li><strong>Ciclo do Ouro (século XVIII):</strong> Descoberta de ouro em Minas Gerais, Goiás e Mato Grosso, intensificando a ocupação do interior</li>
+          <li><strong>Ciclo do Algodão (final do século XVIII):</strong> Desenvolvido principalmente no Maranhão e Nordeste</li>
+          <li><strong>Ciclo do Café (século XIX):</strong> Iniciado no final do período colonial e expandido após a independência</li>
+        </ul>
+        
+        <p><strong>Sociedade colonial:</strong></p>
+        <ul>
+          <li><strong>Estrutura hierárquica:</strong> No topo, a elite branca (senhores de engenho, mineradores, grandes comerciantes); no meio, homens livres pobres, mestiços e libertos; na base, escravizados indígenas e africanos</li>
+          <li><strong>Escravidão:</strong> Base do sistema produtivo colonial, com cerca de 4 milhões de africanos trazidos forçadamente ao Brasil durante o período</li>
+          <li><strong>Resistência:</strong> Formação de quilombos (como Palmares), revoltas e outras formas de resistência à escravidão e ao domínio português</li>
+          <li><strong>Miscigenação:</strong> Processo de formação de uma sociedade multiétnica através da mistura entre europeus, indígenas e africanos</li>
+        </ul>
+        
+        <p><strong>Movimentos nativistas e emancipacionistas:</strong></p>
+        <ul>
+          <li><strong>Guerra dos Emboabas (1707-1709)</strong></li>
+          <li><strong>Guerra dos Mascates (1710-1711)</strong></li>
+          <li><strong>Revolta de Felipe dos Santos (1720)</strong></li>
+          <li><strong>Inconfidência Mineira (1789)</strong></li>
+          <li><strong>Conjuração Baiana (1798)</strong></li>
+          <li><strong>Revolução Pernambucana (1817)</strong></li>
+        </ul>
+        
+        <p>O período colonial terminou oficialmente com a Independência do Brasil em 1822, quando D. Pedro I rompeu os laços políticos com Portugal. No entanto, muitas estruturas socioeconômicas do período colonial persistiram no Brasil independente, como a escravidão (abolida apenas em 1888), o latifúndio e a economia agroexportadora.</p>
       `;
     } else if (temaLowerCase.includes('revolução francesa')) {
       return `
@@ -166,6 +256,221 @@ export const getThematicContent = (materia: string, tema: string): string | null
           <li>Pretendiam adotar uma bandeira com a inscrição "Libertas Quae Sera Tamen" (Liberdade Ainda Que Tardia)</li>
           <li>Tornou-se símbolo do nacionalismo brasileiro e da luta contra a opressão colonial</li>
         </ul>
+      `;
+    } else if (temaLowerCase.includes('império do brasil') || temaLowerCase.includes('imperio do brasil') || temaLowerCase.includes('brasil império') || temaLowerCase.includes('brasil imperio')) {
+      return `
+        <p>O Império do Brasil foi o período da história brasileira compreendido entre a independência de Portugal em 1822 e a Proclamação da República em 1889. Durante esse intervalo de 67 anos, o Brasil foi governado por dois imperadores: D. Pedro I (1822-1831) e seu filho D. Pedro II (1831-1889), sendo que este último assumiu efetivamente o poder apenas em 1840, após o período regencial.</p>
+        
+        <p>Este período foi marcado pela consolidação do Estado brasileiro, expansão territorial, desenvolvimento econômico baseado na agricultura de exportação (principalmente café), permanência da escravidão até 1888 e pela gradual modernização das instituições e infraestrutura do país.</p>
+        
+        <p><strong>Primeiro Reinado (1822-1831):</strong></p>
+        <ul>
+          <li><strong>Governo de D. Pedro I:</strong> Marcado por conflitos entre tendências absolutistas e liberais</li>
+          <li><strong>Constituição de 1824:</strong> Primeira constituição brasileira, outorgada pelo imperador, estabeleceu o Poder Moderador</li>
+          <li><strong>Confederação do Equador (1824):</strong> Revolta republicana e separatista no Nordeste</li>
+          <li><strong>Guerra da Cisplatina (1825-1828):</strong> Conflito que resultou na independência do Uruguai</li>
+          <li><strong>Crise política:</strong> Desgaste do imperador levou à sua abdicação em 7 de abril de 1831</li>
+        </ul>
+        
+        <p><strong>Período Regencial (1831-1840):</strong></p>
+        <ul>
+          <li><strong>Regências Trina Provisória, Trina Permanente e Una:</strong> Governos que substituíram o imperador menor de idade</li>
+          <li><strong>Reformas liberais:</strong> Código de Processo Criminal (1832) e Ato Adicional (1834)</li>
+          <li><strong>Revoltas provinciais:</strong> Cabanagem (PA), Sabinada (BA), Balaiada (MA), Farroupilha (RS), entre outras</li>
+          <li><strong>Regresso conservador:</strong> Reação às reformas liberais e centralização do poder</li>
+          <li><strong>Golpe da Maioridade (1840):</strong> Antecipação da maioridade de D. Pedro II para estabilizar o país</li>
+        </ul>
+        
+        <p><strong>Segundo Reinado (1840-1889):</strong></p>
+        <ul>
+          <li><strong>Consolidação do Estado:</strong> Pacificação das províncias e fortalecimento das instituições nacionais</li>
+          <li><strong>Parlamentarismo às avessas:</strong> Sistema político com alternância entre liberais e conservadores</li>
+          <li><strong>Guerra do Paraguai (1864-1870):</strong> Maior conflito militar da América do Sul, consolidou o exército brasileiro</li>
+          <li><strong>Questão Religiosa (1872-1875):</strong> Conflito entre a Igreja Católica e a Maçonaria que envolveu o governo imperial</li>
+          <li><strong>Questão abolicionista:</strong> Processo gradual de abolição da escravidão (Lei Eusébio de Queirós, Lei do Ventre Livre, Lei dos Sexagenários e Lei Áurea)</li>
+          <li><strong>Questão militar:</strong> Conflitos entre o exército e o governo imperial</li>
+          <li><strong>Movimento republicano:</strong> Crescimento do ideal republicano, especialmente após o Manifesto Republicano de 1870</li>
+        </ul>
+        
+        <p><strong>Economia e sociedade imperial:</strong></p>
+        <ul>
+          <li><strong>Economia agroexportadora:</strong> Baseada principalmente no café, que se tornou o principal produto de exportação</li>
+          <li><strong>Início da industrialização:</strong> Especialmente no final do período, com investimentos do Barão de Mauá e outros empreendedores</li>
+          <li><strong>Imigração europeia:</strong> Intensificada após 1850, visando substituir gradualmente a mão de obra escravizada</li>
+          <li><strong>Urbanização:</strong> Crescimento das cidades e melhorias urbanas, especialmente no Rio de Janeiro</li>
+          <li><strong>Modernização dos transportes:</strong> Construção de ferrovias, navegação a vapor e implementação do telégrafo</li>
+        </ul>
+        
+        <p>O Império do Brasil terminou com a Proclamação da República em 15 de novembro de 1889, quando um golpe militar liderado pelo Marechal Deodoro da Fonseca depôs D. Pedro II, encerrando a monarquia no Brasil e inaugurando o período republicano.</p>
+      `;
+    } else if (temaLowerCase.includes('república velha') || temaLowerCase.includes('republica velha') || temaLowerCase.includes('primeira república')) {
+      return `
+        <p>A República Velha, também conhecida como Primeira República, foi o período inicial da história republicana brasileira, estendendo-se da Proclamação da República em 15 de novembro de 1889 até a Revolução de 1930. Durante estas quatro décadas, o Brasil passou por profundas transformações políticas, econômicas e sociais, consolidando-se como república federativa.</p>
+        
+        <p>Este período foi caracterizado pelo domínio político das oligarquias rurais, especialmente dos cafeicultores paulistas e dos pecuaristas mineiros, que se alternavam no poder federal através da chamada "política do café-com-leite". Ao mesmo tempo, testemunhou-se o crescimento urbano, o início da industrialização e a emergência de novos atores sociais como o operariado e a classe média urbana.</p>
+        
+        <p><strong>República da Espada (1889-1894):</strong></p>
+        <ul>
+          <li><strong>Governos militares:</strong> Deodoro da Fonseca (1889-1891) e Floriano Peixoto (1891-1894)</li>
+          <li><strong>Constituição de 1891:</strong> Estabeleceu o sistema presidencialista, federalismo e separação entre Igreja e Estado</li>
+          <li><strong>Encilhamento:</strong> Crise financeira durante o governo Deodoro, resultante de políticas monetárias expansionistas</li>
+          <li><strong>Revoltas:</strong> Revolta da Armada (1891 e 1893-1894) e Revolução Federalista (1893-1895)</li>
+        </ul>
+        
+        <p><strong>República Oligárquica (1894-1930):</strong></p>
+        <ul>
+          <li><strong>Política dos Governadores:</strong> Sistema que garantia a autonomia estadual em troca de apoio ao governo federal</li>
+          <li><strong>Política do café-com-leite:</strong> Alternância no poder entre São Paulo (café) e Minas Gerais (leite)</li>
+          <li><strong>Coronelismo:</strong> Sistema de poder local baseado em grandes proprietários rurais que controlavam o voto de seus dependentes</li>
+          <li><strong>Voto de cabresto:</strong> Prática de controle do eleitorado pelos coronéis, em um sistema de voto aberto e não-secreto</li>
+          <li><strong>Política de valorização do café:</strong> Intervenção estatal para manter os preços do café no mercado internacional</li>
+        </ul>
+        
+        <p><strong>Revoltas e movimentos sociais:</strong></p>
+        <ul>
+          <li><strong>Canudos (1896-1897):</strong> Movimento messiânico liderado por Antônio Conselheiro no interior da Bahia</li>
+          <li><strong>Revolta da Vacina (1904):</strong> Protestos populares contra a vacinação obrigatória no Rio de Janeiro</li>
+          <li><strong>Revolta da Chibata (1910):</strong> Motim de marinheiros contra castigos físicos na Marinha</li>
+          <li><strong>Contestado (1912-1916):</strong> Conflito messiânico no sul do país</li>
+          <li><strong>Greves operárias (1917-1919):</strong> Mobilizações trabalhistas nas principais cidades</li>
+          <li><strong>Tenentismo:</strong> Movimento de jovens oficiais do exército contra as oligarquias (Revolta do Forte de Copacabana em 1922, Revolução de 1924, Coluna Prestes)</li>
+        </ul>
+        
+        <p><strong>Transformações econômicas e sociais:</strong></p>
+        <ul>
+          <li><strong>Economia cafeeira:</strong> Principal atividade econômica, com forte influência política</li>
+          <li><strong>Industrialização incipiente:</strong> Estimulada pela Primeira Guerra Mundial e acumulação de capital do café</li>
+          <li><strong>Urbanização:</strong> Crescimento das cidades, especialmente São Paulo e Rio de Janeiro</li>
+          <li><strong>Imigração:</strong> Entrada de milhões de imigrantes, principalmente europeus (italianos, portugueses, espanhóis)</li>
+          <li><strong>Formação da classe operária:</strong> Surgimento de organizações sindicais e influência de ideias anarquistas e socialistas</li>
+        </ul>
+        
+        <p><strong>Crise e fim da Primeira República:</strong></p>
+        <ul>
+          <li><strong>Crise de 1929:</strong> Quebra da bolsa de Nova York e seus impactos na economia cafeeira</li>
+          <li><strong>Eleições de 1930:</strong> Derrota de Getúlio Vargas e ruptura da política café-com-leite</li>
+          <li><strong>Revolução de 1930:</strong> Movimento armado liderado por Getúlio Vargas que pôs fim à República Velha</li>
+        </ul>
+        
+        <p>A República Velha encerrou-se oficialmente em 24 de outubro de 1930, quando Getúlio Vargas assumiu o poder, iniciando a Era Vargas e promovendo transformações significativas na estrutura política, econômica e social do Brasil.</p>
+      `;
+    } else if (temaLowerCase.includes('era vargas') || temaLowerCase.includes('getúlio vargas') || temaLowerCase.includes('getulio vargas')) {
+      return `
+        <p>A Era Vargas corresponde ao período de 15 anos (1930-1945) em que Getúlio Vargas governou o Brasil ininterruptamente, primeiro como chefe do Governo Provisório (1930-1934), depois como presidente eleito pelo Congresso Nacional (1934-1937) e, finalmente, como ditador durante o Estado Novo (1937-1945). Este período representou uma profunda transformação no país, com centralização política, modernização econômica e ampliação dos direitos sociais, especialmente trabalhistas.</p>
+        
+        <p>Vargas chegou ao poder através da Revolução de 1930, movimento armado que pôs fim à República Velha e ao domínio das oligarquias cafeeiras. Sua longa permanência no poder foi marcada por uma política ambígua, ora pendendo para tendências autoritárias, ora para medidas populistas e progressistas.</p>
+        
+        <p><strong>Governo Provisório (1930-1934):</strong></p>
+        <ul>
+          <li><strong>Centralização política:</strong> Nomeação de interventores nos estados, substituindo os antigos governadores</li>
+          <li><strong>Revolução Constitucionalista de 1932:</strong> Revolta de São Paulo contra o governo Vargas, exigindo uma nova constituição</li>
+          <li><strong>Criação de ministérios:</strong> Trabalho, Indústria e Comércio, Educação e Saúde Pública</li>
+          <li><strong>Primeiras leis trabalhistas:</strong> Jornada de 8 horas, férias remuneradas, trabalho feminino e de menores</li>
+        </ul>
+        
+        <p><strong>Governo Constitucional (1934-1937):</strong></p>
+        <ul>
+          <li><strong>Constituição de 1934:</strong> Estabeleceu o voto secreto, o voto feminino e a legislação trabalhista</li>
+          <li><strong>Polarização política:</strong> Surgimento da Ação Integralista Brasileira (AIB, fascista) e Aliança Nacional Libertadora (ANL, de esquerda)</li>
+          <li><strong>Intentona Comunista (1935):</strong> Levante comunista liderado por Luís Carlos Prestes, rapidamente sufocado</li>
+          <li><strong>Lei de Segurança Nacional:</strong> Instrumento legal para repressão política</li>
+        </ul>
+        
+        <p><strong>Estado Novo (1937-1945):</strong></p>
+        <ul>
+          <li><strong>Golpe de Estado:</strong> Em 10 de novembro de 1937, com apoio militar, Vargas implantou uma ditadura</li>
+          <li><strong>Constituição de 1937 ("Polaca"):</strong> Inspirada em modelos fascistas, concentrou poderes no Executivo</li>
+          <li><strong>Departamento de Imprensa e Propaganda (DIP):</strong> Órgão de censura e propaganda do regime</li>
+          <li><strong>Plano Cohen:</strong> Documento forjado sobre uma suposta conspiração comunista, usado para justificar o golpe</li>
+          <li><strong>Repressão política:</strong> Perseguição a opositores, principalmente comunistas e integralistas</li>
+          <li><strong>Política externa pragmática:</strong> Inicialmente equidistante e depois alinhada aos Aliados na Segunda Guerra Mundial</li>
+          <li><strong>Participação na Segunda Guerra:</strong> Envio da Força Expedicionária Brasileira (FEB) para combater na Itália</li>
+        </ul>
+        
+        <p><strong>Política econômica e social:</strong></p>
+        <ul>
+          <li><strong>Nacional-desenvolvimentismo:</strong> Modelo econômico voltado para a industrialização e substituição de importações</li>
+          <li><strong>Empresas estatais:</strong> Criação da Companhia Siderúrgica Nacional (CSN), Companhia Vale do Rio Doce, entre outras</li>
+          <li><strong>Consolidação das Leis do Trabalho (CLT):</strong> Unificação da legislação trabalhista em 1943</li>
+          <li><strong>Sindicatos oficiais:</strong> Incorporação dos sindicatos ao Estado, com estrutura corporativista</li>
+          <li><strong>Salário mínimo:</strong> Instituído em 1940</li>
+          <li><strong>Justiça do Trabalho:</strong> Criada para mediar conflitos trabalhistas</li>
+          <li><strong>Nacionalismo econômico:</strong> Proteção à indústria nacional e controle de recursos estratégicos</li>
+        </ul>
+        
+        <p><strong>Fim do Estado Novo:</strong></p>
+        <ul>
+          <li><strong>Contradição:</strong> Brasil lutando contra o fascismo na Europa enquanto mantinha um regime autoritário internamente</li>
+          <li><strong>Manifesto dos Mineiros (1943):</strong> Documento de intelectuais e políticos pedindo redemocratização</li>
+          <li><strong>Queremismo:</strong> Movimento popular de apoio a Vargas ("Queremos Getúlio")</li>
+          <li><strong>Deposição:</strong> Em 29 de outubro de 1945, Vargas foi deposto por um golpe militar</li>
+        </ul>
+        
+        <p>Apesar de deposto em 1945, Getúlio Vargas retornaria à presidência em 1951, eleito democraticamente, governando até seu suicídio em 1954. Seu legado é complexo e contraditório, sendo considerado o principal estadista brasileiro do século XX, responsável por modernizar o país e implementar direitos sociais, mas também criticado pelo autoritarismo e práticas populistas.</p>
+      `;
+    } else if (temaLowerCase.includes('ditadura militar') || temaLowerCase.includes('regime militar') || temaLowerCase.includes('golpe de 64')) {
+      return `
+        <p>A Ditadura Militar no Brasil foi o regime autoritário que vigorou de 1964 a 1985, instaurado a partir do golpe de estado que derrubou o presidente democraticamente eleito João Goulart. Durante 21 anos, o país foi governado por sucessivos presidentes militares, em um período marcado por repressão política, censura, perseguição a opositores e, paradoxalmente, por intenso crescimento econômico em determinados momentos.</p>
+        
+        <p>O regime militar representou uma ruptura com o processo democrático e foi caracterizado pela supressão de direitos políticos e civis, pela forte intervenção estatal na economia e pelo alinhamento com os Estados Unidos no contexto da Guerra Fria.</p>
+        
+        <p><strong>Antecedentes e golpe de 1964:</strong></p>
+        <ul>
+          <li><strong>Governo João Goulart (1961-1964):</strong> Marcado por instabilidade política e polarização ideológica</li>
+          <li><strong>Reformas de Base:</strong> Propostas progressistas de Jango (reforma agrária, urbana, tributária e educacional) que assustaram as elites conservadoras</li>
+          <li><strong>Comício da Central do Brasil (13/03/1964):</strong> Evento em que Goulart anunciou medidas que aceleraram a conspiração golpista</li>
+          <li><strong>Marcha da Família com Deus pela Liberdade:</strong> Manifestações conservadoras contra o governo Goulart</li>
+          <li><strong>Golpe militar (31/03/1964):</strong> Movimento militar que depôs Goulart com apoio civil e dos Estados Unidos</li>
+        </ul>
+        
+        <p><strong>Institucionalização do regime:</strong></p>
+        <ul>
+          <li><strong>Atos Institucionais:</strong> Decretos do Executivo que se sobrepunham à Constituição (destaque para o AI-5 de 1968, que suspendeu garantias constitucionais)</li>
+          <li><strong>Bipartidarismo forçado:</strong> ARENA (apoio ao governo) e MDB (oposição controlada)</li>
+          <li><strong>"Eleições" indiretas:</strong> Presidentes escolhidos pelo Congresso controlado pelos militares</li>
+          <li><strong>Constituição de 1967:</strong> Institucionalizou o regime autoritário</li>
+          <li><strong>Serviço Nacional de Informações (SNI):</strong> Órgão de inteligência e espionagem interna</li>
+          <li><strong>Doutrina de Segurança Nacional:</strong> Base ideológica do regime, focada no combate ao "inimigo interno" (comunismo)</li>
+        </ul>
+        
+        <p><strong>Fases do regime militar:</strong></p>
+        <ul>
+          <li><strong>Governo Castello Branco (1964-1967):</strong> "Institucionalização" do regime e reformas econômicas</li>
+          <li><strong>Governo Costa e Silva (1967-1969):</strong> Radicalização com o AI-5 e intensificação da repressão</li>
+          <li><strong>Governo Médici (1969-1974):</strong> "Anos de chumbo", auge da repressão e do "milagre econômico"</li>
+          <li><strong>Governo Geisel (1974-1979):</strong> Início da "distensão lenta, gradual e segura"</li>
+          <li><strong>Governo Figueiredo (1979-1985):</strong> Continuação da abertura política e anistia</li>
+        </ul>
+        
+        <p><strong>Repressão e resistência:</strong></p>
+        <ul>
+          <li><strong>Operação Bandeirantes (OBAN) e DOI-CODI:</strong> Órgãos de repressão e tortura</li>
+          <li><strong>Censura:</strong> Controle da imprensa, artes, cultura e educação</li>
+          <li><strong>Exílio político:</strong> Milhares de brasileiros forçados a deixar o país</li>
+          <li><strong>Resistência armada:</strong> Grupos que adotaram a luta armada como ALN, MR-8, VPR</li>
+          <li><strong>Resistência pacífica:</strong> Movimentos estudantis, artísticos, intelectuais, religiosos e sindicais</li>
+          <li><strong>Guerrilha do Araguaia:</strong> Movimento guerrilheiro rural organizado pelo PCdoB, duramente reprimido</li>
+        </ul>
+        
+        <p><strong>Economia:</strong></p>
+        <ul>
+          <li><strong>"Milagre econômico" (1968-1973):</strong> Período de crescimento econômico acelerado (média de 11% ao ano)</li>
+          <li><strong>Grandes obras:</strong> Ponte Rio-Niterói, Transamazônica, Itaipu, Programa Nuclear</li>
+          <li><strong>Endividamento externo:</strong> Crescimento baseado em empréstimos internacionais</li>
+          <li><strong>Crise do petróleo:</strong> Impacto negativo na economia a partir de 1973</li>
+          <li><strong>Concentração de renda:</strong> Aumento da desigualdade social ("o bolo cresceu, mas não foi dividido")</li>
+        </ul>
+        
+        <p><strong>Transição democrática:</strong></p>
+        <ul>
+          <li><strong>Lei da Anistia (1979):</strong> Perdão aos crimes políticos de ambos os lados</li>
+          <li><strong>Reforma partidária (1979):</strong> Fim do bipartidarismo</li>
+          <li><strong>Diretas Já (1983-1984):</strong> Movimento popular pela volta das eleições diretas para presidente</li>
+          <li><strong>Eleição indireta de Tancredo Neves (1985):</strong> Marco do fim do regime militar</li>
+          <li><strong>Posse de José Sarney:</strong> Devido à doença e morte de Tancredo, assumiu seu vice</li>
+        </ul>
+        
+        <p><strong>Legado:</strong> Os efeitos da ditadura militar permanecem presentes na sociedade brasileira. Enquanto houve modernização em alguns setores, o período deixou como herança problemas como concentração de renda, endividamento público, cultura política autoritária, violência policial e feridas sociais ainda não completamente cicatrizadas. A Lei de Anistia, que impediu a punição dos crimes cometidos por agentes do Estado, continua sendo objeto de debates sobre justiça de transição.</p>
       `;
     }
   }
