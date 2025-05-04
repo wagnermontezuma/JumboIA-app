@@ -69,6 +69,16 @@ const TypingIndicator = () => (
   </div>
 );
 
+// Componente para exibir o guia de estudos
+const StudyGuideDisplay = ({ title, content }: { title: string, content: string }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-6">
+      <h2 className="text-xl font-bold text-jumbo mb-4">{title}</h2>
+      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: formatMessageContent(content) }} />
+    </div>
+  );
+};
+
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const location = useLocation();
@@ -89,6 +99,10 @@ function App() {
   const [selectedMateria, setSelectedMateria] = useState('');
   const [selectedAno, setSelectedAno] = useState('');
   const [learningTopic, setLearningTopic] = useState('');
+  
+  // Estados para o guia de estudos
+  const [isCreatingStudyGuide, setIsCreatingStudyGuide] = useState(false);
+  const [studyGuide, setStudyGuide] = useState<{ title: string, content: string } | null>(null);
   
   // Função para rolar para a última mensagem
   const scrollToBottom = () => {
@@ -324,18 +338,86 @@ function App() {
   };
 
   // Função para processar o formulário de ano e conteúdo
-  const handleAnoFormSubmit = () => {
+  const handleAnoFormSubmit = (action: 'chat' | 'guide') => {
     if (!selectedAno || !learningTopic.trim()) return;
 
-    // Criar a mensagem para enviar ao chat
-    const tema = `${selectedMateria} - ${selectedAno}: ${learningTopic}`;
-    setInput(`Preciso de ajuda com ${tema}`);
+    if (action === 'chat') {
+      // Criar a mensagem para enviar ao chat
+      const tema = `${selectedMateria} - ${selectedAno}: ${learningTopic}`;
+      setInput(`Preciso de ajuda com ${tema}`);
 
-    // Fechar o diálogo
+      // Fechar o diálogo
+      closeAnoDialog();
+
+      // Navegar para a página de chat
+      window.location.href = "/";
+    } else if (action === 'guide') {
+      // Gerar guia de estudos
+      generateStudyGuide();
+    }
+  };
+  
+  // Função para gerar o guia de estudos
+  const generateStudyGuide = async () => {
+    if (!selectedMateria || !learningTopic.trim()) return;
+    
+    setIsCreatingStudyGuide(true);
     closeAnoDialog();
-
-    // Navegar para a página de chat
-    window.location.href = "/";
+    
+    try {
+      // Simulando uma geração de guia de estudos
+      // Em produção, aqui você faria uma chamada para a API
+      setTimeout(() => {
+        const guideTitle = `Guia de Estudos: ${selectedMateria} - ${learningTopic}`;
+        
+        const guideContent = `
+          <h3>Nível Básico</h3>
+          <ul>
+            <li><strong>Conceitos Fundamentais:</strong> Compreensão dos princípios básicos de ${learningTopic.toLowerCase()}</li>
+            <li><strong>Terminologia Essencial:</strong> Aprendizado do vocabulário básico relacionado ao tema</li>
+            <li><strong>Exercícios Introdutórios:</strong> Prática com problemas simples para fixação</li>
+          </ul>
+          
+          <h3>Nível Intermediário</h3>
+          <ul>
+            <li><strong>Aprofundamento Teórico:</strong> Estudo de conceitos mais complexos</li>
+            <li><strong>Aplicações Práticas:</strong> Resolução de problemas mais elaborados</li>
+            <li><strong>Conexões com Outros Temas:</strong> Relacionamento do tema com outros conteúdos da matéria</li>
+          </ul>
+          
+          <h3>Nível Avançado</h3>
+          <ul>
+            <li><strong>Análise Crítica:</strong> Desenvolvimento de pensamento crítico sobre o tema</li>
+            <li><strong>Resolução de Problemas Complexos:</strong> Abordagem de desafios que exigem múltiplos conceitos</li>
+            <li><strong>Pesquisa e Aprofundamento:</strong> Busca por fontes adicionais de conhecimento</li>
+          </ul>
+          
+          <h3>Nível Profissional</h3>
+          <ul>
+            <li><strong>Especialização:</strong> Estudo de áreas específicas dentro do tema</li>
+            <li><strong>Aplicações no Mundo Real:</strong> Como o tema é utilizado em contextos profissionais</li>
+            <li><strong>Contribuições para o Campo:</strong> Preparação para contribuir com novos conhecimentos na área</li>
+          </ul>
+          
+          <h3>Recursos Recomendados</h3>
+          <ul>
+            <li><strong>Livros:</strong> Títulos essenciais para aprofundamento</li>
+            <li><strong>Cursos Online:</strong> Plataformas educacionais com conteúdo relacionado</li>
+            <li><strong>Exercícios Práticos:</strong> Fontes de problemas para prática contínua</li>
+          </ul>
+          
+          <p>Este guia foi criado especialmente para estudantes do ${selectedAno}. Adapte o ritmo de estudos conforme sua familiaridade com o tema.</p>
+        `;
+        
+        setStudyGuide({ title: guideTitle, content: guideContent });
+        setIsCreatingStudyGuide(false);
+      }, 2000);
+      
+    } catch (err: any) {
+      setError(err.message || 'Erro ao gerar guia de estudos');
+      console.error('Erro na criação do guia:', err);
+      setIsCreatingStudyGuide(false);
+    }
   };
 
   return (
@@ -613,20 +695,40 @@ function App() {
               <Route path="/materias" element={
                 <div className="p-6 max-w-4xl mx-auto">
                   <h1 className="text-2xl font-bold text-gray-800 mb-6">Matérias Disponíveis</h1>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Física', 'Química', 'Biologia', 'Literatura'].map((materia) => (
-                      <div key={materia} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow">
-                        <h2 className="text-lg font-semibold text-jumbo">{materia}</h2>
-                        <p className="text-gray-600 mt-2 text-sm">Conteúdo completo sobre {materia.toLowerCase()}</p>
-                        <button 
-                          className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors"
-                          onClick={() => openAnoDialog(materia)}
-                        >
-                          Explorar
-                        </button>
+                  
+                  {isCreatingStudyGuide ? (
+                    <div className="flex items-center justify-center p-12">
+                      <div className="text-center">
+                        <FiLoader className="w-12 h-12 animate-spin text-jumbo mx-auto mb-4" />
+                        <p className="text-gray-600">Gerando guia de estudos...</p>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ) : studyGuide ? (
+                    <>
+                      <button 
+                        onClick={() => setStudyGuide(null)} 
+                        className="mb-4 px-3 py-1 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 transition-colors"
+                      >
+                        Voltar para matérias
+                      </button>
+                      <StudyGuideDisplay title={studyGuide.title} content={studyGuide.content} />
+                    </>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Física', 'Química', 'Biologia', 'Literatura'].map((materia) => (
+                        <div key={materia} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow">
+                          <h2 className="text-lg font-semibold text-jumbo">{materia}</h2>
+                          <p className="text-gray-600 mt-2 text-sm">Conteúdo completo sobre {materia.toLowerCase()}</p>
+                          <button 
+                            className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors"
+                            onClick={() => openAnoDialog(materia)}
+                          >
+                            Explorar
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Modal de seleção de ano escolar */}
                   {isAnoDiaglogOpen && (
@@ -675,19 +777,28 @@ function App() {
                           ></textarea>
                         </div>
                         
-                        <div className="flex justify-end space-x-3">
+                        <div className="flex flex-col space-y-3">
+                          <button
+                            onClick={() => handleAnoFormSubmit('guide')}
+                            disabled={!selectedAno || !learningTopic.trim()}
+                            className="w-full px-4 py-2 bg-jumbo text-white rounded-md hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                          >
+                            <span className="mr-2">Criar guia de estudos</span> <LuBrain className="w-4 h-4" />
+                          </button>
+                          
+                          <button
+                            onClick={() => handleAnoFormSubmit('chat')}
+                            disabled={!selectedAno || !learningTopic.trim()}
+                            className="w-full px-4 py-2 bg-jumbo/80 text-white rounded-md hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Obter ajuda no chat
+                          </button>
+                          
                           <button
                             onClick={closeAnoDialog}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
                           >
                             Cancelar
-                          </button>
-                          <button
-                            onClick={handleAnoFormSubmit}
-                            disabled={!selectedAno || !learningTopic.trim()}
-                            className="px-4 py-2 bg-jumbo text-white rounded-md hover:bg-jumbo/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Obter ajuda
                           </button>
                         </div>
                       </div>
