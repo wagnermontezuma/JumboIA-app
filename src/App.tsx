@@ -377,8 +377,7 @@ function App() {
     closeAnoDialog();
     
     try {
-      // Simulando uma geração de guia de estudos
-      // Em produção, aqui você faria uma chamada para a API
+      // Reduzido o tempo de espera para 500ms em vez de 2000ms
       setTimeout(() => {
         const guideTitle = `Guia de Estudos: ${selectedMateria} - ${learningTopic}`;
         
@@ -448,12 +447,78 @@ function App() {
         
         setStudyGuide({ title: guideTitle, content: guideContent });
         setIsCreatingStudyGuide(false);
-      }, 2000);
+      }, 500); // Reduzido para 500ms
       
     } catch (err: any) {
       setError(err.message || 'Erro ao gerar guia de estudos');
       console.error('Erro na criação do guia:', err);
       setIsCreatingStudyGuide(false);
+    }
+  };
+
+  // Função para determinar o conteúdo específico para o ano escolar
+  const getYearSpecificContent = (materia: string, ano: string, tema: string): string => {
+    // Extrair o número do ano e o nível (Fundamental ou Médio)
+    const anoNumber = parseInt(ano.split('º')[0]);
+    const isEnsinoMedio = ano.includes('Médio');
+    
+    if (isEnsinoMedio) {
+      // Conteúdo para Ensino Médio
+      switch (materia) {
+        case 'Matemática':
+          return `No ${ano}, você deve focar em dominar os fundamentos de ${tema} através de exercícios práticos, compreender as principais fórmulas e aplicações, além de resolver problemas contextualizados. É importante relacionar este tema com outros conteúdos da matemática como ${anoNumber === 3 ? 'preparação para o vestibular' : 'base para tópicos mais avançados'}.`;
+          
+        case 'Português':
+          return `Durante o ${ano}, você deve desenvolver análises mais aprofundadas sobre ${tema}, compreender as principais regras gramaticais relacionadas, produzir textos aplicando este conhecimento e identificar sua aplicação em diferentes contextos literários. ${anoNumber === 3 ? 'Este tópico é frequentemente cobrado em vestibulares e no ENEM.' : 'Este conhecimento será fundamental para os próximos anos.'}`;
+          
+        case 'História':
+          return `No ${ano}, você deve compreender os principais eventos históricos relacionados a ${tema}, analisar suas causas e consequências, estabelecer conexões com outros períodos históricos e desenvolver pensamento crítico sobre o tema. ${anoNumber === 3 ? 'Este é um tema recorrente em questões de vestibular e ENEM.' : 'Este conhecimento será aprofundado nos próximos anos.'}`;
+          
+        case 'Geografia':
+          return `Durante o ${ano}, você deve dominar os conceitos fundamentais de ${tema}, compreender sua distribuição espacial e impactos socioeconômicos, analisar dados e mapas relacionados ao tema, e estabelecer conexões com questões ambientais e geopolíticas atuais. ${anoNumber === 3 ? 'Este é um tópico frequentemente abordado em exames de ingresso universitário.' : 'Este conhecimento será essencial para os tópicos mais complexos dos próximos anos.'}`;
+          
+        default:
+          return `No ${ano}, você deve focar em dominar os conceitos fundamentais de ${tema}, praticar exercícios relacionados, desenvolver projetos práticos e preparar-se para aprofundar este conhecimento ${anoNumber === 3 ? 'nos estudos universitários' : 'nos próximos anos do ensino médio'}.`;
+      }
+    } else {
+      // Conteúdo para Ensino Fundamental
+      if (anoNumber <= 5) {
+        // Fundamental I (1º ao 5º ano)
+        switch (materia) {
+          case 'Matemática':
+            return `No ${ano}, você deve aprender os conceitos básicos de ${tema}, praticar com exemplos simples do dia a dia, desenvolver o raciocínio lógico através de jogos e atividades lúdicas, e compreender como este tema se relaciona com outros conteúdos matemáticos.`;
+            
+          case 'Português':
+            return `Durante o ${ano}, você precisa conhecer o vocabulário básico relacionado a ${tema}, praticar leitura e escrita com textos simples, participar de atividades orais e desenvolver a capacidade de expressão usando este conhecimento.`;
+            
+          case 'Ciências':
+            return `No ${ano}, você vai explorar ${tema} através de observações simples, experimentos básicos, atividades práticas e ilustrações. É importante compreender como este tema se relaciona com o seu dia a dia e com o meio ambiente.`;
+            
+          default:
+            return `Durante o ${ano}, você vai conhecer os primeiros conceitos de ${tema} através de atividades lúdicas, histórias, imagens e exemplos simples do cotidiano. Os professores usarão jogos e projetos criativos para tornar o aprendizado mais divertido.`;
+        }
+      } else {
+        // Fundamental II (6º ao 9º ano)
+        switch (materia) {
+          case 'Matemática':
+            return `No ${ano}, você deve aprofundar o conhecimento sobre ${tema}, resolver problemas mais elaborados, compreender fórmulas e suas aplicações, e começar a desenvolver raciocínio abstrato relacionado ao tema.`;
+            
+          case 'Português':
+            return `Durante o ${ano}, você deve ampliar o vocabulário relacionado a ${tema}, analisar diferentes tipos de textos, produzir redações aplicando este conhecimento e compreender as regras gramaticais associadas.`;
+            
+          case 'História':
+            return `No ${ano}, você vai estudar os principais acontecimentos relacionados a ${tema}, compreender sua importância histórica, analisar suas causas e consequências, e estabelecer relações com outros períodos históricos.`;
+            
+          case 'Geografia':
+            return `Durante o ${ano}, você vai explorar ${tema} através de mapas e gráficos, compreender sua distribuição espacial, analisar seu impacto na sociedade e no meio ambiente, e relacionar com outros fenômenos geográficos.`;
+            
+          case 'Ciências':
+            return `No ${ano}, você deve compreender os princípios científicos de ${tema}, realizar experimentos práticos, analisar suas aplicações no cotidiano e entender sua importância para o meio ambiente e a saúde.`;
+            
+          default:
+            return `Durante o ${ano}, você vai aprofundar seus conhecimentos sobre ${tema}, realizar projetos práticos, desenvolver pesquisas guiadas e preparar apresentações sobre aspectos específicos deste tema.`;
+        }
+      }
     }
   };
 
@@ -734,10 +799,11 @@ function App() {
                   <h1 className="text-2xl font-bold text-gray-800 mb-6">Matérias Disponíveis</h1>
                   
                   {isCreatingStudyGuide ? (
-                    <div className="flex items-center justify-center p-12">
+                    <div className="flex flex-col items-center justify-center p-12">
                       <div className="text-center">
                         <FiLoader className="w-12 h-12 animate-spin text-jumbo mx-auto mb-4" />
-                        <p className="text-gray-600">Gerando guia de estudos...</p>
+                        <p className="text-gray-600 mb-2">Gerando guia de estudos...</p>
+                        <p className="text-gray-500 text-sm">Isso levará apenas alguns instantes</p>
                       </div>
                     </div>
                   ) : studyGuide ? (
