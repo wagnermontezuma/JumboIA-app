@@ -21,7 +21,8 @@ import {
   getCriticalAnalysis,
   getSpecialization,
   getRealWorldApplications,
-  getRecommendedBooks
+  getRecommendedBooks,
+  getThematicImage
 } from './utils/studyGuideContent';
 
 // Corrigido para garantir que a URL do backend seja sempre http://localhost:3000
@@ -49,7 +50,7 @@ const formatMessageContent = (content: string): string => {
   // Suporte a imagens markdown
   const withImages = linkedContent.replace(
     /!\[(.*?)\]\((.*?)\)/g,
-    '<img src="$2" alt="$1" class="mt-2 max-w-full rounded-lg">'
+    '<img src="$2" alt="$1" class="mt-2 max-w-full h-auto rounded-lg">'
   );
   
   return withImages;
@@ -57,18 +58,18 @@ const formatMessageContent = (content: string): string => {
 
 // Logo JumboIA como texto
 const JumboLogo = () => (
-  <div className="flex items-center space-x-2">
+  <div className="flex items-center">
     <div>
-      <span className="text-green-600 text-xl font-semibold">JumboIA</span>
-      <span className="text-blue-400 text-sm font-medium -mt-0.5 ml-1">by <span className="uppercase">Gotta</span></span>
+      <span className="font-bold text-xl text-green-600">JumboIA</span>
+      <div className="text-xs text-blue-500">by <span className="uppercase">Gotta</span></div>
     </div>
   </div>
 );
 
 // Versão simplificada do logo para a caixa de mensagem (sem o texto "by GOTTA")
 const JumboLogoSimple = () => (
-  <div className="flex items-center justify-center w-full h-full">
-    <span className="text-green-600 font-semibold">JumboIA</span>
+  <div className="flex items-center">
+    <span className="font-bold text-green-600">JumboIA</span>
   </div>
 );
 
@@ -86,7 +87,10 @@ const StudyGuideDisplay = ({ title, content }: { title: string, content: string 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-6">
       <h2 className="text-xl font-bold text-jumbo mb-4">{title}</h2>
-      <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: formatMessageContent(content) }} />
+      <div 
+        className="prose prose-sm max-w-none" 
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -115,6 +119,20 @@ function App() {
   // Estados para o guia de estudos
   const [isCreatingStudyGuide, setIsCreatingStudyGuide] = useState(false);
   const [studyGuide, setStudyGuide] = useState<{ title: string, content: string } | null>(null);
+
+  // Redirecionar para a página inicial ao carregar
+  useEffect(() => {
+    // Só redireciona para a página inicial quando a splash screen termina
+    // e apenas se a URL estiver vazia ou for a raiz do aplicativo
+    if (!showSplash && location.pathname === '/') {
+      // Não precisa fazer nada, já está na página inicial
+    } else if (!showSplash && location.pathname !== '/' && 
+              !location.pathname.includes('/quizzes') && 
+              !location.pathname.includes('/materias')) {
+      // Redireciona apenas se não estiver em uma rota válida como quizzes ou materias
+      window.location.href = '/';
+    }
+  }, [showSplash, location.pathname]);
 
   // Função para rolar para a última mensagem
   const scrollToBottom = () => {
@@ -384,7 +402,17 @@ function App() {
         // Obter conteúdo histórico ou específico do tema, se disponível
         const thematicContent = getThematicContent(selectedMateria, learningTopic);
         
+        // Obter imagem temática, se disponível
+        const thematicImage = getThematicImage(selectedMateria, learningTopic);
+        
         const guideContent = `
+          ${thematicImage ? `
+          <div class="mb-6 text-center">
+            <img src="${thematicImage}" alt="Imagem temática de ${learningTopic}" class="rounded-lg shadow-md w-full h-auto max-w-full mx-auto" style="max-height: 400px; object-fit: cover;" />
+            <p class="text-sm text-gray-500 mt-2">Imagem ilustrativa: ${learningTopic}</p>
+          </div>
+          ` : ''}
+          
           ${thematicContent ? `
           <div class="mb-6 p-5 bg-blue-50 border border-blue-200 rounded-lg">
             <h3 class="text-lg font-semibold text-blue-800 mb-3">Contexto Histórico: ${learningTopic}</h3>
@@ -431,11 +459,6 @@ function App() {
           
           <p>Este guia foi criado especialmente para estudantes do ${selectedAno}. Adapte o ritmo de estudos conforme sua familiaridade com o tema.</p>
           
-          <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <h4 class="text-lg font-semibold text-green-700 mb-2">O que aprender no ${selectedAno}:</h4>
-            <p class="text-green-800">${getYearSpecificContent(selectedMateria, selectedAno, learningTopic)}</p>
-          </div>
-          
           <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <h4 class="text-lg font-semibold text-yellow-700 mb-2">Teste seus conhecimentos:</h4>
             <p class="text-yellow-800 mb-3">Faça um quiz sobre ${learningTopic} para verificar seu nível de compreensão e identificar áreas que precisam de mais estudo.</p>
@@ -453,72 +476,6 @@ function App() {
       setError(err.message || 'Erro ao gerar guia de estudos');
       console.error('Erro na criação do guia:', err);
       setIsCreatingStudyGuide(false);
-    }
-  };
-
-  // Função para determinar o conteúdo específico para o ano escolar
-  const getYearSpecificContent = (materia: string, ano: string, tema: string): string => {
-    // Extrair o número do ano e o nível (Fundamental ou Médio)
-    const anoNumber = parseInt(ano.split('º')[0]);
-    const isEnsinoMedio = ano.includes('Médio');
-    
-    if (isEnsinoMedio) {
-      // Conteúdo para Ensino Médio
-      switch (materia) {
-        case 'Matemática':
-          return `No ${ano}, você deve focar em dominar os fundamentos de ${tema} através de exercícios práticos, compreender as principais fórmulas e aplicações, além de resolver problemas contextualizados. É importante relacionar este tema com outros conteúdos da matemática como ${anoNumber === 3 ? 'preparação para o vestibular' : 'base para tópicos mais avançados'}.`;
-          
-        case 'Português':
-          return `Durante o ${ano}, você deve desenvolver análises mais aprofundadas sobre ${tema}, compreender as principais regras gramaticais relacionadas, produzir textos aplicando este conhecimento e identificar sua aplicação em diferentes contextos literários. ${anoNumber === 3 ? 'Este tópico é frequentemente cobrado em vestibulares e no ENEM.' : 'Este conhecimento será fundamental para os próximos anos.'}`;
-          
-        case 'História':
-          return `No ${ano}, você deve compreender os principais eventos históricos relacionados a ${tema}, analisar suas causas e consequências, estabelecer conexões com outros períodos históricos e desenvolver pensamento crítico sobre o tema. ${anoNumber === 3 ? 'Este é um tema recorrente em questões de vestibular e ENEM.' : 'Este conhecimento será aprofundado nos próximos anos.'}`;
-          
-        case 'Geografia':
-          return `Durante o ${ano}, você deve dominar os conceitos fundamentais de ${tema}, compreender sua distribuição espacial e impactos socioeconômicos, analisar dados e mapas relacionados ao tema, e estabelecer conexões com questões ambientais e geopolíticas atuais. ${anoNumber === 3 ? 'Este é um tópico frequentemente abordado em exames de ingresso universitário.' : 'Este conhecimento será essencial para os tópicos mais complexos dos próximos anos.'}`;
-          
-        default:
-          return `No ${ano}, você deve focar em dominar os conceitos fundamentais de ${tema}, praticar exercícios relacionados, desenvolver projetos práticos e preparar-se para aprofundar este conhecimento ${anoNumber === 3 ? 'nos estudos universitários' : 'nos próximos anos do ensino médio'}.`;
-      }
-    } else {
-      // Conteúdo para Ensino Fundamental
-      if (anoNumber <= 5) {
-        // Fundamental I (1º ao 5º ano)
-        switch (materia) {
-          case 'Matemática':
-            return `No ${ano}, você deve aprender os conceitos básicos de ${tema}, praticar com exemplos simples do dia a dia, desenvolver o raciocínio lógico através de jogos e atividades lúdicas, e compreender como este tema se relaciona com outros conteúdos matemáticos.`;
-            
-          case 'Português':
-            return `Durante o ${ano}, você precisa conhecer o vocabulário básico relacionado a ${tema}, praticar leitura e escrita com textos simples, participar de atividades orais e desenvolver a capacidade de expressão usando este conhecimento.`;
-            
-          case 'Ciências':
-            return `No ${ano}, você vai explorar ${tema} através de observações simples, experimentos básicos, atividades práticas e ilustrações. É importante compreender como este tema se relaciona com o seu dia a dia e com o meio ambiente.`;
-            
-          default:
-            return `Durante o ${ano}, você vai conhecer os primeiros conceitos de ${tema} através de atividades lúdicas, histórias, imagens e exemplos simples do cotidiano. Os professores usarão jogos e projetos criativos para tornar o aprendizado mais divertido.`;
-        }
-      } else {
-        // Fundamental II (6º ao 9º ano)
-        switch (materia) {
-          case 'Matemática':
-            return `No ${ano}, você deve aprofundar o conhecimento sobre ${tema}, resolver problemas mais elaborados, compreender fórmulas e suas aplicações, e começar a desenvolver raciocínio abstrato relacionado ao tema.`;
-            
-          case 'Português':
-            return `Durante o ${ano}, você deve ampliar o vocabulário relacionado a ${tema}, analisar diferentes tipos de textos, produzir redações aplicando este conhecimento e compreender as regras gramaticais associadas.`;
-            
-          case 'História':
-            return `No ${ano}, você vai estudar os principais acontecimentos relacionados a ${tema}, compreender sua importância histórica, analisar suas causas e consequências, e estabelecer relações com outros períodos históricos.`;
-            
-          case 'Geografia':
-            return `Durante o ${ano}, você vai explorar ${tema} através de mapas e gráficos, compreender sua distribuição espacial, analisar seu impacto na sociedade e no meio ambiente, e relacionar com outros fenômenos geográficos.`;
-            
-          case 'Ciências':
-            return `No ${ano}, você deve compreender os princípios científicos de ${tema}, realizar experimentos práticos, analisar suas aplicações no cotidiano e entender sua importância para o meio ambiente e a saúde.`;
-            
-          default:
-            return `Durante o ${ano}, você vai aprofundar seus conhecimentos sobre ${tema}, realizar projetos práticos, desenvolver pesquisas guiadas e preparar apresentações sobre aspectos específicos deste tema.`;
-        }
-      }
     }
   };
 
@@ -818,16 +775,79 @@ function App() {
                     </>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {['Matemática', 'Português', 'História', 'Geografia', 'Ciências', 'Física', 'Química', 'Biologia', 'Literatura'].map((materia) => (
-                        <div key={materia} className="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow">
-                          <h2 className="text-lg font-semibold text-jumbo">{materia}</h2>
-                          <p className="text-gray-600 mt-2 text-sm">Conteúdo completo sobre {materia.toLowerCase()}</p>
-                          <button 
-                            className="mt-4 bg-jumbo text-white px-3 py-1 rounded-md text-sm hover:bg-jumbo/90 transition-colors"
-                            onClick={() => openAnoDialog(materia)}
-                          >
-                            Explorar
-                          </button>
+                      {[
+                        {
+                          nome: 'Matemática',
+                          descricao: 'Estudo dos números, quantidades, formas, espaço e mudanças',
+                          topicos: 'Álgebra, Geometria, Trigonometria, Estatística, Cálculo',
+                          icone: '➗'
+                        },
+                        {
+                          nome: 'Português',
+                          descricao: 'Estudo da língua portuguesa, gramática, literatura e produção textual',
+                          topicos: 'Gramática, Interpretação Textual, Redação, Gêneros Textuais',
+                          icone: '📝'
+                        },
+                        {
+                          nome: 'História',
+                          descricao: 'Estudo do passado humano, civilizações e acontecimentos importantes',
+                          topicos: 'História do Brasil, História Geral, Pré-História, Idade Antiga/Média/Moderna/Contemporânea',
+                          icone: '🏛️'
+                        },
+                        {
+                          nome: 'Geografia',
+                          descricao: 'Estudo dos lugares, territórios, paisagens e fenômenos terrestres',
+                          topicos: 'Geografia Física, Geografia Humana, Geopolítica, Cartografia, Meio Ambiente',
+                          icone: '🌎'
+                        },
+                        {
+                          nome: 'Ciências',
+                          descricao: 'Estudo dos fenômenos naturais, seres vivos e matéria',
+                          topicos: 'Biologia Básica, Física Básica, Química Básica, Ecologia, Corpo Humano',
+                          icone: '🔬'
+                        },
+                        {
+                          nome: 'Física',
+                          descricao: 'Estudo das leis fundamentais do universo, matéria e energia',
+                          topicos: 'Mecânica, Termodinâmica, Eletromagnetismo, Ondulatória, Física Moderna',
+                          icone: '⚛️'
+                        },
+                        {
+                          nome: 'Química',
+                          descricao: 'Estudo da composição, estrutura e transformações da matéria',
+                          topicos: 'Química Orgânica, Química Inorgânica, Físico-Química, Tabela Periódica',
+                          icone: '🧪'
+                        },
+                        {
+                          nome: 'Biologia',
+                          descricao: 'Estudo dos seres vivos, sua estrutura, função e interações',
+                          topicos: 'Citologia, Genética, Ecologia, Evolução, Fisiologia, Botânica, Zoologia',
+                          icone: '🧬'
+                        },
+                        {
+                          nome: 'Literatura',
+                          descricao: 'Estudo das obras literárias, movimentos e autores importantes',
+                          topicos: 'Literatura Brasileira, Literatura Portuguesa, Escolas Literárias, Análise Textual',
+                          icone: '📚'
+                        }
+                      ].map((materia) => (
+                        <div key={materia.nome} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+                          <div className="p-5">
+                            <div className="flex items-start justify-between mb-3">
+                              <h2 className="text-xl font-semibold text-jumbo">{materia.nome}</h2>
+                              <span className="text-2xl" role="img" aria-label={materia.nome}>{materia.icone}</span>
+                            </div>
+                            <p className="text-gray-700 mb-3">{materia.descricao}</p>
+                            <div className="bg-jumbo/10 p-3 rounded-md mb-4">
+                              <p className="text-sm text-gray-800"><strong>Principais tópicos:</strong> {materia.topicos}</p>
+                            </div>
+                            <button 
+                              className="w-full bg-jumbo text-white px-4 py-2 rounded-md text-sm hover:bg-jumbo/90 transition-colors"
+                              onClick={() => openAnoDialog(materia.nome)}
+                            >
+                              Explorar {materia.nome}
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -837,7 +857,35 @@ function App() {
                   {isAnoDiaglogOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                       <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-800 mb-4">Explorar {selectedMateria}</h2>
+                        <div className="flex items-center justify-between mb-2">
+                          <h2 className="text-xl font-bold text-gray-800">Explorar {selectedMateria}</h2>
+                          <span className="text-2xl">
+                            {selectedMateria === 'Matemática' ? '➗' : 
+                             selectedMateria === 'Português' ? '📝' : 
+                             selectedMateria === 'História' ? '🏛️' : 
+                             selectedMateria === 'Geografia' ? '🌎' : 
+                             selectedMateria === 'Ciências' ? '🔬' : 
+                             selectedMateria === 'Física' ? '⚛️' : 
+                             selectedMateria === 'Química' ? '🧪' : 
+                             selectedMateria === 'Biologia' ? '🧬' : 
+                             selectedMateria === 'Literatura' ? '📚' : '📘'}
+                          </span>
+                        </div>
+                        
+                        <div className="mb-4 bg-jumbo/5 p-3 rounded">
+                          <p className="text-sm text-gray-700">
+                            {selectedMateria === 'Matemática' ? 'Desenvolva habilidades lógicas e resolva problemas com números, formas e equações.' : 
+                             selectedMateria === 'Português' ? 'Aprimore sua comunicação escrita e oral, além de analisar textos e compreender a estrutura da língua.' : 
+                             selectedMateria === 'História' ? 'Compreenda como eventos passados moldaram nosso mundo atual e as lições que podemos aprender com eles.' : 
+                             selectedMateria === 'Geografia' ? 'Entenda as relações entre pessoas, lugares e ambientes, desde sua cidade até o mundo inteiro.' : 
+                             selectedMateria === 'Ciências' ? 'Descubra os fundamentos do mundo natural através de observação, experimentação e análise.' : 
+                             selectedMateria === 'Física' ? 'Explore as leis fundamentais que governam o universo, desde partículas subatômicas até galáxias.' : 
+                             selectedMateria === 'Química' ? 'Investigue a composição da matéria e como diferentes substâncias interagem entre si.' : 
+                             selectedMateria === 'Biologia' ? 'Estude a vida em todas suas formas, desde células microscópicas até ecossistemas complexos.' : 
+                             selectedMateria === 'Literatura' ? 'Mergulhe nas grandes obras literárias e entenda os contextos culturais e históricos que as influenciaram.' : 
+                             'Explore este conteúdo com nossa ajuda personalizada.'}
+                          </p>
+                        </div>
                         
                         <div className="mb-4">
                           <label htmlFor="anoEscolar" className="block text-sm font-medium text-gray-700 mb-1">
@@ -875,7 +923,18 @@ function App() {
                             id="conteudoAprendendo"
                             value={learningTopic}
                             onChange={(e) => setLearningTopic(e.target.value)}
-                            placeholder="Ex: Equações de segundo grau, Análise sintática..."
+                            placeholder={
+                              selectedMateria === 'Matemática' ? 'Ex: Equações de segundo grau, Teorema de Pitágoras, Frações...' : 
+                              selectedMateria === 'Português' ? 'Ex: Análise sintática, Concordância verbal, Figuras de linguagem...' : 
+                              selectedMateria === 'História' ? 'Ex: Segunda Guerra Mundial, Revolução Industrial, Brasil Colônia...' : 
+                              selectedMateria === 'Geografia' ? 'Ex: Globalização, Clima e vegetação, Geopolítica...' : 
+                              selectedMateria === 'Ciências' ? 'Ex: Sistema solar, Corpo humano, Cadeia alimentar...' : 
+                              selectedMateria === 'Física' ? 'Ex: Leis de Newton, Termodinâmica, Eletromagnetismo...' : 
+                              selectedMateria === 'Química' ? 'Ex: Tabela periódica, Reações químicas, Estequiometria...' : 
+                              selectedMateria === 'Biologia' ? 'Ex: Genética, Evolução, Sistema digestório...' : 
+                              selectedMateria === 'Literatura' ? 'Ex: Modernismo, Romantismo, José de Alencar...' : 
+                              'Ex: O tema específico que você está estudando...'
+                            }
                             className="w-full border border-gray-300 rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-jumbo"
                           ></textarea>
                         </div>

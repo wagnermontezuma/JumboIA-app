@@ -808,3 +808,96 @@ export const getRecommendedBooks = (materia: string, tema: string): string => {
       return `Obras fundamentais de referência sobre ${tema.toLowerCase()}, manuais técnicos atualizados e compêndios acadêmicos que abordam desde os fundamentos até aplicações avançadas do tema.`;
   }
 };
+
+/**
+ * Retorna o URL de uma imagem temática baseada no assunto e tema
+ */
+export function getThematicImage(subject: string, topic: string): string | null {
+  const topicLower = topic.toLowerCase();
+  
+  // Imagens para História
+  if (subject === 'História') {
+    // Idade Média
+    if (topicLower.includes('idade média') || topicLower.includes('medieval') || topicLower.includes('feudalismo')) {
+      return 'https://images.unsplash.com/photo-1599431238918-7d8f7f0cf0d1?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Grécia Antiga
+    if (topicLower.includes('grécia') || topicLower.includes('grecia antiga') || topicLower.includes('grego')) {
+      return 'https://images.unsplash.com/photo-1603566541830-a1b70c67cb12?q=80&w=2748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Roma Antiga
+    if (topicLower.includes('roma') || topicLower.includes('império romano') || topicLower.includes('romanos')) {
+      return 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=2796&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Revolução Francesa
+    if (topicLower.includes('revolução francesa') || topicLower.includes('frança revolucionária')) {
+      return 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Segunda Guerra Mundial
+    if (topicLower.includes('segunda guerra') || topicLower.includes('guerra mundial') || topicLower.includes('nazismo')) {
+      return 'https://images.unsplash.com/photo-1541863141-dea510626619?q=80&w=2060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Pré-história
+    if (topicLower.includes('pré-história') || topicLower.includes('pre historia') || topicLower.includes('período paleolítico')) {
+      return 'https://images.unsplash.com/photo-1598524374912-8d7a9d9a6b8d?q=80&w=2077&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Brasil Colônia
+    if (topicLower.includes('brasil colônia') || topicLower.includes('período colonial') || topicLower.includes('colonização do brasil')) {
+      return 'https://images.unsplash.com/photo-1544989163-df6cdad91d03?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de História
+    return 'https://images.unsplash.com/photo-1461360228754-6e81c478b882?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Imagens para Geografia
+  if (subject === 'Geografia') {
+    // Clima e vegetação
+    if (topicLower.includes('clima') || topicLower.includes('vegetação') || topicLower.includes('biomas')) {
+      return 'https://images.unsplash.com/photo-1543964198-d54e4f2a356d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Globalização
+    if (topicLower.includes('globalização') || topicLower.includes('economia global')) {
+      return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Urbanização
+    if (topicLower.includes('urbanização') || topicLower.includes('cidades') || topicLower.includes('urbano')) {
+      return 'https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de Geografia
+    return 'https://images.unsplash.com/photo-1566837497312-7be7830ae9b1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Imagens para Ciências/Biologia
+  if (subject === 'Ciências' || subject === 'Biologia') {
+    // Corpo humano
+    if (topicLower.includes('corpo humano') || topicLower.includes('anatomia') || topicLower.includes('sistema')) {
+      return 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?q=80&w=2087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Ecologia
+    if (topicLower.includes('ecologia') || topicLower.includes('meio ambiente') || topicLower.includes('ecossistema')) {
+      return 'https://images.unsplash.com/photo-1500829243541-74b677fecc30?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Genética
+    if (topicLower.includes('genética') || topicLower.includes('dna') || topicLower.includes('genes')) {
+      return 'https://images.unsplash.com/photo-1607360288331-64f89bb89b70?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de Ciências/Biologia
+    return 'https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Se não encontrar um tema específico, retorna null
+  return null;
+}
