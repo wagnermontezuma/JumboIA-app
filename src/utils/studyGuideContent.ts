@@ -574,7 +574,7 @@ export const getThematicContent = (materia: string, tema: string): string | null
     }
   }
   
-  // Temas de Português
+  // Temas de Português/Literatura
   else if (materia === 'Português' || materia === 'Literatura') {
     if (temaLowerCase.includes('modernismo')) {
       return `
@@ -752,60 +752,440 @@ export const getThematicContent = (materia: string, tema: string): string | null
     }
   }
   
+  // Temas de Ensino Religioso
+  else if (materia === 'Ensino Religioso') {
+    if (temaLowerCase.includes('religiões do mundo') || temaLowerCase.includes('religioes do mundo')) {
+      return `
+        <p>As religiões do mundo representam diversos sistemas de crenças, práticas e tradições que diferentes sociedades desenvolveram para entender questões fundamentais sobre a existência, o sagrado e a moralidade. Apesar da grande diversidade, as religiões compartilham elementos como narrativas mitológicas, símbolos, rituais e códigos éticos.</p>
+        
+        <p><strong>Principais tradições religiosas:</strong></p>
+        <ul>
+          <li><strong>Cristianismo:</strong> Religião abraâmica baseada na vida e ensinamentos de Jesus Cristo. Dividida em denominações como Catolicismo, Ortodoxia e Protestantismo, tem cerca de 2,4 bilhões de seguidores.</li>
+          <li><strong>Islamismo:</strong> Religião monoteísta seguindo os ensinamentos do profeta Maomé e o Alcorão. Divide-se principalmente entre Sunitas e Xiitas, com aproximadamente 1,9 bilhão de seguidores.</li>
+          <li><strong>Hinduísmo:</strong> Um conjunto diversificado de tradições, filosofias e práticas originárias da Índia. Reconhece múltiplas manifestações divinas e ciclos de reencarnação, com cerca de 1,2 bilhão de seguidores.</li>
+          <li><strong>Budismo:</strong> Sistema filosófico-religioso baseado nos ensinamentos de Sidarta Gautama (Buda). Foca no desenvolvimento espiritual e libertação do sofrimento, com aproximadamente 500 milhões de seguidores.</li>
+          <li><strong>Judaísmo:</strong> Religião monoteísta do povo judeu, baseada na Torá, enfatizando a relação entre Deus e o povo de Israel, com cerca de 15 milhões de seguidores.</li>
+          <li><strong>Religiões tradicionais africanas:</strong> Conjunto diverso de crenças indígenas da África, caracterizadas por culto aos antepassados, animismo e tradições orais.</li>
+          <li><strong>Religiões indígenas:</strong> Sistemas de crenças de povos nativos das Américas, Oceania e outras regiões, frequentemente ligadas à natureza e ancestralidade.</li>
+        </ul>
+        
+        <p><strong>Elementos comuns entre religiões:</strong></p>
+        <ul>
+          <li>Crenças sobre o divino ou sagrado</li>
+          <li>Textos ou tradições sagradas</li>
+          <li>Práticas rituais e celebrações</li>
+          <li>Comunidades de praticantes</li>
+          <li>Códigos morais e éticos</li>
+          <li>Conceitos sobre vida após a morte</li>
+        </ul>
+        
+        <p>O estudo comparativo das religiões permite compreender como diferentes culturas abordam questões universais, promovendo o diálogo inter-religioso e a compreensão mútua em um mundo cada vez mais diverso e interconectado.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('ética') || temaLowerCase.includes('valores')) {
+      return `
+        <p>A ética e os valores são fundamentais para as tradições religiosas ao redor do mundo, fornecendo orientações sobre como viver uma vida boa e virtuosa. Embora cada religião apresente seu próprio conjunto de princípios éticos, existem notáveis convergências em valores fundamentais que transcendem fronteiras culturais e teológicas.</p>
+        
+        <p><strong>Valores compartilhados entre tradições religiosas:</strong></p>
+        <ul>
+          <li><strong>Compaixão:</strong> Presente em praticamente todas as religiões, significa reconhecer o sofrimento alheio e agir para aliviá-lo. No budismo, é um valor central; no cristianismo, exemplificado pelo "amar ao próximo"; no judaísmo e islamismo, através da caridade obrigatória.</li>
+          <li><strong>Justiça:</strong> Um princípio universal que abrange equidade, direitos humanos e responsabilidade social. Nas tradições abraâmicas, é vista como atributo divino e dever humano.</li>
+          <li><strong>Honestidade:</strong> Valorizada em todas as tradições como base da confiança social e integridade pessoal.</li>
+          <li><strong>Respeito pela vida:</strong> Expresso de várias formas, desde o "não matarás" judeu-cristão até o conceito de "ahimsa" (não-violência) no hinduísmo, jainismo e budismo.</li>
+          <li><strong>Humildade:</strong> Contraponto ao orgulho e arrogância, presente em ensinamentos religiosos como caminho para o autoconhecimento e relacionamento adequado com o divino.</li>
+        </ul>
+        
+        <p><strong>Aplicação prática nas religiões:</strong></p>
+        <ul>
+          <li><strong>Cristianismo:</strong> Expressa ética através do amor a Deus e ao próximo, como nas Bem-aventuranças e na Regra de Ouro.</li>
+          <li><strong>Islamismo:</strong> Estabelece valores por meio dos Cinco Pilares e do conceito de adab (comportamento apropriado).</li>
+          <li><strong>Judaísmo:</strong> Articula ética através dos 613 mandamentos (mitzvot) e princípios de justiça social.</li>
+          <li><strong>Hinduísmo:</strong> Desenvolve valores através do conceito de dharma (dever) e karma (consequência de ações).</li>
+          <li><strong>Budismo:</strong> Orienta comportamento ético pelo Caminho Óctuplo e Cinco Preceitos.</li>
+        </ul>
+        
+        <p>Na educação contemporânea, o estudo da ética religiosa contribui para a formação cidadã, promovendo diálogo inter-religioso, compreensão cultural e desenvolvimento de valores universais que transcendem diferenças teológicas.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('textos sagrados') || temaLowerCase.includes('livros sagrados')) {
+      return `
+        <p>Os textos sagrados são documentos de importância fundamental para as tradições religiosas, considerados por seus devotos como contendo sabedoria divina, ensinamentos espirituais e orientações éticas. Estes textos variam em formato, incluindo livros, poemas, cânticos, narrativas orais posteriormente transcritas e compilações de leis e preceitos.</p>
+        
+        <p>A autoridade atribuída a estes textos varia entre as religiões, desde aquelas que os consideram diretamente inspirados ou revelados pela divindade até tradições que os veem como expressões humanas de sabedoria espiritual. O estudo destes textos frequentemente envolve complexas tradições de interpretação e comentário.</p>
+        
+        <p><strong>Principais textos sagrados nas tradições religiosas:</strong></p>
+        <ul>
+          <li><strong>Cristianismo:</strong> A Bíblia, dividida em Antigo Testamento (compartilhado com o judaísmo) e Novo Testamento (contendo os Evangelhos, Atos dos Apóstolos, Epístolas e Apocalipse).</li>
+          <li><strong>Judaísmo:</strong> A Torá (os cinco primeiros livros do Antigo Testamento), o Tanakh (Bíblia Hebraica completa) e textos interpretativos como o Talmude e a Mishná.</li>
+          <li><strong>Islamismo:</strong> O Alcorão, considerado a palavra literal de Deus revelada ao profeta Maomé, e os Hadith, relatos dos ditos e ações do profeta.</li>
+          <li><strong>Hinduísmo:</strong> Os Vedas (textos mais antigos), Upanishads (textos filosóficos), Bhagavad Gita (parte do épico Mahabharata), Puranas e Ramayana.</li>
+          <li><strong>Budismo:</strong> O Tripitaka (Três Cestos) no budismo Theravada, que inclui o Vinaya Pitaka (regras monásticas), Sutta Pitaka (discursos do Buda) e Abhidhamma Pitaka (análises filosóficas). Diferentes sutras são enfatizados nas tradições Mahayana e Vajrayana.</li>
+          <li><strong>Sikhismo:</strong> O Guru Granth Sahib, uma coleção de hinos escritos pelos gurus sikhs e outros santos.</li>
+          <li><strong>Jainismo:</strong> Os Agamas e a literatura canônica jainista, preservando os ensinamentos de Mahavira.</li>
+          <li><strong>Zoroastrismo:</strong> O Avesta, incluindo o Yasna com os Gathas (hinos atribuídos a Zaratustra).</li>
+          <li><strong>Confucionismo:</strong> Os Cinco Clássicos e os Quatro Livros, incluindo os Analectos de Confúcio.</li>
+          <li><strong>Taoísmo:</strong> O Tao Te Ching atribuído a Lao Tsé e o Zhuangzi.</li>
+        </ul>
+        
+        <p><strong>Abordagens interpretativas:</strong></p>
+        <ul>
+          <li><strong>Literalismo:</strong> Interpretação das escrituras como literalmente verdadeiras em todos os aspectos.</li>
+          <li><strong>Contextualismo:</strong> Considera o contexto histórico e cultural em que os textos foram produzidos.</li>
+          <li><strong>Interpretação alegórica:</strong> Busca significados simbólicos além do sentido literal.</li>
+          <li><strong>Hermenêutica:</strong> Métodos formais de interpretação textual desenvolvidos por tradições religiosas.</li>
+          <li><strong>Estudos críticos:</strong> Abordagem acadêmica que analisa textos usando métodos históricos, literários e arqueológicos.</li>
+        </ul>
+        
+        <p>O estudo comparativo dos textos sagrados revela tanto diferenças quanto surpreendentes similaridades entre tradições religiosas, oferecendo insights sobre valores humanos universais e diversas compreensões da realidade espiritual.</p>
+      `;
+    }
+  }
+  
+  // Temas de Astronomia
+  else if (materia === 'Astronomia') {
+    if (temaLowerCase.includes('sistema solar')) {
+      return `
+        <p>O Sistema Solar é o conjunto formado pelo Sol e todos os corpos celestes que orbitam ao seu redor devido à sua força gravitacional. Localizado na Via Láctea, nossa galáxia, o Sistema Solar se formou há aproximadamente 4,6 bilhões de anos a partir de uma nuvem de gás e poeira em colapso gravitacional.</p>
+        
+        <p><strong>Estrutura do Sistema Solar:</strong></p>
+        <ul>
+          <li><strong>Sol:</strong> Estrela central que contém mais de 99,8% da massa total do Sistema Solar. É uma estrela de tipo G da sequência principal, produzindo energia através da fusão nuclear de hidrogênio em hélio.</li>
+          <li><strong>Planetas:</strong> Oito corpos celestes principais que orbitam o Sol: Mercúrio, Vênus, Terra, Marte (planetas rochosos/terrestres) e Júpiter, Saturno, Urano, Netuno (planetas gasosos/jovianos).</li>
+          <li><strong>Planetas anões:</strong> Corpos como Plutão, Ceres, Haumea, Makemake e Eris, que orbitam o Sol e têm massa suficiente para serem aproximadamente esféricos, mas não limparam suas órbitas de outros objetos.</li>
+          <li><strong>Luas:</strong> Mais de 200 satélites naturais orbitando os planetas e planetas anões.</li>
+          <li><strong>Asteroides:</strong> Corpos rochosos menores, principalmente concentrados no Cinturão de Asteroides entre Marte e Júpiter.</li>
+          <li><strong>Cometas:</strong> Corpos gelados que desenvolvem caudas quando se aproximam do Sol, originários principalmente da Nuvem de Oort e do Cinturão de Kuiper.</li>
+          <li><strong>Meteoroides:</strong> Pequenos fragmentos rochosos ou metálicos que, ao entrarem na atmosfera terrestre, produzem meteoros (estrelas cadentes) e, se atingirem a superfície, meteoritos.</li>
+          <li><strong>Poeira interplanetária:</strong> Partículas microscópicas que preenchem o espaço entre os planetas.</li>
+        </ul>
+        
+        <p><strong>Características notáveis:</strong></p>
+        <ul>
+          <li>A maioria dos planetas, luas e asteroides orbita o Sol no mesmo sentido (anti-horário visto do norte) e aproximadamente no mesmo plano orbital (eclíptica).</li>
+          <li>As órbitas planetárias são elípticas, seguindo as leis de Kepler.</li>
+          <li>O Sistema Solar está em constante movimento – o Sol orbita o centro da Via Láctea a cada 225-250 milhões de anos.</li>
+          <li>A região mais externa do Sistema Solar é delimitada pela heliopausa, onde o vento solar encontra o meio interestelar.</li>
+        </ul>
+        
+        <p>O estudo do Sistema Solar continua revelando novos corpos celestes e aprofundando nossa compreensão sobre a formação e evolução dos sistemas planetários, fundamentais para entender nosso lugar no universo.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('cosmologia') || temaLowerCase.includes('universo')) {
+      return `
+        <p>A Cosmologia é o estudo científico da origem, evolução, estrutura e destino final do Universo como um todo. Esta área combina física teórica, astrofísica observacional e filosofia para construir modelos que expliquem nosso cosmos em grande escala.</p>
+        
+        <p><strong>O Big Bang e a expansão do Universo:</strong></p>
+        <p>A teoria do Big Bang é o modelo cosmológico predominante, propondo que o Universo teve início há aproximadamente 13,8 bilhões de anos, a partir de um estado extremamente quente e denso. Evidências como a expansão do Universo, a radiação cósmica de fundo e a abundância de elementos leves dão forte suporte a esta teoria.</p>
+        <p>O astrônomo Edwin Hubble descobriu em 1929 que as galáxias estão se afastando umas das outras, indicando que o Universo está em expansão. Observações posteriores revelaram que esta expansão está acelerando, possivelmente devido à influência de uma misteriosa energia escura.</p>
+        
+        <p><strong>Estrutura em larga escala do Universo:</strong></p>
+        <ul>
+          <li><strong>Galáxias:</strong> Vastos sistemas estelares contendo bilhões de estrelas, poeira e gás. A Via Láctea é nossa galáxia, com aproximadamente 100-400 bilhões de estrelas.</li>
+          <li><strong>Aglomerados de galáxias:</strong> Grupos de dezenas a milhares de galáxias unidas pela gravidade.</li>
+          <li><strong>Superaglomerados:</strong> Vastas coleções de aglomerados de galáxias formando algumas das maiores estruturas conhecidas.</li>
+          <li><strong>Filamentos e vazios cósmicos:</strong> O Universo apresenta uma estrutura semelhante a uma "teia cósmica", com galáxias concentradas em filamentos que cercam enormes vazios.</li>
+        </ul>
+        
+        <p><strong>Matéria e energia do Universo:</strong></p>
+        <p>As observações cosmológicas sugerem uma composição surpreendente do Universo:</p>
+        <ul>
+          <li><strong>Energia escura:</strong> Aproximadamente 68% do conteúdo do Universo, responsável pela aceleração da expansão cósmica.</li>
+          <li><strong>Matéria escura:</strong> Cerca de 27%, detectada apenas por seus efeitos gravitacionais, não interage com a luz.</li>
+          <li><strong>Matéria normal (bariônica):</strong> Apenas 5%, constituindo tudo o que podemos ver ou detectar diretamente.</li>
+        </ul>
+        
+        <p><strong>Questões fundamentais:</strong></p>
+        <p>A cosmologia moderna ainda enfrenta grandes questões não resolvidas:</p>
+        <ul>
+          <li>O que aconteceu nos primeiros instantes após o Big Bang?</li>
+          <li>Qual é a natureza da matéria escura e da energia escura?</li>
+          <li>O Universo é infinito ou finito?</li>
+          <li>Qual será o destino final do Universo?</li>
+          <li>Existem múltiplos universos (multiverso)?</li>
+        </ul>
+        
+        <p>A cosmologia continua evoluindo com novas observações e teorias, mostrando como nossa compreensão do Universo está em constante refinamento, enquanto buscamos respostas para algumas das questões mais profundas da existência.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('exploração espacial') || temaLowerCase.includes('exploracao espacial') || temaLowerCase.includes('astronáutica')) {
+      return `
+        <p>A exploração espacial representa o conjunto de esforços humanos para investigar corpos celestes além da Terra, utilizando tecnologias como foguetes, satélites, sondas espaciais e naves tripuladas. Iniciada no contexto da Guerra Fria como uma competição entre superpotências, evoluiu para uma colaboração internacional científica que tem expandido significativamente nossa compreensão do universo.</p>
+        
+        <p><strong>Marcos históricos da exploração espacial:</strong></p>
+        <ul>
+          <li><strong>Era dos pioneiros (1940s-1950s):</strong> 
+            <ul>
+              <li>Desenvolvimento dos primeiros foguetes V-2 durante a Segunda Guerra Mundial</li>
+              <li>Lançamento do Sputnik 1 (1957), primeiro satélite artificial, pela União Soviética</li>
+              <li>Criação da NASA (1958) pelos Estados Unidos</li>
+              <li>Missão Vostok 1 (1961) com Yuri Gagarin, primeiro ser humano no espaço</li>
+            </ul>
+          </li>
+          <li><strong>Corrida Espacial (1960s-1970s):</strong>
+            <ul>
+              <li>Programa Mercury: primeiros astronautas americanos no espaço</li>
+              <li>Programa Gemini: desenvolvimento de técnicas de encontro espacial</li>
+              <li>Programa Apollo: missões Apollo 11-17 levando humanos à Lua (1969-1972)</li>
+              <li>Primeiras estações espaciais: Salyut (URSS) e Skylab (EUA)</li>
+            </ul>
+          </li>
+          <li><strong>Era da exploração robótica (1970s-presente):</strong>
+            <ul>
+              <li>Sondas Voyager 1 e 2 (1977): exploraram planetas exteriores e continuam em operação no espaço interestelar</li>
+              <li>Mars Pathfinder (1997): primeiro rover em Marte</li>
+              <li>Telescópio Espacial Hubble (1990-presente): revolucionou nossa visão do cosmos</li>
+              <li>Curiosity e Perseverance: rovers avançados em Marte</li>
+              <li>New Horizons: primeira sonda a explorar Plutão (2015)</li>
+              <li>Telescópio Espacial James Webb (2021): sucessor do Hubble</li>
+            </ul>
+          </li>
+          <li><strong>Cooperação internacional (1990s-presente):</strong>
+            <ul>
+              <li>Estação Espacial Internacional (desde 1998): projeto colaborativo de 15 países</li>
+              <li>Missões comerciais: SpaceX, Blue Origin, Virgin Galactic</li>
+              <li>Parcerias internacionais para missões lunares e marcianas</li>
+            </ul>
+          </li>
+        </ul>
+        
+        <p><strong>Tecnologias e desafios da exploração espacial:</strong></p>
+        <ul>
+          <li><strong>Propulsão:</strong> Sistemas químicos convencionais, propulsão iônica, velas solares e conceitos avançados como propulsão nuclear</li>
+          <li><strong>Suporte à vida:</strong> Sistemas para manter humanos em ambientes extraterrestres hostis</li>
+          <li><strong>Radiação espacial:</strong> Proteção contra radiação solar e cósmica</li>
+          <li><strong>Efeitos fisiológicos:</strong> Microgravidade causando perda óssea e muscular em astronautas</li>
+          <li><strong>Comunicações:</strong> Transmissão de dados através de vastas distâncias espaciais</li>
+          <li><strong>Custos:</strong> Desenvolvimento de tecnologias mais acessíveis para democratizar o acesso ao espaço</li>
+        </ul>
+        
+        <p><strong>Futuro da exploração espacial:</strong></p>
+        <ul>
+          <li>Missões tripuladas a Marte previstas para as próximas décadas</li>
+          <li>Estabelecimento de bases permanentes na Lua (Programa Artemis)</li>
+          <li>Mineração de asteroides e utilização de recursos espaciais</li>
+          <li>Telescópios espaciais cada vez mais poderosos para procurar exoplanetas habitáveis</li>
+          <li>Turismo espacial e comercialização da órbita baixa terrestre</li>
+          <li>Missões para investigar os oceanos subsuperficiais de luas como Europa e Encélado, buscando vida extraterrestre</li>
+        </ul>
+        
+        <p>A exploração espacial continua sendo uma das maiores aventuras da humanidade, combinando desafios tecnológicos, descobertas científicas e aspirações filosóficas sobre nosso lugar no cosmos.</p>
+      `;
+    }
+  }
+  
+  // Temas de Artes
+  else if (materia === 'Artes') {
+    if (temaLowerCase.includes('história da arte') || temaLowerCase.includes('movimentos artísticos') || temaLowerCase.includes('movimentos artisticos')) {
+      return `
+        <p>A História da Arte é o estudo da evolução das expressões artísticas humanas através do tempo, desde as pinturas rupestres pré-históricas até as formas contemporâneas digitais e conceituais. Os movimentos artísticos representam tendências estéticas, filosóficas e culturais que caracterizam diferentes períodos históricos.</p>
+        
+        <p><strong>Principais períodos e movimentos artísticos:</strong></p>
+        <ul>
+          <li><strong>Arte Pré-histórica (35.000-2.500 a.C.):</strong> Primeiras expressões artísticas humanas, incluindo pinturas rupestres em cavernas (Lascaux, Altamira), esculturas e monumentos megalíticos (Stonehenge).</li>
+          
+          <li><strong>Arte Antiga (3.500 a.C.-500 d.C.):</strong> Desenvolvimentos nas civilizações egípcia (arte monumental, hierática), mesopotâmica, grega (ideal de beleza, proporção) e romana (realismo, pragmatismo).</li>
+          
+          <li><strong>Arte Medieval (500-1400):</strong> Arte Bizantina (mosaicos, ícones), Românica (arquitetura maciça, esculturas) e Gótica (catedrais com vitrais, verticalidade).</li>
+          
+          <li><strong>Renascimento (1400-1600):</strong> Redescoberta dos ideais clássicos, desenvolvimento da perspectiva, humanismo. Artistas como Leonardo da Vinci, Michelangelo e Rafael.</li>
+          
+          <li><strong>Barroco e Rococó (1600-1750):</strong> Drama, movimento, contraste luz/som (Caravaggio, Rembrandt, Bernini); seguido pelo Rococó mais leve e decorativo.</li>
+          
+          <li><strong>Neoclassicismo e Romantismo (1750-1850):</strong> Retorno à clareza clássica versus expressão emocional e sublime do Romantismo.</li>
+          
+          <li><strong>Realismo e Impressionismo (1850-1900):</strong> Foco em temas cotidianos, classe trabalhadora (Courbet, Millet); Impressionistas (Monet, Renoir) capturando luz e momento.</li>
+          
+          <li><strong>Movimentos modernos (1900-1970):</strong>
+            <ul>
+              <li>Expressionismo: Emoção sobre aparência (Munch, Kandinsky)</li>
+              <li>Cubismo: Múltiplas perspectivas simultâneas (Picasso, Braque)</li>
+              <li>Dadaísmo e Surrealismo: Anti-arte e exploração do inconsciente (Duchamp, Dalí)</li>
+              <li>Abstracionismo: Abandono da representação figurativa (Mondrian, Malevich)</li>
+              <li>Expressionismo Abstrato: Técnicas espontâneas, pintura gestual (Pollock, Rothko)</li>
+              <li>Pop Art: Apropriação de imagens da cultura popular (Warhol, Lichtenstein)</li>
+            </ul>
+          </li>
+          
+          <li><strong>Arte Contemporânea (1970-presente):</strong> Diversidade de abordagens, incluindo arte conceitual, instalação, performance, arte digital, video art, e práticas pós-modernas que questionam fronteiras e definições tradicionais.</li>
+        </ul>
+        
+        <p><strong>Importância do estudo da História da Arte:</strong></p>
+        <ul>
+          <li>Proporciona compreensão cultural e histórica das sociedades através das suas expressões visuais</li>
+          <li>Desenvolve capacidade crítica e analítica ao interpretar imagens e objetos artísticos</li>
+          <li>Revela conexões entre arte, política, religião, tecnologia e transformações sociais</li>
+          <li>Oferece inspiração e contexto para artistas contemporâneos</li>
+          <li>Preserva e valoriza o patrimônio cultural material e imaterial da humanidade</li>
+        </ul>
+        
+        <p>A arte continua sendo um reflexo das preocupações, ideais e experiências humanas, sempre se transformando para dialogar com seu tempo, enquanto mantém conexões com tradições e inovações do passado.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('artes visuais') || temaLowerCase.includes('pintura') || temaLowerCase.includes('escultura')) {
+      return `
+        <p>As Artes Visuais constituem uma das mais antigas e diversas formas de expressão humana, abrangendo a criação de obras que são primariamente visuais em natureza. Esta ampla categoria inclui desde técnicas tradicionais como pintura e escultura até formas contemporâneas como instalação, performance e arte digital.</p>
+        
+        <p><strong>Elementos fundamentais das Artes Visuais:</strong></p>
+        <ul>
+          <li><strong>Linha:</strong> O caminho visível criado pelo movimento de um ponto, definindo formas, contornos e direções.</li>
+          <li><strong>Forma:</strong> Objetos bidimensionais (formas) ou tridimensionais (volumes) criados quando linhas se encontram.</li>
+          <li><strong>Espaço:</strong> A área tridimensional em que objetos existem, ou a ilusão de profundidade em obras bidimensionais.</li>
+          <li><strong>Cor:</strong> Resultado da luz refletida, com propriedades de matiz (tipo de cor), saturação (intensidade) e valor (luminosidade).</li>
+          <li><strong>Textura:</strong> Qualidade tátil, real ou simulada, de uma superfície.</li>
+          <li><strong>Valor:</strong> A luminosidade ou escuridão de cores e tons, criando contraste.</li>
+        </ul>
+        
+        <p><strong>Principais disciplinas das Artes Visuais:</strong></p>
+        <ul>
+          <li><strong>Desenho:</strong> A base da maioria das práticas artísticas, usando linhas e valores para criar imagens.</li>
+          <li><strong>Pintura:</strong> Aplicação de pigmentos líquidos coloridos a superfícies, usando materiais como óleo, acrílico, aquarela, guache, têmpera.</li>
+          <li><strong>Escultura:</strong> Criação de formas tridimensionais através de processos aditivos (modelagem), subtrativos (talha) ou construtivos (assemblage).</li>
+          <li><strong>Gravura:</strong> Criação de imagens através da transferência de desenhos de matrizes para papel ou outros suportes.</li>
+          <li><strong>Fotografia:</strong> Captação de imagens através de processos que utilizam luz e materiais fotossensíveis ou tecnologia digital.</li>
+          <li><strong>Cerâmica:</strong> Modelagem e queima de argila para criar objetos funcionais ou escultóricos.</li>
+          <li><strong>Instalação:</strong> Obras que transformam o espaço e frequentemente envolvem múltiplos meios, criando ambientes imersivos.</li>
+          <li><strong>Arte digital:</strong> Criação usando tecnologias como computadores, realidade virtual e aumentada, e diversos softwares.</li>
+        </ul>
+        
+        <p><strong>Abordagens contemporâneas:</strong></p>
+        <ul>
+          <li><strong>Arte conceitual:</strong> Prioriza ideias e conceitos sobre a estética formal.</li>
+          <li><strong>Performance:</strong> Utiliza o corpo do artista como meio, frequentemente combinado com elementos visuais.</li>
+          <li><strong>Arte socialmente engajada:</strong> Aborda questões sociais, políticas e ambientais, frequentemente envolvendo comunidades.</li>
+          <li><strong>Arte interativa:</strong> Requer participação ativa do espectador para completar a obra.</li>
+          <li><strong>Arte multimídia:</strong> Combina diversos meios visuais com som, movimento e tecnologia.</li>
+        </ul>
+        
+        <p>As artes visuais continuam evoluindo, incorporando novas tecnologias e respondendo a questões contemporâneas, enquanto mantêm conexões com técnicas e tradições milenares. Através delas, artistas exploram a percepção, comunicam ideias complexas e convidam à reflexão sobre a experiência humana.</p>
+      `;
+    }
+    
+    if (temaLowerCase.includes('música') || temaLowerCase.includes('musica') || temaLowerCase.includes('teoria musical')) {
+      return `
+        <p>A música é uma forma de expressão artística que utiliza sons organizados no tempo, combinando elementos como melodia, harmonia, ritmo, timbre e forma. Presente em todas as culturas conhecidas, a música atua como linguagem universal, capaz de transmitir emoções, ideias e identidades culturais sem necessariamente recorrer a palavras.</p>
+        
+        <p><strong>Elementos fundamentais da música:</strong></p>
+        <ul>
+          <li><strong>Melodia:</strong> Sequência de notas que formam uma linha musical reconhecível, o elemento mais imediatamente identificável de uma composição.</li>
+          <li><strong>Harmonia:</strong> Combinação simultânea de notas que formam acordes e progressões, criando o "tecido" sonoro que sustenta a melodia.</li>
+          <li><strong>Ritmo:</strong> Organização temporal dos sons, definindo padrões de duração e acentuação que dão movimento à música.</li>
+          <li><strong>Timbre:</strong> Qualidade sonora que permite distinguir diferentes instrumentos ou vozes tocando a mesma nota.</li>
+          <li><strong>Dinâmica:</strong> Variações de intensidade (volume) que criam contrastes expressivos.</li>
+          <li><strong>Textura:</strong> Relação entre as diferentes vozes ou linhas musicais (monofonia, polifonia, homofonia).</li>
+          <li><strong>Forma:</strong> Estrutura organizacional da música, como a sonata, rondó, tema e variações.</li>
+        </ul>
+        
+        <p><strong>Desenvolvimento histórico na tradição ocidental:</strong></p>
+        <ul>
+          <li><strong>Música medieval (500-1400):</strong> Canto gregoriano, desenvolvimento da notação musical, polifonia inicial.</li>
+          <li><strong>Renascença (1400-1600):</strong> Refinamento da polifonia, música vocal a cappella, madrigais.</li>
+          <li><strong>Barroco (1600-1750):</strong> Contraponto elaborado, desenvolvimento da ópera, concerto e baixo contínuo.</li>
+          <li><strong>Clássico (1750-1820):</strong> Formas equilibradas, sonata, sinfonias e música de câmara (Mozart, Haydn, Beethoven).</li>
+          <li><strong>Romântico (1820-1900):</strong> Expressão emocional intensificada, virtuosismo, música programática.</li>
+          <li><strong>Modernismo (1900-1950):</strong> Ruptura com a tonalidade tradicional, experimentação com atonalidade, dodecafonismo.</li>
+          <li><strong>Contemporâneo (1950-presente):</strong> Pluralidade de estilos, música eletrônica, minimalismo, fusões interculturais.</li>
+        </ul>
+        
+        <p><strong>Tradições musicais não-ocidentais:</strong></p>
+        <ul>
+          <li><strong>Música indiana:</strong> Sistema de ragas e talas, improvisação estruturada.</li>
+          <li><strong>Música chinesa:</strong> Pentatonismo, instrumentos tradicionais como erhu e guqin.</li>
+          <li><strong>Música africana:</strong> Complexidade rítmica, tradição de percussão, música comunitária.</li>
+          <li><strong>Música árabe:</strong> Sistema de maqamat, ornamentação melódica elaborada.</li>
+          <li><strong>Música japonesa:</strong> Conceitos de ma (espaço/silêncio), instrumentos como koto e shakuhachi.</li>
+        </ul>
+        
+        <p><strong>Música popular e contemporânea:</strong></p>
+        <ul>
+          <li><strong>Jazz:</strong> Improvisação, swing, blues, bebop, fusion</li>
+          <li><strong>Rock:</strong> Do rock'n'roll às múltiplas vertentes como punk, metal, alternativo</li>
+          <li><strong>Música eletrônica:</strong> Techno, house, ambient, experimental</li>
+          <li><strong>Hip-hop:</strong> Rap, sampling, beatmaking, cultura urbana</li>
+          <li><strong>World Music:</strong> Fusões de tradições musicais globais</li>
+        </ul>
+        
+        <p>A música continua evoluindo através de inovações tecnológicas, fusões culturais e experimentações, mantendo seu papel fundamental na expressão humana e na construção de comunidades. Seja como experiência estética, prática cultural ou ferramenta terapêutica, a música permanece uma das formas mais poderosas e acessíveis de arte.</p>
+      `;
+    }
+  }
+  
   // Se não houver conteúdo específico para o tema, retorna null
   return null;
 };
 
 // Funções para detalhar cada seção do guia de estudos
 export const getBasicConcepts = (materia: string, tema: string): string => {
-  return `Compreensão abrangente dos princípios básicos de ${tema.toLowerCase()}, incluindo definições fundamentais, contexto histórico inicial e estruturas conceituais que servem como fundamento para todo o estudo posterior.`;
+  return `Compreensão abrangente dos princípios básicos de ${tema.toLowerCase()}, incluindo definições fundamentais, contexto histórico inicial e estruturas conceituais que servem como fundamento para todo o estudo posterior. Esta fase estabelece a linguagem comum e os conceitos essenciais para avançar no conhecimento específico, permitindo que você construa uma base sólida antes de explorar aspectos mais complexos.`;
 };
 
 export const getEssentialTerminology = (materia: string, tema: string): string => {
-  return `Domínio do vocabulário técnico e específico relacionado a ${tema.toLowerCase()}, incluindo etimologia dos termos, variações contextuais e evolução histórica da terminologia na área.`;
+  return `Domínio do vocabulário técnico e específico relacionado a ${tema.toLowerCase()}, incluindo etimologia dos termos, variações contextuais e evolução histórica da terminologia na área. A familiaridade com estes termos específicos é crucial para a comunicação precisa dentro do campo de estudo, permitindo não apenas entender textos especializados, mas também expressar ideias com clareza e precisão científica.`;
 };
 
 export const getIntermediateConcepts = (materia: string, tema: string): string => {
-  return `Estudo detalhado de conceitos mais complexos relacionados a ${tema.toLowerCase()}, incluindo teorias secundárias, debates contemporâneos e nuances que expandem a compreensão básica para níveis mais sofisticados.`;
+  return `Estudo detalhado de conceitos mais complexos relacionados a ${tema.toLowerCase()}, incluindo teorias secundárias, debates contemporâneos e nuances que expandem a compreensão básica para níveis mais sofisticados. Neste estágio, você começa a perceber as interconexões entre diferentes aspectos do tema, desenvolvendo um entendimento mais profundo das complexidades e contradições dentro da área de conhecimento.`;
 };
 
 export const getPracticalApplications = (materia: string, tema: string): string => {
-  return `Implementação prática dos conhecimentos teóricos em contextos reais, resolvendo problemas de complexidade média relacionados a ${tema.toLowerCase()} e desenvolvendo habilidades aplicadas.`;
+  return `Implementação prática dos conhecimentos teóricos em contextos reais, resolvendo problemas de complexidade média relacionados a ${tema.toLowerCase()} e desenvolvendo habilidades aplicadas. A transição da teoria para a prática permite visualizar a relevância do conhecimento adquirido, experimentar diferentes abordagens metodológicas e desenvolver competências técnicas específicas que são valorizadas em ambientes acadêmicos e profissionais.`;
 };
 
 export const getConnections = (materia: string, tema: string): string => {
-  return `Análise das interconexões entre ${tema.toLowerCase()} e outros tópicos relevantes da ${materia.toLowerCase()}, estabelecendo um mapa conceitual integrado que permite uma visão holística da disciplina.`;
+  return `Análise das interconexões entre ${tema.toLowerCase()} e outros tópicos relevantes da ${materia.toLowerCase()}, estabelecendo um mapa conceitual integrado que permite uma visão holística da disciplina. Esta perspectiva interdisciplinar revela como diferentes áreas de conhecimento se influenciam mutuamente, proporcionando insights inovadores e uma compreensão mais rica e contextualizada sobre o tema em estudo.`;
 };
 
 export const getCriticalAnalysis = (materia: string, tema: string): string => {
-  return `Desenvolvimento da capacidade de avaliar criticamente teorias, evidências e argumentos relacionados a ${tema.toLowerCase()}, identificando premissas, questionando metodologias e formulando contra-argumentos fundamentados.`;
+  return `Desenvolvimento da capacidade de avaliar criticamente teorias, evidências e argumentos relacionados a ${tema.toLowerCase()}, identificando premissas, questionando metodologias e formulando contra-argumentos fundamentados. Esta abordagem analítica incentiva o pensamento independente, a capacidade de distinguir fatos de opiniões e a habilidade de considerar múltiplas perspectivas antes de chegar a conclusões, competências essenciais tanto no ambiente acadêmico quanto na vida profissional.`;
 };
 
 export const getSpecialization = (materia: string, tema: string): string => {
-  return `Foco em subcampos específicos de ${tema.toLowerCase()}, explorando áreas de nicho que representam as fronteiras do conhecimento atual e exigem especialização avançada.`;
+  return `Foco em subcampos específicos de ${tema.toLowerCase()}, explorando áreas de nicho que representam as fronteiras do conhecimento atual e exigem especialização avançada. A especialização permite aprofundar aspectos particulares que despertam maior interesse ou têm relevância estratégica para sua formação, desenvolvendo expertise diferenciada em temas que estão na vanguarda da pesquisa ou que apresentam aplicações inovadoras no mundo contemporâneo.`;
 };
 
 export const getRealWorldApplications = (materia: string, tema: string): string => {
-  return `Análise de como ${tema.toLowerCase()} é aplicado em contextos profissionais e acadêmicos avançados, incluindo estudos de caso reais, implementações industriais e aplicações multidisciplinares.`;
+  return `Análise de como ${tema.toLowerCase()} é aplicado em contextos profissionais e acadêmicos avançados, incluindo estudos de caso reais, implementações industriais, inovações tecnológicas e aplicações multidisciplinares. Compreender estas aplicações práticas revela o impacto tangível do conhecimento teórico na sociedade, na economia e no desenvolvimento tecnológico, inspirando novas possibilidades de carreira e áreas de atuação profissional alinhadas com suas habilidades e interesses.`;
 };
 
 export const getRecommendedBooks = (materia: string, tema: string): string => {
   // Recomendações de livros por matéria
   switch (materia) {
     case 'História':
-      return `"História Concisa de ${tema}" de autores especializados, "A Era das Revoluções" de Eric Hobsbawm, e obras específicas sobre ${tema.toLowerCase()} de historiadores renomados como Marc Bloch e Fernand Braudel.`;
+      return `"História Concisa de ${tema}" de autores especializados, "A Era das Revoluções" de Eric Hobsbawm, "Nova História Crítica" de Mario Schmidt, e obras específicas sobre ${tema.toLowerCase()} de historiadores renomados como Marc Bloch, Fernand Braudel e Jacques Le Goff, que oferecem diferentes perspectivas historiográficas e metodológicas para uma compreensão mais nuançada dos processos históricos.`;
     
     case 'Geografia':
-      return `"Geografia Humana e Econômica" de Milton Santos, "Compreendendo ${tema}" de David Harvey, e "Atlas de ${tema.toLowerCase()}" com cartografia e análises detalhadas.`;
+      return `"Geografia Humana e Econômica" de Milton Santos, "Compreendendo ${tema}" de David Harvey, "Geografia: Pequena História Crítica" de Antonio Carlos Robert Moraes, e "Atlas de ${tema.toLowerCase()}" com cartografia e análises detalhadas, além de obras que abordam questões contemporâneas como globalização, meio ambiente e geopolítica, fundamentais para entender as transformações espaciais do mundo atual.`;
     
     case 'Matemática':
-      return `"Fundamentos de ${tema}" de Ian Stewart, "A Matemática do Ensino Médio" (coleção do IMPA), e livros-problema com exercícios graduados em dificuldade para prática extensiva.`;
+      return `"Fundamentos de ${tema}" de Ian Stewart, "A Matemática do Ensino Médio" (coleção do IMPA), "O Homem que Calculava" de Malba Tahan para uma abordagem lúdica, e livros-problema com exercícios graduados em dificuldade para prática extensiva, como a série "Desafios Matemáticos" e obras que contextualizam historicamente o desenvolvimento dos conceitos matemáticos em estudo.`;
     
     case 'Português':
-      return `"Nova Gramática do Português Contemporâneo" de Celso Cunha e Lindley Cintra, "Texto e Interação" de William Cereja, e manuais específicos sobre ${tema.toLowerCase()} para aprofundamento.`;
+      return `"Nova Gramática do Português Contemporâneo" de Celso Cunha e Lindley Cintra, "Texto e Interação" de William Cereja, "Português: Linguagens" de William Cereja e Thereza Cochar, e manuais específicos sobre ${tema.toLowerCase()} para aprofundamento, além de dicionários etimológicos e obras que exploram a riqueza da literatura como fonte de exemplos para análise linguística e estilística.`;
     
+    case 'Física':
+      return `"Curso de Física Básica" de H. Moysés Nussenzveig, "Física Conceitual" de Paul G. Hewitt para uma abordagem mais intuitiva, "Fundamentos de Física" de Halliday e Resnick para tratamento mais aprofundado de ${tema.toLowerCase()}, e obras de divulgação científica como as de Stephen Hawking e Michio Kaku que tornam acessíveis conceitos complexos de física moderna e contemporânea.`;
+
+    case 'Química':
+      return `"Química Geral" de John C. Kotz, "Princípios de Química" de Peter Atkins, "Química Orgânica" de Solomons para tópicos específicos de ${tema.toLowerCase()}, e "A Tabela Periódica" de Primo Levi que oferece uma perspectiva única sobre os elementos químicos, além de guias práticos de laboratório e obras que exploram as aplicações da química no cotidiano e na indústria.`;
+
+    case 'Biologia':
+      return `"Biologia" de Campbell, obra de referência abrangente, "Fundamentos da Biologia Moderna" de Amabis e Martho, "O Gene Egoísta" de Richard Dawkins para uma perspectiva evolutiva, e títulos específicos sobre ${tema.toLowerCase()} como os da coleção "Ciência Aberta", além de atlas de anatomia e fisiologia, e obras que discutem os avanços recentes em biotecnologia e suas implicações éticas.`;
+
+    case 'Ensino Religioso':
+      return `"História das Crenças e das Ideias Religiosas" de Mircea Eliade, "O Sagrado e o Profano" também de Eliade, "Tratado de História das Religiões" para uma visão antropológica, e obras específicas sobre ${tema.toLowerCase()} de autores como Karen Armstrong e Huston Smith, que abordam as tradições religiosas com respeito e profundidade, explorando seus fundamentos filosóficos e práticas culturais.`;
+
+    case 'Astronomia':
+      return `"Astronomia: Uma Visão Geral do Universo" de Kepler de Oliveira, "Cosmos" de Carl Sagan para uma introdução inspiradora, "Breve História do Tempo" de Stephen Hawking para conceitos de cosmologia, e obras especializadas em ${tema.toLowerCase()} da coleção "Fundamentos da Astronomia Moderna", além de guias de observação do céu e livros que exploram as mais recentes descobertas astronômicas e missões espaciais.`;
+
+    case 'Artes':
+      return `"História da Arte" de E.H. Gombrich, obra clássica e abrangente, "A Arte Moderna" de Giulio Carlo Argan para movimentos contemporâneos, "O Poder da Arte" de Simon Schama com abordagem narrativa envolvente, e livros específicos sobre ${tema.toLowerCase()} de autores como Ernst Fischer e Fayga Ostrower, que discutem tanto aspectos técnicos quanto filosóficos da criação artística em diferentes linguagens e períodos históricos.`;
+
     default:
-      return `Obras fundamentais de referência sobre ${tema.toLowerCase()}, manuais técnicos atualizados e compêndios acadêmicos que abordam desde os fundamentos até aplicações avançadas do tema.`;
+      return `Obras fundamentais de referência sobre ${tema.toLowerCase()}, manuais técnicos atualizados e compêndios acadêmicos que abordam desde os fundamentos até aplicações avançadas do tema, complementados por textos de divulgação científica que tornam conceitos complexos mais acessíveis e por periódicos acadêmicos especializados que trazem as pesquisas mais recentes e discussões contemporâneas na área.`;
   }
 };
 
@@ -896,6 +1276,69 @@ export function getThematicImage(subject: string, topic: string): string | null 
     
     // Imagem geral de Ciências/Biologia
     return 'https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Imagens para Ensino Religioso
+  if (subject === 'Ensino Religioso') {
+    // Religiões do mundo
+    if (topicLower.includes('religião') || topicLower.includes('religiões') || topicLower.includes('tradições religiosas')) {
+      return 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Ética e valores
+    if (topicLower.includes('ética') || topicLower.includes('valores') || topicLower.includes('moral')) {
+      return 'https://images.unsplash.com/photo-1604882355705-d4865c150c82?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de Ensino Religioso
+    return 'https://images.unsplash.com/photo-1556202555-c0c2e95ca84f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Imagens para Astronomia
+  if (subject === 'Astronomia') {
+    // Sistema Solar
+    if (topicLower.includes('sistema solar') || topicLower.includes('planetas')) {
+      return 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Cosmos e universo
+    if (topicLower.includes('universo') || topicLower.includes('cosmos') || topicLower.includes('galáxia') || topicLower.includes('cosmologia')) {
+      return 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2022&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Estrelas e astros
+    if (topicLower.includes('estrelas') || topicLower.includes('astros') || topicLower.includes('constelação')) {
+      return 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de Astronomia
+    return 'https://images.unsplash.com/photo-1504333638930-c8787321eee0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+  }
+  
+  // Imagens para Artes
+  if (subject === 'Artes') {
+    // Artes visuais e pintura
+    if (topicLower.includes('artes visuais') || topicLower.includes('pintura') || topicLower.includes('desenho')) {
+      return 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // História da arte
+    if (topicLower.includes('história da arte') || topicLower.includes('movimentos artísticos')) {
+      return 'https://images.unsplash.com/photo-1580136579312-94651dfd596d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Música
+    if (topicLower.includes('música') || topicLower.includes('musica') || topicLower.includes('som')) {
+      return 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Teatro e dança
+    if (topicLower.includes('teatro') || topicLower.includes('dança') || topicLower.includes('performance')) {
+      return 'https://images.unsplash.com/photo-1503095396549-807759245b35?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+    }
+    
+    // Imagem geral de Artes
+    return 'https://images.unsplash.com/photo-1452802447250-470a88ac82bc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
   }
   
   // Se não encontrar um tema específico, retorna null
