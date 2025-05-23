@@ -23,6 +23,7 @@ interface SimuladoFormData {
   materia: string;
   assuntos: string[];
   assuntoInput: string;
+  incluiRedacao: boolean;
 }
 
 export const SimuladoPage: React.FC = () => {
@@ -30,7 +31,8 @@ export const SimuladoPage: React.FC = () => {
   const [formData, setFormData] = useState<SimuladoFormData>({
     materia: '',
     assuntos: [],
-    assuntoInput: ''
+    assuntoInput: '',
+    incluiRedacao: false
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +42,9 @@ export const SimuladoPage: React.FC = () => {
   const handleMateriaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormData({
       ...formData,
-      materia: e.target.value
+      materia: e.target.value,
+      // Resetar a opção de redação quando trocar de matéria
+      incluiRedacao: false
     });
   };
 
@@ -49,6 +53,14 @@ export const SimuladoPage: React.FC = () => {
     setFormData({
       ...formData,
       assuntoInput: e.target.value
+    });
+  };
+
+  // Manipular a opção de redação
+  const handleRedacaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      incluiRedacao: e.target.checked
     });
   };
 
@@ -133,11 +145,12 @@ export const SimuladoPage: React.FC = () => {
         },
         body: JSON.stringify({ 
           topic: temaCompleto,
-          questionCount: 15, // Total de 15 questões
-          timeLimit: 15, // minutos
+          questionCount: 10, // Total de 10 questões
+          timeLimit: 5, // minutos
           includeImages: true, // Solicitar imagens
-          imageCount: 5, // Apenas 5 questões terão imagens
-          questionType: 'multiple_choice' // Garantir que são de múltipla escolha
+          imageCount: 3, // Apenas 3 questões terão imagens
+          questionType: 'multiple_choice', // Garantir que são de múltipla escolha
+          includeEssay: formData.incluiRedacao // Incluir redação se solicitado
         }),
       });
       
@@ -208,6 +221,23 @@ export const SimuladoPage: React.FC = () => {
             </select>
           </div>
           
+          {/* Opção de redação apenas para Português */}
+          {formData.materia === 'Português' && (
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="incluiRedacao"
+                checked={formData.incluiRedacao}
+                onChange={handleRedacaoChange}
+                className="h-4 w-4 text-jumbo border-gray-300 rounded focus:ring-jumbo"
+                disabled={isLoading}
+              />
+              <label htmlFor="incluiRedacao" className="ml-2 block text-sm text-gray-700">
+                Incluir questão de redação
+              </label>
+            </div>
+          )}
+          
           <div>
             <label htmlFor="assuntos" className="block text-sm font-medium text-gray-700 mb-1">
               Assuntos <span className="text-red-500">*</span> 
@@ -269,18 +299,23 @@ export const SimuladoPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center">
                 <FiCheckCircle className="text-jumbo mr-2" />
-                <span className="text-gray-600">15 questões (5 ilustradas)</span>
+                <span className="text-gray-600">10 questões (3 ilustradas)</span>
               </div>
               <div className="flex items-center">
                 <FiClock className="text-jumbo mr-2" />
-                <span className="text-gray-600">15 minutos</span>
+                <span className="text-gray-600">5 minutos</span>
               </div>
               <div className="flex items-center">
                 <span className="text-gray-600">Nota média: 6,0</span>
               </div>
               <div className="flex items-center">
-                <span className="text-gray-600">Cada questão vale 0,67 pontos</span>
+                <span className="text-gray-600">Cada questão vale 1,0 ponto</span>
               </div>
+              {formData.materia === 'Português' && formData.incluiRedacao && (
+                <div className="col-span-2 flex items-center">
+                  <span className="text-gray-600 font-medium">Inclui uma questão de redação</span>
+                </div>
+              )}
             </div>
           </div>
           
@@ -318,11 +353,12 @@ export const SimuladoPage: React.FC = () => {
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Selecione uma matéria e 4 assuntos específicos para o simulado.</li>
           <li>A IA fará uma pesquisa sobre os assuntos e gerará um contexto educacional.</li>
-          <li>Com base nos conceitos pesquisados, serão criadas 15 questões de múltipla escolha.</li>
-          <li>5 dessas questões terão imagens relacionadas ao conteúdo para facilitar a compreensão.</li>
-          <li>Você terá 15 minutos para completar todo o simulado.</li>
-          <li>Cada questão vale 0,67 pontos, totalizando 10 pontos.</li>
+          <li>Com base nos conceitos pesquisados, serão criadas 10 questões de múltipla escolha.</li>
+          <li>3 dessas questões terão imagens relacionadas ao conteúdo para facilitar a compreensão.</li>
+          <li>Você terá 5 minutos para completar todo o simulado.</li>
+          <li>Cada questão vale 1,0 ponto, totalizando 10 pontos.</li>
           <li>A nota média para aprovação é 6,0.</li>
+          <li>Durante o simulado, você terá acesso a um cartão-resposta para navegar entre as questões.</li>
           <li>Ao finalizar, você receberá feedback detalhado sobre seu desempenho.</li>
         </ol>
       </div>

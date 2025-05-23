@@ -4,6 +4,8 @@ import { ChatMessage, Quiz } from '../types/chat';
 import { PlusIcon, ChatBubbleLeftIcon, TrashIcon, PencilIcon } from '@heroicons/react/24/outline';
 import QuizMode from './QuizMode';
 import { useNavigate } from 'react-router-dom';
+import { FaMicrophone, FaStop } from 'react-icons/fa';
+import BestFriendChat from './BestFriendChat';
 
 // API URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -31,6 +33,11 @@ const ChatPage: React.FC = () => {
   const [quizData, setQuizData] = useState<Quiz | null>(null);
   const [quizLoading, setQuizLoading] = useState(false);
   const navigate = useNavigate();
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
+  const [showBestFriend, setShowBestFriend] = useState(false);
 
   // Inicializar com uma conversa vazia
   useEffect(() => {
@@ -319,11 +326,52 @@ const ChatPage: React.FC = () => {
     );
   };
 
+  const handleAudioRecord = async () => {
+    if (!isRecording) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunks.current = [];
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.current.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+          setAudioUrl(URL.createObjectURL(audioBlob));
+        };
+
+        mediaRecorder.start();
+        setIsRecording(true);
+      } catch (err) {
+        alert('Não foi possível acessar o microfone. Permita o acesso nas configurações do navegador.');
+      }
+    } else {
+      mediaRecorderRef.current?.stop();
+      setIsRecording(false);
+    }
+  };
+
   return (
     <div className="h-full flex">
       {/* Lista de conversas no lado esquerdo */}
       <div className="w-72 h-full bg-white border-r border-gray-100 shadow-sm overflow-y-auto">
         <div className="p-4">
+          {/* Botão Melhor Amigo */}
+          <button
+            onClick={() => setShowBestFriend(true)}
+            className="w-full flex items-center gap-2 px-4 py-3 mb-4 rounded-lg font-bold shadow transition border-none"
+            style={{ backgroundColor: '#1FE374', color: '#fff' }}
+            onMouseOver={e => e.currentTarget.style.backgroundColor = '#19c463'}
+            onMouseOut={e => e.currentTarget.style.backgroundColor = '#1FE374'}
+          >
+            <span className="text-2xl">🤗</span>
+            <span>Melhor Amigo</span>
+          </button>
           <h3 className="sidebar-title">Suas Conversas</h3>
           {conversations.length === 0 ? (
             <p className="text-gray-500">Nenhuma conversa encontrada</p>
@@ -421,65 +469,104 @@ const ChatPage: React.FC = () => {
 
       {/* Área de chat no lado direito */}
       <div className="flex-1 flex flex-col h-full bg-white">
-        {/* Cabeçalho */}
-        <div className="p-4 border-b border-gray-100 flex items-center justify-center bg-white">
-          <span className="font-bold text-green-500 text-2xl">Jumbo</span>
-          <span className="font-bold text-green-500 text-2xl ml-1">IA</span>
-          <span className="text-teal-400 text-sm ml-2" style={{ alignSelf: 'flex-end' }}>by GOTTA</span>
-        </div>
-
-        {/* Área de mensagens */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {messages.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center">
-              <h2 className="welcome-title">Bem-vindo ao JumboIA</h2>
-              <p className="welcome-subtitle">Envie uma mensagem para começar a conversa</p>
-            </div>
-          ) : (
-            <div>
-              {messages.map(message => renderMessage(message))}
-              {isLoading && <TypingIndicator />}
-              <div ref={messagesEndRef} />
-            </div>
-          )}
-        </div>
-
-        {/* Rodapé com área de entrada de texto */}
-        <div className="p-4 border-t border-gray-100">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <textarea
-              className="chat-gpt-textarea"
-              placeholder="Digite sua mensagem aqui..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              rows={1}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage();
-                }
-              }}
-            />
-            <div className="flex items-center justify-between mt-2">
+        {showBestFriend ? (
+          <div className="h-full flex flex-col">
+            <div className="p-4 flex items-center bg-white" style={{ borderBottom: 'none', boxShadow: 'none' }}>
               <button
-                type="button"
-                onClick={handleClearChat}
-                className="text-gray-400 hover:text-teal-400 px-2 py-1 text-sm"
+                onClick={() => setShowBestFriend(false)}
+                className="mr-4 px-3 py-1 rounded-lg font-semibold transition border-none"
+                style={{ backgroundColor: '#1FE374', color: '#fff' }}
               >
-                Limpar conversa
+                Voltar
               </button>
-              <button
-                type="submit"
-                className="send-button"
-                disabled={!inputMessage.trim() || isLoading}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-                </svg>
-              </button>
+              <span className="font-bold text-xl ml-2" style={{ color: '#1FE374' }}>Melhor Amigo</span>
             </div>
-          </form>
-        </div>
+            <div className="flex-1">
+              <BestFriendChat />
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Cabeçalho */}
+            {!showBestFriend && (
+              <div className="p-4 border-b border-gray-100 flex items-center justify-center bg-white">
+                <span className="font-bold text-green-500 text-2xl">Jumbo</span>
+                <span className="font-bold text-green-500 text-2xl ml-1">IA</span>
+                <span className="text-teal-400 text-sm ml-2" style={{ alignSelf: 'flex-end' }}>by GOTTA</span>
+              </div>
+            )}
+
+            {/* Área de mensagens */}
+            <div className="flex-1 overflow-y-auto p-4">
+              {messages.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center">
+                  <h2 className="welcome-title">Bem-vindo ao JumboIA</h2>
+                  <p className="welcome-subtitle">Envie uma mensagem para começar a conversa</p>
+                </div>
+              ) : (
+                <div>
+                  {messages.map(message => renderMessage(message))}
+                  {isLoading && <TypingIndicator />}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
+
+            {/* Rodapé com área de entrada de texto */}
+            <div className="p-4 border-t border-gray-100">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                <textarea
+                  className="chat-gpt-textarea"
+                  placeholder="Digite sua mensagem aqui..."
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  rows={1}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      sendMessage();
+                    }
+                  }}
+                />
+                <div className="flex items-center justify-between mt-2">
+                  <button
+                    type="button"
+                    onClick={handleClearChat}
+                    className="text-gray-400 hover:text-teal-400 px-2 py-1 text-sm"
+                  >
+                    Limpar conversa
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="send-button"
+                      title={isRecording ? 'Parar gravação' : 'Gravar áudio'}
+                      onClick={handleAudioRecord}
+                      style={{ background: isRecording ? '#f87171' : undefined }}
+                    >
+                      {isRecording ? <FaStop className="w-4 h-4" /> : <FaMicrophone className="w-4 h-4" />}
+                    </button>
+                    <button
+                      type="submit"
+                      className="send-button"
+                      disabled={!inputMessage.trim() || isLoading}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                        <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                {audioUrl && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <audio src={audioUrl} controls />
+                    {/* Botão de enviar áudio pode ser adicionado aqui futuramente */}
+                  </div>
+                )}
+              </form>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Modal de Quiz */}
