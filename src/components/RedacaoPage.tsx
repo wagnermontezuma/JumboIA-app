@@ -87,7 +87,8 @@ function gerarFrasesVariadas(tema: string, linhas: number) {
   ];
   // Embaralha as frases e pega a quantidade desejada
   const frases = [...frasesBase].sort(() => Math.random() - 0.5).slice(0, linhas);
-  return frases.join('\n');
+  // Junta tudo em um único parágrafo corrido
+  return frases.join(' ').replace(/\s+/g, ' ').trim();
 }
 
 export function RedacaoPage() {
@@ -107,11 +108,104 @@ export function RedacaoPage() {
 
   function gerarRedacao(tema: string, linhas: number) {
     if (!tema) return '';
-    if (tema.toLowerCase().includes('meio ambiente')) {
-      return exemploMeioAmbiente.slice(0, linhas).join('\n');
-    }
-    // Frases limpas para outros temas
-    return gerarFrasesVariadas(tema, linhas);
+
+    // Variações para evitar repetição
+    const temaVariacoes = [
+      tema,
+      `essa questão sobre ${tema}`,
+      `esse desafio relacionado a ${tema}`,
+      `tal problemática envolvendo ${tema}`,
+      `essa discussão acerca de ${tema}`,
+      `esse cenário de ${tema}`,
+      `essa realidade referente a ${tema}`,
+      `essa situação ligada a ${tema}`,
+      `esse contexto de ${tema}`,
+      `isso no âmbito de ${tema}`,
+      `tal aspecto de ${tema}`,
+      `essa temática de ${tema}`,
+      `essa pauta de ${tema}`,
+      `essa circunstância de ${tema}`,
+      `essa problemática social de ${tema}`,
+      `essa demanda de ${tema}`,
+      `essa esfera de ${tema}`,
+      `esse panorama de ${tema}`
+    ];
+    let variacaoIndex = 0;
+    const getTema = () => temaVariacoes[(variacaoIndex++) % temaVariacoes.length];
+
+    // Conectivos variados e objetivos
+    const conectivos = [
+      'Além disso.',
+      'Por outro lado.',
+      'No entanto.',
+      'Ademais.',
+      'Dessa forma.',
+      'Assim.',
+      'Portanto.',
+      'Contudo.',
+      'Vale ressaltar.',
+      'Cabe destacar.',
+      'Em síntese.',
+      'Sob esse viés.',
+      'Nesse sentido.',
+      'Logo.',
+      'De fato.',
+      'Em contrapartida.',
+      'Por conseguinte.',
+      'Em vista disso.',
+      'Diante desse cenário.',
+      'Consequentemente.',
+      'Outrossim.',
+      'Destaca-se.',
+      'Convém salientar.',
+      'Importante frisar.',
+      'Ressalta-se.',
+      'Cumpre observar.',
+      'Sob tal perspectiva.',
+      'Em virtude disso.',
+      'Diante do exposto.'
+    ];
+    let conectivoIndex = 0;
+    const getConectivo = () => conectivos[(conectivoIndex++) % conectivos.length];
+
+    // Repertório sociocultural adaptado ao tema
+    const repertorio = [
+      `Segundo o sociólogo Zygmunt Bauman, desafios como ${tema} refletem a instabilidade das relações e valores na sociedade contemporânea.`,
+      `A Constituição Federal de 1988, em seu artigo 5º, garante direitos fundamentais que são essenciais para o enfrentamento de ${tema}.`,
+      `O filósofo Aristóteles já defendia que a virtude está no equilíbrio e na busca pelo bem comum. Esse princípio é fundamental para lidar com ${tema}.`,
+      `Dados do IBGE apontam que questões relacionadas a ${tema} afetam milhões de brasileiros todos os anos.`,
+      `A Declaração Universal dos Direitos Humanos, de 1948, reforça a importância da dignidade e igualdade. Esses valores são centrais no debate sobre ${tema}.`,
+      `O educador Paulo Freire defendia a educação como instrumento de transformação social. Isso é essencial para superar os desafios de ${tema}.`,
+      `A Agenda 2030 da ONU propõe metas globais para superar desafios como ${tema} e promover o desenvolvimento sustentável.`,
+      `O artigo 205 da Constituição destaca a educação como direito de todos e dever do Estado e da família. Esse direito é crucial para combater problemas como ${tema}.`,
+      `O Estatuto da Criança e do Adolescente (ECA) garante proteção integral aos jovens, especialmente diante de situações envolvendo ${tema}.`,
+      `A filósofa Hannah Arendt analisou o papel da ação coletiva na construção de sociedades mais justas. Isso é fundamental para resolver ${tema}.`
+    ];
+    const getRepertorio = () => repertorio[Math.floor(Math.random() * repertorio.length)];
+
+    // Introdução
+    const introducao = `A discussão sobre ${tema} é de extrema importância para a sociedade contemporânea. O tema envolve questões que impactam diretamente o nosso cotidiano e exige soluções urgentes e eficazes. ${getRepertorio()} Diante disso, é fundamental analisar os principais aspectos de ${tema} e defender a necessidade de mudanças.`;
+
+    // Desenvolvimento 1: contextualização, argumento, repertório e análise
+    const desenvolvimento1 = `${getConectivo()} ${getTema()} apresenta raízes históricas e sociais profundas. É influenciada por fatores como desigualdade, falta de acesso à informação e políticas públicas insuficientes. ${getRepertorio()} No Brasil, observa-se que a ausência de debates amplos e a carência de investimentos em educação agravam ainda mais tal situação. Isso dificulta a superação desse desafio. Para transformar essa realidade, é necessário analisar suas causas estruturais e promover mudanças efetivas. Todas as ações devem estar relacionadas ao combate de ${tema}.`;
+
+    // Desenvolvimento 2: consequências, exemplo real, análise crítica
+    const desenvolvimento2 = `${getConectivo()} As consequências de ${getTema()} são perceptíveis no cotidiano. Refletem-se em prejuízos para o desenvolvimento social, econômico e cultural do país. Por exemplo, a persistência desse problema pode gerar exclusão, aumento da violência ou degradação ambiental, dependendo do tema abordado. Um caso emblemático é o de países que investiram em políticas públicas integradas e obtiveram avanços significativos em áreas relacionadas a ${tema}. A Finlândia se destaca na educação e a Alemanha em sustentabilidade. Experiências internacionais demonstram que a superação desse obstáculo exige esforços conjuntos entre governo, sociedade civil e iniciativa privada. É importante analisar criticamente as soluções adotadas em diferentes contextos, sempre com foco em ${tema}.`;
+
+    // Proposta de intervenção detalhada
+    const proposta = `Para enfrentar ${getTema()}, é imprescindível a implementação de uma proposta de intervenção articulada e diretamente relacionada ao tema. O governo federal, em parceria com estados e municípios, deve investir em campanhas educativas e políticas públicas inclusivas. É necessário promover o acesso à informação e à cidadania no contexto de ${tema}. Além disso, a participação da sociedade civil deve ser incentivada por meio de projetos sociais e ações comunitárias. Também é fundamental fiscalizar e punir práticas discriminatórias ou prejudiciais ligadas a ${tema}. Dessa forma, será possível construir uma sociedade mais justa, igualitária e respeitosa aos direitos humanos. Assim, os desafios impostos por ${tema} poderão ser superados.`;
+
+    // Conclusão
+    const conclusao = `Em síntese, a resolução de ${getTema()} demanda esforços coletivos, responsabilidade social e compromisso ético de todos os agentes envolvidos. Somente assim será possível promover avanços significativos e garantir um futuro mais digno para toda a população. Soluções efetivas para ${tema} são indispensáveis para o progresso do país.`;
+
+    // Montagem do texto
+    return [
+      introducao,
+      desenvolvimento1,
+      desenvolvimento2,
+      proposta,
+      conclusao
+    ].join(' ');
   }
 
   const handleCopiar = async () => {
