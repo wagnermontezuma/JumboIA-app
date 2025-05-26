@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Quiz, QuizQuestion } from '../types/chat';
 import { v4 as uuidv4 } from 'uuid';
+import { FiArrowLeft } from 'react-icons/fi';
 
 interface QuizModeProps {
   onClose: () => void;
@@ -114,65 +115,92 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
 
   // Renderizar a página de entrada do tópico
   const renderTopicInput = () => (
-    <div className="bg-white rounded-lg p-6 shadow-md">
-      <h2 className="text-xl font-bold text-center mb-4">Criar Quiz</h2>
-      <form onSubmit={handleSubmitTopic} className="space-y-4">
-        <div>
-          <label htmlFor="topic" className="block text-sm font-medium text-gray-700 mb-1">
-            Informe o tema do Quiz
-          </label>
-          <input
-            type="text"
-            id="topic"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="Ex: Revolução Industrial, Fotossíntese, Segunda Guerra Mundial..."
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            required
-          />
-        </div>
-        <div className="flex justify-between">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
+      <div className="w-full max-w-2xl mx-auto">
+        {/* Topo com botão voltar */}
+        <div className="flex items-center mb-4">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
+            className="flex items-center text-green-500 hover:text-green-700 font-semibold transition-colors"
           >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Gerando...' : 'Gerar Quiz'}
+            <FiArrowLeft className="mr-2" size={22} />
+            Voltar ao Início
           </button>
         </div>
-      </form>
+        <div className="bg-white rounded-xl shadow-md p-8 w-full">
+          <h2 className="text-2xl font-bold text-center mb-6 text-green-600">Criar Quiz</h2>
+          <form onSubmit={handleSubmitTopic} className="space-y-4">
+            <div>
+              <label htmlFor="topic" className="block text-sm font-medium text-gray-700 mb-1">
+                Informe o tema do Quiz
+              </label>
+              <input
+                type="text"
+                id="topic"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Ex: Revolução Industrial, Fotossíntese, Segunda Guerra Mundial..."
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition font-semibold"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Gerando...' : 'Gerar Quiz'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
+
+  // Adicionar botão Voltar para o início nas perguntas e resultados
+  function withBackButton(children: React.ReactNode) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-50 z-50">
+        <div className="w-full max-w-2xl mx-auto">
+          <div className="flex items-center mb-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center text-green-500 hover:text-green-700 font-semibold transition-colors"
+            >
+              <FiArrowLeft className="mr-2" size={22} />
+              Voltar ao Início
+            </button>
+          </div>
+          <div className="bg-white rounded-xl shadow-md p-8 w-full">
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Renderizar a pergunta atual
   const renderQuestion = () => {
     if (!quiz || !quiz.questions[currentQuestionIndex]) return null;
-    
     const question = quiz.questions[currentQuestionIndex];
-    
-    return (
-      <div className="bg-white rounded-lg p-6 shadow-md">
+    return withBackButton(
+      <div className="w-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-bold">Quiz: {quiz.topic}</h2>
           <div className="text-sm font-medium px-3 py-1 bg-green-100 text-green-800 rounded-full">
             Tempo: {formatTime(timeLeft)}
           </div>
         </div>
-        
         <div className="mb-6">
           <div className="font-medium text-gray-500 mb-1">
             Pergunta {currentQuestionIndex + 1} de {quiz.questions.length}
           </div>
           <p className="text-lg font-medium">{question.text}</p>
         </div>
-        
         <div className="space-y-3 mb-6">
           {question.options.map((option) => (
             <div
@@ -201,7 +229,6 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
             </div>
           ))}
         </div>
-        
         <div className="flex justify-between">
           <button
             type="button"
@@ -230,12 +257,10 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
   // Renderizar os resultados
   const renderResults = () => {
     if (!quiz) return null;
-    
-    return (
-      <div className="bg-white rounded-lg p-6 shadow-md">
+    return withBackButton(
+      <div className="w-full">
         <h2 className="text-xl font-bold text-center mb-2">Resultado do Quiz</h2>
         <p className="text-center mb-6">Tema: {quiz.topic}</p>
-        
         <div className="text-center mb-8">
           <div className="text-6xl font-bold mb-2" style={{
             color: score >= 7 ? '#22c55e' : score >= 5 ? '#eab308' : '#ef4444'
@@ -250,13 +275,11 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
                 : 'Continue estudando para melhorar.'}
           </p>
         </div>
-        
         <div className="space-y-6 mb-8">
           {quiz.questions.map((question, index) => {
             const userSelectedOption = userAnswers[question.id];
             const correctOption = question.options.find(opt => opt.isCorrect);
             const isCorrect = userSelectedOption === correctOption?.id;
-            
             return (
               <div key={question.id} className="border rounded-lg p-4">
                 <div className="flex items-start">
@@ -299,7 +322,6 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
             );
           })}
         </div>
-        
         <div className="flex justify-center">
           <button
             type="button"
@@ -317,7 +339,14 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="bg-white rounded-lg p-6 shadow-md text-center">
+        <div className="bg-white w-full h-full flex flex-col items-center justify-center rounded-none shadow-none text-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-6 left-6 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition font-semibold"
+          >
+            Voltar para o início
+          </button>
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto mb-4"></div>
           <p className="text-gray-600">Gerando quiz sobre {topic}...</p>
           <p className="text-sm text-gray-500 mt-2">Isso pode levar alguns segundos</p>
@@ -331,8 +360,8 @@ const QuizMode: React.FC<QuizModeProps> = ({ onClose, onSubmitTopic, quiz, isLoa
   };
   
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="max-w-2xl w-full">
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-0">
+      <div className="w-screen h-screen flex items-center justify-center">
         {renderContent()}
       </div>
     </div>

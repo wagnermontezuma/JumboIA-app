@@ -10,6 +10,9 @@ import BestFriendChat from './BestFriendChat';
 // API URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
+// Verifique a URL da API no console para debug
+console.log('API URL:', API_URL);
+
 interface Conversation {
   id: string;
   title: string;
@@ -228,7 +231,42 @@ const ChatPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Fazer requisição para a API
+      console.log('Enviando mensagem para:', `${API_URL}/api/chat`);
+      
+      // SOLUÇÃO TEMPORÁRIA: Usar uma resposta local enquanto debugamos a API
+      setTimeout(() => {
+        // Gerar resposta temporária baseada na mensagem do usuário
+        let resposta = "Olá! Estou funcionando em modo local no momento. ";
+        
+        if (userMessage.content.toLowerCase().includes("olá") || 
+            userMessage.content.toLowerCase().includes("oi") || 
+            userMessage.content.toLowerCase().includes("ola")) {
+          resposta += "É um prazer conversar com você! Como posso ajudar hoje?";
+        } else if (userMessage.content.toLowerCase().includes("como") && 
+                  userMessage.content.toLowerCase().includes("vai")) {
+          resposta += "Estou muito bem, obrigado por perguntar! E você, como está?";
+        } else if (userMessage.content.toLowerCase().includes("ajuda") || 
+                  userMessage.content.toLowerCase().includes("ajudar")) {
+          resposta += "Estou aqui para te ajudar! Posso responder perguntas, dar sugestões ou apenas conversar.";
+        } else {
+          resposta += "Estou aqui para conversar sobre qualquer assunto! O que você gostaria de saber?";
+        }
+        
+        // Adicionar resposta da IA ao estado
+        const aiMessage: ChatMessage = {
+          id: uuidv4(),
+          sender: 'bot',
+          content: resposta,
+          timestamp: new Date().toISOString(),
+          role: 'assistant'
+        };
+        
+        updateActiveConversation([...newMessages, aiMessage]);
+        setIsLoading(false);
+      }, 1000);
+      
+      // Código original comentado para debug
+      /*
       const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: {
@@ -244,6 +282,7 @@ const ChatPage: React.FC = () => {
       });
 
       const data = await response.json();
+      console.log('Resposta recebida:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao processar a mensagem');
@@ -260,6 +299,7 @@ const ChatPage: React.FC = () => {
       };
 
       updateActiveConversation([...newMessages, aiMessage]);
+      */
     } catch (err) {
       console.error('Erro ao enviar mensagem:', err);
       setError(err instanceof Error ? err.message : 'Erro desconhecido');
@@ -447,7 +487,14 @@ const ChatPage: React.FC = () => {
           {/* Atalhos abaixo do botão Nova conversa */}
           <ul className="mt-4 flex flex-col gap-2">
             <li><button className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition">Resumo</button></li>
-            <li><button className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition">Redação</button></li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition"
+                onClick={() => navigate('/redacao')}
+              >
+                Redação
+              </button>
+            </li>
             <li><button 
               className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition"
               onClick={openQuizMode}
