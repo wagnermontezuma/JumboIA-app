@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { FiArrowLeft, FiCheck, FiBookOpen, FiEdit3 } from 'react-icons/fi';
 
 const opcoesLinhas = Array.from({ length: 9 }, (_, i) => 10 + i * 5); // [10, 15, ..., 50]
 
@@ -98,12 +98,32 @@ export function RedacaoPage() {
   const [redacao, setRedacao] = useState('');
   const [copiado, setCopiado] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Detectar modo via query string
+  const isCorrecao = location.search.includes('correcao=1');
+  // Se for correção, modo fixo; se não, modo criar fixo
+  const [modo, setModo] = useState<'criar' | 'corrigir'>(isCorrecao ? 'corrigir' : 'criar');
+
+  // Novos estados para a correção de redação
+  const [redacaoParaCorrigir, setRedacaoParaCorrigir] = useState('');
+  const [temaRedacao, setTemaRedacao] = useState('');
+  const [tituloRedacao, setTituloRedacao] = useState('');
+  const [redacaoCorrigida, setRedacaoCorrigida] = useState(false);
+  const [errosRedacao, setErrosRedacao] = useState<Array<{inicio: number, tamanho: number, erro: string, explicacao: string}>>([]);
+  const [notaRedacao, setNotaRedacao] = useState<number | null>(null);
+  const [pontosMelhoria, setPontosMelhoria] = useState<string[]>([]);
+  const [erroSelecionado, setErroSelecionado] = useState<number | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setRedacao(gerarRedacao(tema, linhas));
-    setEnviado(true);
-    setCopiado(false);
+    if (modo === 'criar') {
+      setRedacao(gerarRedacao(tema, linhas));
+      setEnviado(true);
+      setCopiado(false);
+    } else {
+      corrigirRedacao();
+    }
   };
 
   function gerarRedacao(tema: string, linhas: number) {
@@ -135,35 +155,35 @@ export function RedacaoPage() {
 
     // Conectivos variados e objetivos
     const conectivos = [
-      'Além disso.',
-      'Por outro lado.',
-      'No entanto.',
-      'Ademais.',
-      'Dessa forma.',
-      'Assim.',
-      'Portanto.',
-      'Contudo.',
-      'Vale ressaltar.',
-      'Cabe destacar.',
-      'Em síntese.',
-      'Sob esse viés.',
-      'Nesse sentido.',
-      'Logo.',
-      'De fato.',
-      'Em contrapartida.',
-      'Por conseguinte.',
-      'Em vista disso.',
-      'Diante desse cenário.',
-      'Consequentemente.',
-      'Outrossim.',
-      'Destaca-se.',
-      'Convém salientar.',
-      'Importante frisar.',
-      'Ressalta-se.',
-      'Cumpre observar.',
-      'Sob tal perspectiva.',
-      'Em virtude disso.',
-      'Diante do exposto.'
+      'Além disso,',
+      'Por outro lado,',
+      'No entanto,',
+      'Ademais,',
+      'Dessa forma,',
+      'Assim,',
+      'Portanto,',
+      'Contudo,',
+      'Vale ressaltar que',
+      'Cabe destacar que',
+      'Em síntese,',
+      'Sob esse viés,',
+      'Nesse sentido,',
+      'Logo,',
+      'De fato,',
+      'Em contrapartida,',
+      'Por conseguinte,',
+      'Em vista disso,',
+      'Diante desse cenário,',
+      'Consequentemente,',
+      'Outrossim,',
+      'Destaca-se que',
+      'Convém salientar que',
+      'É importante frisar que',
+      'Ressalta-se que',
+      'Cumpre observar que',
+      'Sob tal perspectiva,',
+      'Em virtude disso,',
+      'Diante do exposto,'
     ];
     let conectivoIndex = 0;
     const getConectivo = () => conectivos[(conectivoIndex++) % conectivos.length];
@@ -183,29 +203,161 @@ export function RedacaoPage() {
     ];
     const getRepertorio = () => repertorio[Math.floor(Math.random() * repertorio.length)];
 
-    // Introdução
-    const introducao = `A discussão sobre ${tema} é de extrema importância para a sociedade contemporânea. O tema envolve questões que impactam diretamente o nosso cotidiano e exige soluções urgentes e eficazes. ${getRepertorio()} Diante disso, é fundamental analisar os principais aspectos de ${tema} e defender a necessidade de mudanças.`;
+    // ====== NOVA ESTRUTURA DE REDAÇÃO ======
 
-    // Desenvolvimento 1: contextualização, argumento, repertório e análise
-    const desenvolvimento1 = `${getConectivo()} ${getTema()} apresenta raízes históricas e sociais profundas. É influenciada por fatores como desigualdade, falta de acesso à informação e políticas públicas insuficientes. ${getRepertorio()} No Brasil, observa-se que a ausência de debates amplos e a carência de investimentos em educação agravam ainda mais tal situação. Isso dificulta a superação desse desafio. Para transformar essa realidade, é necessário analisar suas causas estruturais e promover mudanças efetivas. Todas as ações devem estar relacionadas ao combate de ${tema}.`;
+    // Introdução: contextualização + tese clara
+    const introducao = `
+      A discussão sobre ${tema} tem ganhado relevância crescente na sociedade brasileira contemporânea. 
+      ${getRepertorio()} 
+      Diante desse cenário, é fundamental analisar os principais desafios e oportunidades relacionados a esse tema, 
+      bem como defender a necessidade de ações articuladas entre governo e sociedade para enfrentar essa questão.
+    `;
 
-    // Desenvolvimento 2: consequências, exemplo real, análise crítica
-    const desenvolvimento2 = `${getConectivo()} As consequências de ${getTema()} são perceptíveis no cotidiano. Refletem-se em prejuízos para o desenvolvimento social, econômico e cultural do país. Por exemplo, a persistência desse problema pode gerar exclusão, aumento da violência ou degradação ambiental, dependendo do tema abordado. Um caso emblemático é o de países que investiram em políticas públicas integradas e obtiveram avanços significativos em áreas relacionadas a ${tema}. A Finlândia se destaca na educação e a Alemanha em sustentabilidade. Experiências internacionais demonstram que a superação desse obstáculo exige esforços conjuntos entre governo, sociedade civil e iniciativa privada. É importante analisar criticamente as soluções adotadas em diferentes contextos, sempre com foco em ${tema}.`;
+    // Desenvolvimento 1: primeiro argumento principal com repertório
+    const desenvolvimento1 = `
+      ${getConectivo()} em primeiro lugar, é necessário compreender que ${getTema()} apresenta raízes históricas e sociais profundas. 
+      ${getRepertorio()} 
+      No Brasil, observa-se que fatores como a desigualdade social, a falta de políticas públicas eficientes e o acesso limitado à educação de qualidade 
+      contribuem significativamente para a persistência desse problema. Tais elementos, quando analisados em conjunto, 
+      evidenciam a complexidade de ${tema} e a necessidade de uma abordagem multidimensional para sua resolução.
+    `;
 
-    // Proposta de intervenção detalhada
-    const proposta = `Para enfrentar ${getTema()}, é imprescindível a implementação de uma proposta de intervenção articulada e diretamente relacionada ao tema. O governo federal, em parceria com estados e municípios, deve investir em campanhas educativas e políticas públicas inclusivas. É necessário promover o acesso à informação e à cidadania no contexto de ${tema}. Além disso, a participação da sociedade civil deve ser incentivada por meio de projetos sociais e ações comunitárias. Também é fundamental fiscalizar e punir práticas discriminatórias ou prejudiciais ligadas a ${tema}. Dessa forma, será possível construir uma sociedade mais justa, igualitária e respeitosa aos direitos humanos. Assim, os desafios impostos por ${tema} poderão ser superados.`;
+    // Desenvolvimento 2: segundo argumento com outro aspecto ou contraponto
+    const desenvolvimento2 = `
+      ${getConectivo()} é importante destacar também que as consequências de ${getTema()} são perceptíveis em diversos âmbitos da sociedade. 
+      A persistência desse problema gera impactos negativos para o desenvolvimento social, econômico e cultural do país. 
+      Um caso exemplar é o de nações que investiram em políticas públicas integradas e obtiveram avanços significativos em questões semelhantes, 
+      como a Finlândia na educação e a Alemanha em sustentabilidade. Essas experiências demonstram que a superação dos desafios relacionados a ${tema} 
+      exige esforços conjuntos e comprometimento com mudanças estruturais, sempre com base em evidências científicas e respeito aos direitos humanos.
+    `;
 
-    // Conclusão
-    const conclusao = `Em síntese, a resolução de ${getTema()} demanda esforços coletivos, responsabilidade social e compromisso ético de todos os agentes envolvidos. Somente assim será possível promover avanços significativos e garantir um futuro mais digno para toda a população. Soluções efetivas para ${tema} são indispensáveis para o progresso do país.`;
+    // Conclusão: retomada da tese + proposta de intervenção
+    const conclusao = `
+      Portanto, conforme discutido, ${getTema()} representa um desafio complexo que requer atenção prioritária. 
+      Para enfrentá-lo de maneira efetiva, é imprescindível que o governo federal, em parceria com estados e municípios, 
+      implemente políticas públicas abrangentes que promovam educação, conscientização e participação social. 
+      Paralelamente, as instituições educacionais devem fortalecer programas de formação crítica e cidadã, 
+      enquanto a sociedade civil precisa exercer seu papel fiscalizador e propositivo. Somente por meio dessas ações articuladas 
+      será possível construir um futuro mais justo e igualitário, no qual ${tema} seja tratado com a devida importância 
+      e as soluções propostas sejam verdadeiramente eficazes.
+    `;
 
-    // Montagem do texto
-    return [
-      introducao,
-      desenvolvimento1,
-      desenvolvimento2,
-      proposta,
-      conclusao
-    ].join(' ');
+    // Montagem do texto final, removendo espaços extras e formatando corretamente
+    const textoFinal = [
+      introducao.replace(/\s+/g, ' ').trim(),
+      desenvolvimento1.replace(/\s+/g, ' ').trim(),
+      desenvolvimento2.replace(/\s+/g, ' ').trim(),
+      conclusao.replace(/\s+/g, ' ').trim()
+    ].join('\n\n');
+
+    return textoFinal;
+  }
+
+  function corrigirRedacao() {
+    // Simulação de correção de redação (em um ambiente real, isto seria feito via API)
+    // Agora, cada erro tem índice inicial e tamanho do trecho a ser destacado
+    const errosSimulados: Array<{inicio: number, tamanho: number, erro: string, explicacao: string}> = [];
+    const texto = redacaoParaCorrigir;
+
+    // Exemplo: encontrar a palavra "que"
+    let idx = texto.indexOf(' que ');
+    if (idx !== -1) {
+      errosSimulados.push({
+        inicio: idx + 1, // pula o espaço
+        tamanho: 3,
+        erro: "Uso excessivo de 'que'",
+        explicacao: "O uso repetitivo do pronome 'que' pode deixar o texto cansativo. Tente reescrever a frase para evitar repetições."
+      });
+    }
+    // Exemplo: encontrar advérbio vago "muito"
+    idx = texto.indexOf('muito');
+    if (idx !== -1) {
+      errosSimulados.push({
+        inicio: idx,
+        tamanho: 5,
+        erro: "Advérbio vago",
+        explicacao: "Evite advérbios vagos como 'muito'. Prefira termos mais específicos para dar precisão ao texto."
+      });
+    }
+    // Exemplo: período muito longo (frase com mais de 30 palavras)
+    const frases = texto.split(/[.!?]/);
+    frases.forEach(frase => {
+      const palavras = frase.trim().split(/\s+/);
+      if (palavras.length > 30) {
+        const inicio = texto.indexOf(frase);
+        errosSimulados.push({
+          inicio,
+          tamanho: frase.length,
+          erro: "Período muito longo",
+          explicacao: "Frases muito longas dificultam a compreensão. Divida em períodos menores."
+        });
+      }
+    });
+
+    const melhoriasSimuladas = [
+      "Desenvolva melhor seus argumentos com exemplos concretos",
+      "Utilize repertório sociocultural mais variado para enriquecer o texto",
+      "Evite repetições de ideias entre os parágrafos",
+      "Conclua com uma proposta de intervenção mais detalhada"
+    ];
+
+    // Nota consistente baseada em hash simples do texto
+    function hashCode(str: string) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+      }
+      return Math.abs(hash);
+    }
+    const notaBase = 600;
+    const notaMax = 950;
+    const hash = hashCode(texto);
+    const notaSimulada = notaBase + (hash % (notaMax - notaBase + 1));
+
+    setErrosRedacao(errosSimulados);
+    setPontosMelhoria(melhoriasSimuladas);
+    setNotaRedacao(notaSimulada);
+    setRedacaoCorrigida(true);
+  }
+
+  function destacarErros(texto: string) {
+    if (errosRedacao.length === 0) return <p>{texto}</p>;
+
+    let resultado = [];
+    let ultimoIndice = 0;
+
+    // Ordena os erros por índice para processar em ordem
+    const errosOrdenados = [...errosRedacao].sort((a, b) => a.inicio - b.inicio);
+
+    for (let i = 0; i < errosOrdenados.length; i++) {
+      const erro = errosOrdenados[i];
+      // Texto antes do erro
+      if (erro.inicio > ultimoIndice) {
+        resultado.push(
+          <span key={`texto-${i}`}>{texto.substring(ultimoIndice, erro.inicio)}</span>
+        );
+      }
+      // Texto do erro destacado
+      resultado.push(
+        <span
+          key={`erro-${i}`}
+          className={`bg-yellow-200 cursor-pointer ${erroSelecionado === i ? 'border-b-2 border-red-500' : ''}`}
+          onClick={() => setErroSelecionado(erroSelecionado === i ? null : i)}
+          title={erro.erro}
+        >
+          {texto.substring(erro.inicio, erro.inicio + erro.tamanho)}
+        </span>
+      );
+      ultimoIndice = erro.inicio + erro.tamanho;
+    }
+    // Texto após o último erro
+    if (ultimoIndice < texto.length) {
+      resultado.push(
+        <span key="texto-final">{texto.substring(ultimoIndice)}</span>
+      );
+    }
+    return <p>{resultado}</p>;
   }
 
   const handleCopiar = async () => {
@@ -215,6 +367,35 @@ export function RedacaoPage() {
       setTimeout(() => setCopiado(false), 2000);
     } catch {
       setCopiado(false);
+    }
+  };
+
+  // Função para limpar os estados e voltar ao formulário
+  const handleNovaCorrecao = () => {
+    setRedacaoParaCorrigir('');
+    setTemaRedacao('');
+    setTituloRedacao('');
+    setRedacaoCorrigida(false);
+    setErrosRedacao([]);
+    setNotaRedacao(null);
+    setPontosMelhoria([]);
+    setErroSelecionado(null);
+  };
+
+  // Funções para alternar entre os modos (agora só funcionam se não for modo fixo)
+  const alternarParaCriar = () => {
+    if (!isCorrecao) {
+      setModo('criar');
+      setEnviado(false);
+      handleNovaCorrecao();
+    }
+  };
+
+  const alternarParaCorrigir = () => {
+    if (!isCorrecao) {
+      setModo('corrigir');
+      setEnviado(false);
+      setRedacao('');
     }
   };
 
@@ -228,7 +409,8 @@ export function RedacaoPage() {
           <FiArrowLeft className="mr-2" size={24} /> Voltar ao Início
         </button>
         <div className="bg-white rounded-2xl shadow-lg p-10 max-w-2xl mx-auto flex flex-col items-center">
-          {enviado && (
+          {/* Modo criar redação */}
+          {modo === 'criar' && !isCorrecao && enviado && (
             <>
               <div className="mb-8 p-4 bg-green-100 text-green-800 rounded-lg w-full text-center font-sans">
                 Redação criada! Veja abaixo a redação gerada pelo Jumbo.
@@ -250,7 +432,8 @@ export function RedacaoPage() {
               </div>
             </>
           )}
-          {!enviado && (
+          
+          {modo === 'criar' && !isCorrecao && !enviado && (
             <>
               <h1 className="text-3xl font-bold text-green-600 mb-8 text-center font-sans">Criar Redação</h1>
               <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
@@ -282,6 +465,200 @@ export function RedacaoPage() {
                   className="w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold font-sans hover:bg-green-600 transition"
                 >
                   Criar Redação
+                </button>
+              </form>
+            </>
+          )}
+          
+          {/* Modo corrigir redação */}
+          {modo === 'corrigir' && isCorrecao && redacaoCorrigida && (
+            <>
+              <div className="mb-8 p-4 bg-green-100 text-green-800 rounded-lg w-full text-center font-sans">
+                Redação corrigida! Veja abaixo a análise.
+              </div>
+              
+              {/* Exibir nota */}
+              <div className="w-full mb-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800">Sua nota:</h2>
+                  <div className="bg-green-500 text-white px-4 py-2 rounded-lg text-2xl font-bold">
+                    {notaRedacao} / 1000
+                  </div>
+                </div>
+                <div className="mt-4 bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-bold text-gray-800 mb-3">Pontos para melhorar:</h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {pontosMelhoria.map((ponto, idx) => (
+                      <li key={idx} className="text-gray-700">{ponto}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Texto com erros destacados */}
+              <div className="w-full mb-6">
+                <h3 className="font-bold text-gray-800 mb-3">Texto corrigido:</h3>
+                <div className="border border-gray-300 rounded-lg p-4 bg-white">
+                  {destacarErros(redacaoParaCorrigir)}
+                </div>
+              </div>
+              
+              <div className="w-full flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleNovaCorrecao}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition flex items-center justify-center"
+                >
+                  <FiEdit3 className="mr-2" /> Nova Correção
+                </button>
+                <button
+                  onClick={() => navigator.clipboard.writeText(redacaoParaCorrigir)}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-lg transition flex items-center justify-center"
+                >
+                  Copiar Texto
+                </button>
+              </div>
+            </>
+          )}
+          
+          {modo === 'corrigir' && isCorrecao && !redacaoCorrigida && (
+            <>
+              <h1 className="text-3xl font-bold text-green-600 mb-8 text-center font-sans">Corrigir Redação</h1>
+              <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Tema da Redação <span className="text-gray-500 text-sm">(obrigatório)</span></label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+                    placeholder="Ex: Desafios da educação no Brasil"
+                    value={temaRedacao}
+                    onChange={e => setTemaRedacao(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Título <span className="text-gray-500 text-sm">(opcional)</span></label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+                    placeholder="Título da sua redação"
+                    value={tituloRedacao}
+                    onChange={e => setTituloRedacao(e.target.value)}
+                  />
+                </div>
+                
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Texto da Redação <span className="text-gray-500 text-sm">(obrigatório)</span></label>
+                  <textarea
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition h-64"
+                    placeholder="Digite sua redação aqui..."
+                    value={redacaoParaCorrigir}
+                    onChange={e => setRedacaoParaCorrigir(e.target.value)}
+                    required
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  className="w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold font-sans hover:bg-green-600 transition flex items-center justify-center"
+                >
+                  <FiCheck className="mr-2" /> Corrigir Redação
+                </button>
+              </form>
+            </>
+          )}
+          {/* Se não for modo fixo, renderiza normalmente os modos */}
+          {modo === 'corrigir' && !isCorrecao && redacaoCorrigida && (
+            <>
+              <div className="mb-8 p-4 bg-green-100 text-green-800 rounded-lg w-full text-center font-sans">
+                Redação corrigida! Veja abaixo a análise.
+              </div>
+              
+              {/* Exibir nota */}
+              <div className="w-full mb-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800">Sua nota:</h2>
+                  <div className="bg-green-500 text-white px-4 py-2 rounded-lg text-2xl font-bold">
+                    {notaRedacao} / 1000
+                  </div>
+                </div>
+                <div className="mt-4 bg-gray-100 rounded-lg p-4">
+                  <h3 className="font-bold text-gray-800 mb-3">Pontos para melhorar:</h3>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {pontosMelhoria.map((ponto, idx) => (
+                      <li key={idx} className="text-gray-700">{ponto}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Texto com erros destacados */}
+              <div className="w-full mb-6">
+                <h3 className="font-bold text-gray-800 mb-3">Texto corrigido:</h3>
+                <div className="border border-gray-300 rounded-lg p-4 bg-white">
+                  {destacarErros(redacaoParaCorrigir)}
+                </div>
+              </div>
+              
+              <div className="w-full flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleNovaCorrecao}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition flex items-center justify-center"
+                >
+                  <FiEdit3 className="mr-2" /> Nova Correção
+                </button>
+                <button
+                  onClick={() => navigator.clipboard.writeText(redacaoParaCorrigir)}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-6 rounded-lg transition flex items-center justify-center"
+                >
+                  Copiar Texto
+                </button>
+              </div>
+            </>
+          )}
+          {modo === 'corrigir' && !isCorrecao && !redacaoCorrigida && (
+            <>
+              <h1 className="text-3xl font-bold text-green-600 mb-8 text-center font-sans">Corrigir Redação</h1>
+              <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Tema da Redação <span className="text-gray-500 text-sm">(obrigatório)</span></label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+                    placeholder="Ex: Desafios da educação no Brasil"
+                    value={temaRedacao}
+                    onChange={e => setTemaRedacao(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Título <span className="text-gray-500 text-sm">(opcional)</span></label>
+                  <input
+                    type="text"
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition"
+                    placeholder="Título da sua redação"
+                    value={tituloRedacao}
+                    onChange={e => setTituloRedacao(e.target.value)}
+                  />
+                </div>
+                
+                <div className="w-full mb-6">
+                  <label className="block text-base font-medium text-gray-700 mb-2 font-sans">Texto da Redação <span className="text-gray-500 text-sm">(obrigatório)</span></label>
+                  <textarea
+                    className="w-full border border-gray-300 rounded px-4 py-3 text-lg font-sans focus:ring-2 focus:ring-green-400 focus:border-green-400 transition h-64"
+                    placeholder="Digite sua redação aqui..."
+                    value={redacaoParaCorrigir}
+                    onChange={e => setRedacaoParaCorrigir(e.target.value)}
+                    required
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  className="w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold font-sans hover:bg-green-600 transition flex items-center justify-center"
+                >
+                  <FiCheck className="mr-2" /> Corrigir Redação
                 </button>
               </form>
             </>

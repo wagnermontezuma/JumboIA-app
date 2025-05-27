@@ -7,6 +7,7 @@ import LiveVoicePage from './components/LiveVoicePage';
 import LiveDataPage from './components/LiveDataPage';
 import { CalendarPage } from './components/CalendarPage';
 import { RedacaoPage } from './components/RedacaoPage';
+import { MateriasPage } from './components/MateriasPage';
 
 // Criando o roteador com as rotas da aplicação
 const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: '/redacao',
     element: <RedacaoPage />,
+  },
+  {
+    path: '/materias',
+    element: <MateriasPage />,
   },
 ]);
 

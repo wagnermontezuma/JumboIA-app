@@ -6,6 +6,7 @@ import QuizMode from './QuizMode';
 import { useNavigate } from 'react-router-dom';
 import { FaMicrophone, FaStop } from 'react-icons/fa';
 import BestFriendChat from './BestFriendChat';
+import MateriasButton from './MateriasButton';
 
 // API URL
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -75,7 +76,14 @@ const ChatPage: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ topic }),
+        body: JSON.stringify({
+          topic,
+          questionCount: 5,
+          imageCount: 2,
+          timeLimit: 2, // minutos
+          questionType: 'multiple_choice',
+          includeImages: true
+        }),
       });
       
       const data = await response.json();
@@ -98,7 +106,7 @@ const ChatPage: React.FC = () => {
           }))
         })),
         createdAt: new Date().toISOString(),
-        timeLimit: 120 // 2 minutos
+        timeLimit: 120 // 2 minutos em segundos
       };
       
       setQuizData(quiz);
@@ -495,6 +503,14 @@ const ChatPage: React.FC = () => {
                 Redação
               </button>
             </li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition"
+                onClick={() => navigate('/redacao?correcao=1')}
+              >
+                Correção de Redação
+              </button>
+            </li>
             <li><button 
               className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition"
               onClick={openQuizMode}
@@ -509,7 +525,14 @@ const ChatPage: React.FC = () => {
             </li>
             <li><button className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition">Sequência Didática</button></li>
             <li><button className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition">Aulas Eletivas</button></li>
-            <li><button className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition">Matérias</button></li>
+            <li>
+              <button
+                className="w-full text-left px-4 py-3 rounded-lg bg-white border border-gray-200 text-base font-medium text-gray-700 hover:bg-teal-50 transition"
+                onClick={() => navigate('/materias')}
+              >
+                Matérias
+              </button>
+            </li>
           </ul>
         </div>
       </div>
